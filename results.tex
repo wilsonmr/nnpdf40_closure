@@ -1,0 +1,38 @@
+\section{Results}
+\paragraph{Note}{Do we want results in and out of sample? Still don't
+fully understand in sample results. Need to add finite replica/fit results}
+
+Also need to define list of datasets and new vs old processes
+
+\subsection{Data space estimators}
+
+\paragraph{Note}{Add bias and variance across fits to show respective spreads}
+
+\paragraph{Note}{Add xi across datapoints for each experiment}
+
+First we show $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ by experiment for data
+not included in the fit, but old processes.
+
+\input{latex_tables/partialout_sqrt_ratio.tex}
+
+Next we show the same estimator, $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$, by
+experiment for data not included in the fit, new processes
+
+\input{latex_tables/fullout_sqrt_ratio.tex}
+
+Now we compare the measured $\xi_{1\sigma}$ and estimated $\xi_{1\sigma}$ by experiment
+for data not included in the fit, old processes. To estimate $\xi_{1\sigma}$
+we we take $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ and substitute into
+eq. \eqref{eq:expectedxi}, assuming that $\frac{\sigma_i}{\modelstd_i}$ is
+constant across datapoints and equal to $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$.
+
+\input{latex_tables/partialout_xicomp.tex}
+
+Similarly, we compare the same estimators $\xi_{1\sigma}$ and estimated
+$\xi_{1\sigma}$ by experiment for data not included in the fit, new processes.
+
+\input{latex_tables/fullout_xicomp.tex}
+
+\subsection{PDF space estimators}
+
+TODO.

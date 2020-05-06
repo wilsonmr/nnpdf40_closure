@@ -1,0 +1,59 @@
+\section{Introduction}
+
+In an NNPDF fit to experimental data, a set of replicas are fitted to pseudodata which
+is generated according the experimental central values and uncertainties. A
+successful fit is realised if the resulting replicas agree with the underlying
+law within uncertainties. Since the underlying law is usually unknown we cannot
+directly measure if this is the case.
+
+We can, however, test the methodology in
+a fit to artificial data, which is generated from theory predictions from an input PDF
+and check that we agree with the input PDF within uncertainties. This is the basis
+of a closure test, which has already been used to test to validity of previous
+iterations of the NNPDF methodology. Here we aim to refine some of the pre-existing
+closure test estimators and with the help of fast fitting methodology perform
+a more extensive study of how faithful our uncertainties are.
+
+In a fit to experimental data, for a given replica we minimise the $\chi^2$
+between the predictions obtained from that replica and the pseudodata which is
+obtained by adding some noise to the experimental central values. After fitting
+many of these replicas we can construct an ensemble which represents a sample
+from the probability distribution which defines the PDF given the data. In this
+way we propagate the various sources of uncertainty involved with fitting PDFs
+into the functional PDF space. If we consider experimental data which we assume
+to be multigaussian then the experimental central values, $\levone$, are given by
+\begin{equation}
+    \levone_{i} = \law_i + \shift_i
+\end{equation}
+in other words, the experimental values have been shifted away from the true
+values given by nature, $\law$, by some shift, $\shift$. The shift is drawn from
+the multigaussian $\mathcal{N}(0, \cov)$ where $\cov$ is the experimental covariance
+matrix. The fitted pseudodata is obtained by adding Monte Carlo noise, $\noise^{\repind}$,
+on top of the experimental central values
+\begin{equation}
+    \levtwo^{\repind}_{i} = \law_i + \shift_i + \noise^{\repind}_{i},
+\end{equation}
+where the replica index $k$ refers to each replica having different noise drawn
+independently from $\mathcal{N}(0, \cov)$. The $\chi^2$ which is minimised for
+replica $k$ is then given by
+\begin{equation}
+    {\chi^2}^{\repind} = \frac{1}{\ndata} \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j.
+\end{equation}
+After fitting many replicas, the goodness of a fit is often determined by
+considering the $\chi^2$ between the experimental central values and the
+central value of the replica theory predictions
+\begin{equation}
+    \chi^2 = \frac{1}{\ndata} \sum_{ij} \diffcentone_i \invcov{ij} \diffcentone_j,
+\end{equation}
+where $\erep{\cdot}$ denotes the mean value across replicas. The $\chi^2$ is a
+measure of the difference between the central prediction and the experimental
+central values in units of the covariance.
+
+In a fit to
+experimental data we are limited to this quanitity because we don't have knowledge
+of the underlying theory predictions of nature $\law$. In a closure test we use
+a pre-existing PDF as an input to obtain $\law$ and then generate both
+$\shift$ and $\noise$ from $\mathcal{N}(0, \cov)$, emulating the different levels
+of data. We refer to the shifted central values as level one data, the underlying
+law plus a level one shift. The pseudodata which a given replica fits is then
+referred to as level two data.
