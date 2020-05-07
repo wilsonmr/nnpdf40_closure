@@ -30,9 +30,18 @@ which can be interpreted as the uncertainty of the PDF in the space of data.
 As well as being able to calculate the bias estimator in a closure test and
 see how well the underlying law is reproduced, an advantage to testing the
 methodology with closure tests is the ability to generate ensembles of
-level one data - or experimental central values. This facilitates testing
-whether or not the distribution of replicas for a single fit is representative of the
-distribution of central predictions. There are different methods to test if this
+level one data - or experimental central values. Running multiple closure fits
+on different configurations of level one shifts facilitates testing
+whether or not the distribution of replica predictions about the mean of the
+predictions for a given closure fit is statistically representative of the
+distribution of central value of the predictions for different closure fits
+about the underlying law. If we find that
+the two distributions are indeed the same then this supports the case that
+the methodology works given some caveats - such as the distribution of central
+values being accurately modelled by a multigaussian distribution with
+covariance given by the uncertainties which are provided by experimentalists.
+
+There are different estimators to test if this
 is the case each with disadvantages and advantages.
 
 \subsubsection{Bias-Variance Ratio}
@@ -51,10 +60,11 @@ difference between central predictions and underlying law is the same as the
 mean square difference between replica predictions and their central values.
 It's also worth noting that this quantity is a squared quantity, the square
 root of this can be interpreted as how much uncertainty has been over or
-underestimated e.g $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}} = 0.9$ would
-mean the uncertainty is over estimated by 10\%.
+underestimated e.g $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}} = 0.5$ would
+mean the uncertainty for a given fit is, on average, over estimated by a factor
+of 2.
 
-\subsubsection{Quantile statistis: $\xi_{1\sigma}$}
+\subsubsection{Quantile statistics: $\xi_{1\sigma}$}
 
 A closure test estimator which was previously defined in PDF space was $\xi_{1\sigma}$.
 We define here an analogous estimator in data space
@@ -66,15 +76,14 @@ We define here an analogous estimator in data space
 where $\sigma^{(l)}$ is the standard deviation of the theory predictions
 estimated from the replicas of fit $l$. $\xi_{1\sigma}$ aims to measure the same
 thing as $\frac{\eshift{\bias}}{\eshift{\var}}$: whether the distribution of
-replicas for a given fit represents the distribution of the central predictions
+replicas for a given fit matches the distribution of the central predictions
 around the underlying predictions. It's useful to define $\xi_{1\sigma}^{i}$ as
 the value of $\xi_{1\sigma}$ for an individual data point
 such that
 \begin{equation}
     \xi_{1\sigma} = \frac{1}{\ndata} \sum_i \xi_{1\sigma}^{i}.
 \end{equation}
-Using some fairly modest assumptions we can
-calculate what the expected value of $\xi_{1\sigma}^i$ will be. If we assume that
+If we assume that
 the replica distribution is constant across
 fits then
 \begin{equation}

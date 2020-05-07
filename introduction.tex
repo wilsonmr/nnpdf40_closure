@@ -18,7 +18,7 @@ In a fit to experimental data, for a given replica we minimise the $\chi^2$
 between the predictions obtained from that replica and the pseudodata which is
 obtained by adding some noise to the experimental central values. After fitting
 many of these replicas we can construct an ensemble which represents a sample
-from the probability distribution which defines the PDF given the data. In this
+from the probability distribution of the PDF given the data. In this
 way we propagate the various sources of uncertainty involved with fitting PDFs
 into the functional PDF space. If we consider experimental data which we assume
 to be multigaussian then the experimental central values, $\levone$, are given by
@@ -39,13 +39,13 @@ replica $k$ is then given by
 \begin{equation}
     {\chi^2}^{\repind} = \frac{1}{\ndata} \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j.
 \end{equation}
-After fitting many replicas, the goodness of a fit is often determined by
+After fitting many replicas, the quality of a fit is often determined by
 considering the $\chi^2$ between the experimental central values and the
 central value of the replica theory predictions
 \begin{equation}
     \chi^2 = \frac{1}{\ndata} \sum_{ij} \diffcentone_i \invcov{ij} \diffcentone_j,
 \end{equation}
-where $\erep{\cdot}$ denotes the mean value across replicas. The $\chi^2$ is a
+where $\erep{\cdot}$ denotes the mean value across replicas. This $\chi^2$ is a
 measure of the difference between the central prediction and the experimental
 central values in units of the covariance.
 
@@ -54,6 +54,7 @@ experimental data we are limited to this quanitity because we don't have knowled
 of the underlying theory predictions of nature $\law$. In a closure test we use
 a pre-existing PDF as an input to obtain $\law$ and then generate both
 $\shift$ and $\noise$ from $\mathcal{N}(0, \cov)$, emulating the different levels
-of data. We refer to the shifted central values as level one data, the underlying
+of data. The underlying theory predictions are referred to as level zero data.
+We refer to the shifted central values as level one data, the underlying
 law plus a level one shift. The pseudodata which a given replica fits is then
 referred to as level two data.
