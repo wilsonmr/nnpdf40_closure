@@ -85,13 +85,13 @@ such that
 \end{equation}
 If we assume that
 the replica distribution is constant across
-fits then
+fits then our definition $\xi_{1\sigma}^{i}$ is just a discretised expected value
+of the indicator function. In the case that we have infinite fits, then
 \begin{equation}
     \xi_{1\sigma}^{i} = \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}
     p(\erep{\model_i} - \law_i)
-    {\rm d}(\erep{\model_i} - \law_i),
+    {\rm d}(\erep{\model_i} - \law_i).
 \end{equation}
-the expectation value of the indicator function across fits.
 If we then assume that $p(\erep{\model_i} - \law_i)$ is a gaussian centered on zero
 with a standard deviation of $\modelstd_i$ then the integral simplifies to
 \begin{equation}
