@@ -1,0 +1,63 @@
+%\pagestyle{headings}
+
+\textwidth=440pt
+\hoffset=-0.6truein
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\usepackage{pifont}
+\usepackage{booktabs}
+%\usepackage{bbold}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{epsfig}
+%\usepackage{bibunits}
+%\usepackage{theorem}
+\usepackage[framed]{ntheorem}
+\usepackage{framed}
+%\usepackage{showlabels}
+\usepackage{makeidx}
+\usepackage{simplewick}
+\usepackage{tikz-feynman}
+\usepackage{hyperref}
+
+\tikzfeynmanset{compat=1.0.0}
+
+% data levels
+\newcommand{\levone}{z}
+\newcommand{\levtwo}{y}
+\newcommand{\law}{f}
+\newcommand{\model}{g}
+\newcommand{\shift}{\eta}
+\newcommand{\noise}{\epsilon}
+
+% quality of life
+\newcommand{\ndata}{N_{\rm data}}
+\newcommand{\nfits}{N_{\rm fits}}
+\newcommand{\modelstd}{\hat{\sigma}}
+\newcommand{\erf}{{\rm erf}}
+\newcommand{\repind}{(k)}
+\newcommand{\cov}{C}
+\newcommand{\invcov}[1]{\cov^{-1}_{#1}}
+\newcommand{\erep}[1]{\mathbf{E}_{\noise}\left[ #1 \right]}
+\newcommand{\eshift}[1]{\mathbf{E}_{\shift}\left[ #1 \right]}
+
+% Difference vectors - might want to change these
+\newcommand{\diffreptwo}{\left( \model^{\repind} - \levtwo^{\repind} \right)}
+\newcommand{\diffcentone}{\left( \erep{\model} - \levone \right)}
+\newcommand{\diffcentunder}{\left( \erep{\model} - \law \right)}
+\newcommand{\diffcentrep}{\left( \erep{\model} - \model^{\repind}\right)}
+% discard below?
+\newcommand{\levelonediff}{\Delta}
+\newcommand{\underlyingdiff}{u}
+\newcommand{\repdiff}{v}
+
+% estimators
+\newcommand{\bias}{{\rm bias}}
+\newcommand{\var}{{\rm variance}}
+
+
+
+\graphicspath{{./figures/}}
