@@ -1,3 +1,4 @@
+\pdfsuppresswarningpagegroup=1
 \section{Results - data not fitted}
 \paragraph{Note}{Do we want results in and out of sample? Still don't
 fully understand in sample results. Need to add finite replica/fit results}
@@ -7,8 +8,6 @@ Also need to define list of datasets and new vs old processes
 \subsection{Data space estimators}
 
 \paragraph{Note}{Add bias and variance across fits to show respective spreads}
-
-\paragraph{Note}{Add xi across datapoints for each experiment}
 
 First we show $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ by experiment for data
 not included in the fit, but old processes.
@@ -46,7 +45,7 @@ in the basis which diagonalises the respective experimental covariance matrix.
     \label{fig:outoldheraxi}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.6 \textwidth]{out_oldproc_atlas_xi.pdf}
     \caption{$\xi_{1\sigma}^{i}$ for ATLAS datasets which were not fitted
@@ -55,7 +54,7 @@ in the basis which diagonalises the respective experimental covariance matrix.
     \label{fig:outoldatlasxi}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.6 \textwidth]{out_oldproc_cms_xi.pdf}
     \caption{$\xi_{1\sigma}^{i}$ for CMS datasets which were not fitted
@@ -64,7 +63,7 @@ in the basis which diagonalises the respective experimental covariance matrix.
     \label{fig:outoldcmsxi}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.6 \textwidth]{out_oldproc_lhcb_xi.pdf}
     \caption{$\xi_{1\sigma}^{i}$ for LHCb datasets which were not fitted
@@ -75,7 +74,7 @@ in the basis which diagonalises the respective experimental covariance matrix.
 
 Now the corresponding plots for data which was not fitted, new processes.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.6 \textwidth]{out_newproc_atlas_xi.pdf}
     \caption{$\xi_{1\sigma}^{i}$ for ATLAS datasets which were not fitted
@@ -84,7 +83,7 @@ Now the corresponding plots for data which was not fitted, new processes.
     \label{fig:outnewatlasxi}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.6 \textwidth]{out_newproc_cms_xi.pdf}
     \caption{$\xi_{1\sigma}^{i}$ for CMS datasets which were not fitted
@@ -97,8 +96,3 @@ There is no noticeable trend between new and old processes with the data which
 was not fitted. Potentially we can condense the above plots significantly. At
 least into just 4 plots (by experiment). The results would change slightly
 due to the basis being different.
-
-\newpage
-\subsection{PDF space estimators}
-
-TODO.
