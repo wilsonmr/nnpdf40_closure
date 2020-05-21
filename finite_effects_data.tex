@@ -1,0 +1,75 @@
+\section{Finite effects - data space estimators}
+
+\subsection{New data, new processes}
+
+We first show the bias and variance of each fit to see how stable
+the variance is across fits compared to the bias for new data, new processes.
+The variance is expected to be
+independent of the level 1 shift and so we assume any variation is due to finite
+number of replicas.
+
+\begin{figure}[!b]
+    \centering
+    \includegraphics[width=0.6 \textwidth]{fullout_bias_variance_fits.pdf}
+    \caption{Bias and variance for each fit for all new data, new processes. Each
+    fit has 40 replicas. The variance is still fluctuating a fair amount and
+    so results may be subject to finite statistics effects.}
+    \label{fig:outnewfitbiasvar}
+\end{figure}
+
+Next we use bootstrapping to try and gauge the dependence of the error on the
+number of fits and replicas. Using the full set of fits and replicas as the sample
+we draw a random subset of $\nfits$ fits and for each fit a random subset of $\nreps$
+replicas. We then
+calculate the estimators discussed in previous sections for the resample of fits
+and replicas. For each value of $\nfits$ and $\nreps$ we perform 100 bootstraps
+and then take the mean and standard deviation of the estimator across bootstrap
+samples. Finally we vary $\nfits$ and $\nreps$ and tabulate the results in order
+to get an idea of the dependence of the error on increasing the number of fits
+or replicas without having the redo any fits.
+
+First we show the mean of bias/variance across bootstrap samples, varying
+$\nfits$ and $\nreps$
+
+\input{latex_tables/fullout_finite_effects_ratio_mean.tex}
+
+Now the standard deviation across bootstrap samples of bias/variance, varying
+$\nfits$ and $\nreps$
+
+\input{latex_tables/fullout_finite_effects_ratio_error.tex}
+
+Now we show the corresponding tables for the $\xi_{1\sigma}$ estimator. First
+the mean across bootstrap samples
+
+\input{latex_tables/fullout_finite_effects_xi_mean.tex}
+
+Now the standard deviation across bootstrap samples
+
+\input{latex_tables/fullout_finite_effects_xi_error.tex}
+
+\subsection{New data, old processes}
+
+We include the same results for new data, old processes. The results are very
+consistent with those calculated with new data, new processes and so we might
+want to just group all new data together.
+
+First the mean across boostrap samples of bias/variance.
+
+\input{latex_tables/partialout_finite_effects_ratio_mean.tex}
+
+Next the corresponding standard deviation across boostrap samples.
+
+\input{latex_tables/partialout_finite_effects_ratio_error.tex}
+
+Now we show the resampled results for the $\xi_{1\sigma}$ estimator. First
+the mean across bootstrap samples
+
+\input{latex_tables/partialout_finite_effects_xi_means.tex}
+
+and the corresponding standard deviations across bootstrap samples
+
+\input{latex_tables/partialout_finite_effects_xi_error.tex}
+
+\subsection{Fitted data}
+
+Have the tables for fitted data, are they interesting?
