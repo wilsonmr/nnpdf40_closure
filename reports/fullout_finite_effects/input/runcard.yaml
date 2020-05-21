@@ -1,0 +1,103 @@
+fit: 200106-mw-001
+theory:
+ from_: fit
+theoryid:
+ from_: theory
+
+_internal_min_reps: 25
+
+use_cuts: internal
+q2min: 3.49                        # Q2 minimum
+w2min: 12.5                        # W2 minimum
+
+experiments:
+- experiment: ATLAS
+  datasets:
+    # atlas photon
+    - {dataset: ATLASPHT12, cfac: [QCD]}
+    - {dataset: ATLASPHT15, cfac: [QCD]}
+    # atlas single top
+    - {dataset: ATLAS_SINGLETOP_TCH_R_7TEV, cfac: [QCD]}
+    - {dataset: ATLAS_SINGLETOP_TCH_DIFF_7TEV_T_PT, cfac: [QCD]}
+    - {dataset: ATLAS_SINGLETOP_TCH_DIFF_7TEV_T_RAP, cfac: [QCD]}
+    - {dataset: ATLAS_SINGLETOP_TCH_DIFF_7TEV_TBAR_PT, cfac: [QCD]}
+    - {dataset: ATLAS_SINGLETOP_TCH_DIFF_7TEV_TBAR_RAP, cfac: [QCD]}
+    - {dataset: ATLAS_SINGLETOP_TCH_R_8TEV, cfac: [QCD]}
+    - {dataset: ATLAS_SINGLETOP_TCH_DIFF_8TEV_T_PT, cfac: [QCD]}
+    - {dataset: ATLAS_SINGLETOP_TCH_DIFF_8TEV_T_RAP, cfac: [QCD]}
+    - {dataset: ATLAS_SINGLETOP_TCH_DIFF_8TEV_TBAR_PT, cfac: [QCD]}
+    - {dataset: ATLAS_SINGLETOP_TCH_DIFF_8TEV_TBAR_RAP, cfac: [QCD]}
+    - {dataset: ATLAS_SINGLETOP_TCH_R_13TEV, cfac: [QCD]}
+    # atlas dijets
+    - {dataset: ATLAS_2JET_7TEV_R06, cfac: [QCD,EWK]}
+    - {dataset: ATLAS_2JET_7TEV_R04, cfac: [QCD,EWK]}
+    # atlas wjets
+    - {dataset: ATLAS_WP_JET_8TEV_PT, cfac: [QCD]}
+    - {dataset: ATLAS_WM_JET_8TEV_PT, cfac: [QCD]}
+    - {dataset: ATLAS_WP_JET_8TEV_PTJ, cfac: [QCD]}
+- experiment: CMS
+  datasets:
+    # CMS single top
+    - {dataset: CMS_SINGLETOP_TCH_TOT_7TEV, cfac: [QCD]}
+    - {dataset: CMS_SINGLETOP_TCH_R_8TEV, cfac: [QCD]}
+    - {dataset: CMS_SINGLETOP_TCH_R_13TEV, cfac: [QCD]}
+    # CMS dijets
+    - {dataset: CMS_2JET_7TEV, cfac: [QCD,EWK]}
+    - {dataset: CMS_2JET_3D_8TEV, cfac: [QCD,EWK]}
+
+meta:
+ author: Michael Wilson
+ keywords: n3fit, closure, test
+ title: new data, new processes resampled estimators
+
+template_text: |
+ # Bias/variance resample
+ ## means
+ {@total_ratio_means_finite_effects@}
+ ## error
+ {@total_ratio_error_finite_effects@}
+ # Expected xi resample
+ ## means
+ {@total_expected_xi_means_finite_effects@}
+ ## error
+ {@total_expected_xi_error_finite_effects@}
+ # Measured xi resample
+ ## means
+ {@total_xi_means_finite_effects@}
+ ## error
+ {@total_xi_error_finite_effects@}
+
+fits:
+ - 200106-mw-001
+ - 200106-mw-002
+ - 200106-mw-003
+ - 200106-mw-004
+ - 200106-mw-005
+ - 200106-mw-006
+ - 200106-mw-007
+ - 200106-mw-008
+ - 200106-mw-009
+ - 200106-mw-010
+ - 200106-mw-011 
+ - 200106-mw-012
+ - 200106-mw-013
+ - 200106-mw-014
+ - 200106-mw-015
+ - 200106-mw-016
+ - 200106-mw-017
+ - 200106-mw-018
+ - 200106-mw-019
+ - 200106-mw-020
+ - 200106-mw-021
+ - 200106-mw-022
+ - 200106-mw-023
+ - 200106-mw-024
+ - 200106-mw-025
+ - 200106-mw-026
+ - 200106-mw-027
+ - 200106-mw-028
+ - 200106-mw-029
+ - 200106-mw-030
+
+actions_:
+ - report(main=True)
