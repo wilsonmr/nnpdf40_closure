@@ -1,3 +1,96 @@
 \section{PDF space estimators}
 
-TODO.
+We can calculate the same set of estimators in PDF space with minor alteration
+to the definitons. Firstly, we are free to choose our own data points which will
+be points in x and flavour for the PDFs. For this study we choose the number
+of points to be 6. For the singlet and gluon we choose 3 of those points to be
+logarithmically spaced between $10^-3<x<0.1$ and 3 to be linearly spaced $0.1<x<0.5$
+for the other flavours:  V, V3, V8, T3, and T8 we simply choose the points to be
+linearly spaced $0.1<x<0.5$. The covariance matrix which is used in the definition
+of bias and variance is estimated from the union of all of the replicas, allowing
+for correlations across different flavours. We also calculate $\xi_{1\sigma}$
+in the basis which diagonalises this covariance matrix and show that this gives
+much better agreement between the expected $\xi_{1\sigma}$ and that measured
+directly from the PDFs.
+
+First the ratio of bias/variance for each flavour and total.
+
+\input{latex_tables/pdf_ratio_diag.tex}
+
+Now we compare the measured $\xi_{1\sigma}$ with the expected $\xi_{1\sigma}$
+calculated from bias/variance.
+
+\input{latex_tables/pdf_compxi_diag.tex}
+
+For each flavour we can plot $\xi^{i}_{1\sigma}$, the contribution to $\xi_{1\sigma}$
+from each of eigenvectors
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6 \textwidth]{diag_sigma.pdf}
+    \caption{
+        $\xi^{i}_{1\sigma}$ for singlet PDF, in the basis which diagonalises
+        the covariance matrix, estimated from the union of all the replicas
+    }
+    \label{fig:pdfdiagsinglet}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6 \textwidth]{diag_gluon.pdf}
+    \caption{
+        $\xi^{i}_{1\sigma}$ for gluon PDF, in the basis which diagonalises
+        the covariance matrix, estimated from the union of all the replicas
+    }
+    \label{fig:pdfdiaggluon}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6 \textwidth]{diag_v.pdf}
+    \caption{
+        $\xi^{i}_{1\sigma}$ for V PDF, in the basis which diagonalises
+        the covariance matrix, estimated from the union of all the replicas
+    }
+    \label{fig:pdfdiagv}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6 \textwidth]{diag_v3.pdf}
+    \caption{
+        $\xi^{i}_{1\sigma}$ for V3 PDF, in the basis which diagonalises
+        the covariance matrix, estimated from the union of all the replicas
+    }
+    \label{fig:pdfdiagv3}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6 \textwidth]{diag_v8.pdf}
+    \caption{
+        $\xi^{i}_{1\sigma}$ for V8 PDF, in the basis which diagonalises
+        the covariance matrix, estimated from the union of all the replicas
+    }
+    \label{fig:pdfdiagv8}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6 \textwidth]{diag_t3.pdf}
+    \caption{
+        $\xi^{i}_{1\sigma}$ for T3 PDF, in the basis which diagonalises
+        the covariance matrix, estimated from the union of all the replicas
+    }
+    \label{fig:pdfdiagt3}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6 \textwidth]{diag_t8.pdf}
+    \caption{
+        $\xi^{i}_{1\sigma}$ for T8 PDF, in the basis which diagonalises
+        the covariance matrix, estimated from the union of all the replicas
+    }
+    \label{fig:pdfdiagt8}
+\end{figure}
