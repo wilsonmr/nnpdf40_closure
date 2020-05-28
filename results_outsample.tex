@@ -1,13 +1,21 @@
 \pdfsuppresswarningpagegroup=1
 \section{Results - data not fitted}
-\paragraph{Note}{Do we want results in and out of sample? Still don't
-fully understand in sample results. Need to add finite replica/fit results}
 
-Also need to define list of datasets and new vs old processes
+We look at the statistical estimators for data which was not fitted, we split
+that data into two groups: new processes and old processes. Since we are looking
+at closure test data which has not been fitted, we ignore any double counting
+in the data - for example jet measurements with different jet radii,
+or different single top distributions.
+
+\subsection{Out of sample data, New processes}
+
+\input{latex_tables/summarise_fullout_data}
+
+\subsection{Out of sample data, Old process}
+
+\input{latex_tables/summarise_partial_data.tex}
 
 \subsection{Data space estimators}
-
-\paragraph{Note}{Add bias and variance across fits to show respective spreads}
 
 First we show $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ by experiment for data
 not included in the fit, but old processes.
@@ -41,7 +49,11 @@ in the basis which diagonalises the respective experimental covariance matrix.
     \includegraphics[width=0.6 \textwidth]{out_oldproc_hera_xi.pdf}
     \caption{$\xi_{1\sigma}^{i}$ for HERA datasets which were not fitted
     but are old processes, in the basis which diagonalises the experimental
-    covariance matrix}
+    covariance matrix. The dashed black line shows the ideal result, 0.68, when
+    the spread of replica theory predictions around the mean is equal to the
+    spread of the expectation of theory predictions across replicas around the
+    underlying law. The dashed red line shows the ideal result for the $2\sigma$
+    contour for reference.}
     \label{fig:outoldheraxi}
 \end{figure}
 
@@ -50,7 +62,11 @@ in the basis which diagonalises the respective experimental covariance matrix.
     \includegraphics[width=0.6 \textwidth]{out_oldproc_atlas_xi.pdf}
     \caption{$\xi_{1\sigma}^{i}$ for ATLAS datasets which were not fitted
     but are old processes, in the basis which diagonalises the experimental
-    covariance matrix}
+    covariance matrix. The dashed black line shows the ideal result, 0.68, when
+    the spread of replica theory predictions around the mean is equal to the
+    spread of the expectation of theory predictions across replicas around the
+    underlying law. The dashed red line shows the ideal result for the $2\sigma$
+    contour for reference.}
     \label{fig:outoldatlasxi}
 \end{figure}
 
@@ -59,7 +75,11 @@ in the basis which diagonalises the respective experimental covariance matrix.
     \includegraphics[width=0.6 \textwidth]{out_oldproc_cms_xi.pdf}
     \caption{$\xi_{1\sigma}^{i}$ for CMS datasets which were not fitted
     but are old processes, in the basis which diagonalises the experimental
-    covariance matrix}
+    covariance matrix. The dashed black line shows the ideal result, 0.68, when
+    the spread of replica theory predictions around the mean is equal to the
+    spread of the expectation of theory predictions across replicas around the
+    underlying law. The dashed red line shows the ideal result for the $2\sigma$
+    contour for reference.}
     \label{fig:outoldcmsxi}
 \end{figure}
 
@@ -68,7 +88,11 @@ in the basis which diagonalises the respective experimental covariance matrix.
     \includegraphics[width=0.6 \textwidth]{out_oldproc_lhcb_xi.pdf}
     \caption{$\xi_{1\sigma}^{i}$ for LHCb datasets which were not fitted
     but are old processes, in the basis which diagonalises the experimental
-    covariance matrix}
+    covariance matrix. The dashed black line shows the ideal result, 0.68, when
+    the spread of replica theory predictions around the mean is equal to the
+    spread of the expectation of theory predictions across replicas around the
+    underlying law. The dashed red line shows the ideal result for the $2\sigma$
+    contour for reference.}
     \label{fig:outoldlhcbxi}
 \end{figure}
 
@@ -79,7 +103,11 @@ Now the corresponding plots for data which was not fitted, new processes.
     \includegraphics[width=0.6 \textwidth]{out_newproc_atlas_xi.pdf}
     \caption{$\xi_{1\sigma}^{i}$ for ATLAS datasets which were not fitted
     and are new processes, in the basis which diagonalises the experimental
-    covariance matrix}
+    covariance matrix. The dashed black line shows the ideal result, 0.68, when
+    the spread of replica theory predictions around the mean is equal to the
+    spread of the expectation of theory predictions across replicas around the
+    underlying law. The dashed red line shows the ideal result for the $2\sigma$
+    contour for reference.}
     \label{fig:outnewatlasxi}
 \end{figure}
 
@@ -88,7 +116,11 @@ Now the corresponding plots for data which was not fitted, new processes.
     \includegraphics[width=0.6 \textwidth]{out_newproc_cms_xi.pdf}
     \caption{$\xi_{1\sigma}^{i}$ for CMS datasets which were not fitted
     and are new processes, in the basis which diagonalises the experimental
-    covariance matrix}
+    covariance matrix. The dashed black line shows the ideal result, 0.68, when
+    the spread of replica theory predictions around the mean is equal to the
+    spread of the expectation of theory predictions across replicas around the
+    underlying law. The dashed red line shows the ideal result for the $2\sigma$
+    contour for reference.}
     \label{fig:outnewcmsxi}
 \end{figure}
 

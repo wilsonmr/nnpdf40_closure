@@ -1,11 +1,22 @@
 \section{Estimators}
 Since we have access to the underlying predictions in a closure test we can
-define some new estimators which can be used to determine how well a fit performs
+define some new estimators which can be used to determine how well a fit performs.
 
-\paragraph{NOTE}{
-    do I need to derive bias and variance explicitly or can we just
-    reference it?
-}
+We start with the expectation of $\repchis$ across replicas
+\begin{equation}
+    \erep{\repchis} = \frac{1}{\ndata}\erep{ \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j}.
+\end{equation}
+we can perform a decompositon of the above, by completing the square into
+4 terms
+\begin{equation}
+    \begin{split}
+        \erep{\repchis} &= {\rm noise} + {\rm bias} + {\rm variance} - {\rm cross\,term} \\
+        &=  {\rm noise} + {\rm variance} + \Delta_{\chi^2}, \\
+        &= \chi^2 + {\rm variance}
+    \end{split}
+\end{equation}
+where $\Delta_{\chi^2}$ was an estimator which has been discussed in previous
+NNPDF closure test studies, and $\chi^2$ was defined in eq. \eqref{eq:centralchi2}.
 
 \subsection{Bias}
 
@@ -23,7 +34,9 @@ The variance of the replica predictions in units of the covariance
 \begin{equation}
     \var = \frac{1}{\ndata} \erep{ \sum_{ij} \diffcentrep_{i} \invcov{ij} \diffcentrep_{j}},
 \end{equation}
-which can be interpreted as the uncertainty of the PDF in the space of data.
+which can be interpreted as the uncertainty of the PDF in the space of data. It's
+important to note that both variance and bias can be determined purely from the
+ensemble of PDF replicas and the underlying law.
 
 \subsection{Multiple Closure Fits}
 
@@ -69,7 +82,7 @@ of 2.
 A closure test estimator which was previously defined in PDF space was $\xi_{1\sigma}$.
 We define here an analogous estimator in data space
 \begin{equation}
-    \xi_{1\sigma} = \frac{1}{\ndata \nfits} \sum_{il}
+    \xi_{1\sigma} = \frac{1}{\ndata} \frac{1}{\nfits} \sum_{i}^{\ndata} \sum_{l}^{\nfits}
     I_{[-\sigma_i^{(l)}, \sigma_i^{(l)}]}
     \left( \erep{\model_i}^{(l)} - \law_i \right),
 \end{equation}
@@ -93,7 +106,8 @@ of the indicator function. In the case that we have infinite fits, then
     {\rm d}(\erep{\model_i} - \law_i).
 \end{equation}
 If we then assume that $p(\erep{\model_i} - \law_i)$ is a gaussian centered on zero
-with a standard deviation of $\modelstd_i$ then the integral simplifies to
+with a standard deviation which we will denote as $\modelstd_i$ then the integral
+simplifies to
 \begin{equation}
     \xi_{1\sigma}^{i} = \erf \left( \frac{\sigma_i}{\modelstd_i \sqrt{2}}\right),
     \label{eq:expectedxi}
@@ -105,10 +119,11 @@ then the expected value of $\xi_{1\sigma}^{i}$ is 0.68. This is consistent with
 the assumptions we made, it's the quantile statistics of a gaussian distribution.
 
 One can also look at the variance of the indicator function across fits to
-get the variance of $\xi_{1\sigma}^{i}$
+get an idea of the fluctuation of $\xi_{1\sigma}^{i}$, which we will denote
+as $\Delta[\xi_{1\sigma}^{i}]$
 \begin{equation}
     \begin{split}
-        {\rm var}[\xi_{1\sigma}^{i}] =& \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}^2
+        \Delta[\xi_{1\sigma}^{i}] =& \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}^2
         p(\erep{\model_i} - \law_i)
     {\rm d}(\erep{\model_i} - \law_i) - \\
     &\left( \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}
@@ -118,12 +133,12 @@ get the variance of $\xi_{1\sigma}^{i}$
 \end{equation}
 which can be simplified to
 \begin{equation}
-    {\rm var}[\xi_{1\sigma}^{i}] =
+    \Delta[\xi_{1\sigma}^{i}] =
     \erf \left( \frac{\sigma_i}{\modelstd_i \sqrt{2}}\right) -
     \erf \left( \frac{\sigma_i}{\modelstd_i \sqrt{2}}\right)^2.
 \end{equation}
 Even in the ideal case that the distributions are the same, we see that the
-${\rm var}[\xi_{1\sigma}^{i}] = 0.22$, which is a large spread considering
+$\Delta[\xi_{1\sigma}^{i}] = 0.22$, which is a large spread considering
 $\xi_{1\sigma}^{i}$ is bounded between 0 and 1.
 
 When taking the mean across datapoints to obtain $\xi_{1\sigma}$ we note that
@@ -146,10 +161,7 @@ this replica covariance matrix.
 \subsection{Out of sample}
 
 We want to calculate the closure test estimators on data which is out of sample
-to check uncertainty is faithful on predictions. Can we justify this choice better
-other than we get better results out of sample? In toy model it doesn't make a
-difference.
+to check uncertainty is faithful on predictions.
 
-\subsection{PDF estimators}
-
-Fill this later, we can calculate the estimators in PDF space.
+\paragraph{TODO}{Review the toy model here and show that in/out of sample
+didn't make difference}
