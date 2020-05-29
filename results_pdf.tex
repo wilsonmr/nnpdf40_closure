@@ -1,18 +1,59 @@
 \section{PDF space estimators}
 
+\begin{itemize}
+    \item Covmat becomes unstable if Nx is increased beyond 4
+    \item diagonal xi and ratio agree and look good for nx = 4
+    \item x basis xi can still be calculated for any nx, we find it to
+        be very stable, look pretty good and agree with low Nx diagonal result
+\end{itemize}
+
 We can calculate the same set of estimators in PDF space with minor alteration
 to the definitons. Firstly, we are free to choose our own data points which will
-be points in x and flavour for the PDFs at the initial scale. For this study we
-choose the number
-of points to be 6. For the singlet and gluon we choose 3 of those points to be
-logarithmically spaced between $10^-3<x<0.1$ and 3 to be linearly spaced $0.1<x<0.5$
-for the other flavours:  V, V3, V8, T3, and T8 we simply choose the points to be
-linearly spaced $0.1<x<0.5$. The covariance matrix which is used in the definition
+be points in x and flavour for the PDFs at the initial scale. For this study the
+points in x for singlet and gluon were chosen to be half logarithmically spaced
+between $10^-3<x<0.1$ and half linearly spaced between $0.1<x<0.5$. For the
+other flavours (V, V3, V8, T3, and T8) we simply choose the points to be
+linearly spaced $0.1<x<0.5$ which is supposed to roughly capture the data
+region of the PDFs.
+
+The covariance matrix which is used in the definition
 of bias and variance is estimated from the union of all of the replicas, allowing
-for correlations across different flavours. We also calculate $\xi_{1\sigma}$
+for correlations across different flavours. We can also calculate $\xi_{1\sigma}$
 in the basis which diagonalises this covariance matrix and show that this gives
-much better agreement between the expected $\xi_{1\sigma}$ and that measured
+much good agreement between the expected $\xi_{1\sigma}$ and that measured
 directly from the PDFs.
+
+\subsection{Stability of estimated covariance matrix}
+
+Before looking at the estimators, it's useful to see how stable the covariance
+matrix estimated from the PDF replicas is under variations of the number of x
+points for each flavour. We show the eigenvalues of the correlation matrices
+for $N_x = 4,\,6\,8$ and $12$. We see that the l2-condition number of the
+correlation matrix starts to increase with $N_x$ rapidly even between $N_x=4$
+and $N_x=6$. This leads us to conclude that bias, variance and $\xi_{1\sigma}$
+in the basis which diagonalises the covariance matrix might have reliability
+issues beyond $N_x = 4$ because the amount of statistics to accurately
+calculate the covariance matrix becomes much greater.
+
+EIGENVAL PLOTS
+
+\subsection{Results for $N_x=4$}
+
+SQRT RATIO
+
+XI
+
+\subsection(Results in x-basis)
+
+Alternatively we can try calculating $\xi_{1\sigma}$ in the x-basis and ignore
+any correlations. This still will give an indication of whether the distribution
+at each point in x is similar between the PDF replicas for a given fit and the 
+expectation of the PDF replicas at each point in x across fits. Since there
+is no covariance matrix calculation we are free to increase the number of points
+in x, with the caveat that the average of $\xi_{1\sigma}^i$ across x values
+becomes the average of an increasingly correlated sample of points. Something
+which is quite reassuring is that the $\xi_{1\sigma}$ is stable under variations
+of $N_x$.
 
 First the ratio of bias/variance for each flavour and total.
 

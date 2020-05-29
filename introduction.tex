@@ -23,10 +23,11 @@ as a single neural network which takes as input $x$ and $\ln x$ and returns
 8 outputs, one for each flavour in the fitting basis, multiplied by some
 preproccessing exponents. The output for a single flavour $j$ is
 \begin{equation}
-    N(x, \ln x)_j * x^{1-\alpha_j} * (1-x)^{\beta_j},
+    NN(x, \ln x)_j * x^{1-\alpha_j} * (1-x)^{\beta_j},
 \end{equation}
 where each flavour has it's own preproccessing exponents $\alpha$ and $\beta$
-which are parameters which are varied in these fits. The pseudodata replica is generated
+which are parameters which are varied in these fits and $NN(x, \ln x)_j$ is the
+$j^{\rm th}$ output from the neural network. The pseudodata replica is generated
 through Monte Carlo sampling according to the experimental uncertainty, by
 applying a shift to the experimental
 central values. After fitting many sets of PDF replicas (usually of order 100 sets),
