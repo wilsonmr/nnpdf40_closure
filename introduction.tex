@@ -1,27 +1,28 @@
 \section{Introduction}
 
-In an NNPDF fit to experimental data, a set of replicas are fitted to pseudodata which
-is generated according the experimental central values and uncertainties. A
-successful fit is realised if the resulting replicas agree with the underlying
+In an NNPDF fit to experimental data, a set of replicas are fitted to pseudodata
+which is generated according the experimental central values and uncertainties.
+A successful fit is realised if the resulting replicas agree with the underlying
 law within uncertainties. Since the underlying law is usually unknown we cannot
 directly measure if this is the case.
 
-We can, however, test the methodology in
-a fit to artificial data, which is generated from theory predictions from an input PDF
-and check that we agree with the input PDF within uncertainties. This is the basis
-of a closure test, which has already been used to test to validity of previous
-iterations of the NNPDF methodology. Here we aim to refine some of the pre-existing
-closure test estimators and with the help of fast fitting methodology perform
-a more extensive study of how faithful our uncertainties are.
+We can, however, test the methodology in a fit to artificial data, which is
+generated from theory predictions from an input PDF and check that we agree with
+the input PDF within uncertainties. This is the basis of a closure test, which
+has already been used to test to validity of previous iterations of the NNPDF
+methodology. Here we aim to refine some of the pre-existing closure test
+estimators and with the help of fast fitting methodology perform a more
+extensive study of how faithful our uncertainties are.
 
-When fitting experimental data we vary the parameters of a set of PDF replicas at
-the initial scale such that the $\chi^2$ is minimised between the corresponding theory
-predictions and a generated pseudodata replica. A set of PDFs usually refers to a set of
-seperate continuous functions, one for each flavour of PDF in a particular basis.
-In this specific study, fits performed with \nfit parameterise the set of PDFs
-as a single neural network which takes as input $x$ and $\ln x$ and returns
-8 outputs, one for each flavour in the fitting basis, multiplied by some
-preproccessing exponents. The output for a single flavour $j$ is
+When fitting experimental data we vary the parameters of a set of PDF replicas
+at the initial scale such that the $\chi^2$ is minimised between the
+corresponding theory predictions and a generated pseudodata replica. A set of
+PDFs usually refers to a set of seperate continuous functions, one for each
+flavour of PDF in a particular basis. In this specific study, fits performed
+with \nfit\ parameterise the set of PDFs as a single neural network which takes
+as input $x$ and $\ln x$ and returns 8 outputs, one for each flavour in the
+fitting basis, multiplied by some preproccessing exponents. The output for a
+single flavour $j$ is
 \begin{equation}
     NN(x, \ln x)_j * x^{1-\alpha_j} * (1-x)^{\beta_j},
 \end{equation}
@@ -42,9 +43,9 @@ to be multigaussian then the experimental central values, $\levone$, are given b
 \end{equation}
 in other words, the experimental values have been shifted away from the true
 values given by nature, $\law$, by some shift, $\shift$. The shift is drawn from
-the multigaussian $\mathcal{N}(0, \cov)$ where $\cov$ is the experimental covariance
-matrix. The fitted pseudodata is obtained by adding Monte Carlo noise, $\noise^{\repind}$,
-on top of the experimental central values
+the multigaussian $\mathcal{N}(0, \cov)$ where $\cov$ is the experimental
+covariance matrix. The fitted pseudodata is obtained by adding Monte Carlo
+noise, $\noise^{\repind}$, on top of the experimental central values
 \begin{equation}
     \levtwo^{\repind}_{i} = \law_i + \shift_i + \noise^{\repind}_{i},
 \end{equation}
@@ -55,23 +56,22 @@ replica $k$ is then given by
     \repchis = \frac{1}{\ndata} \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j,
 \end{equation}
 where $\model^{\repind}_i$ is the prediction for $i^{\rm th}$ datapoint, from
-the $k^{\rm th}$ set of PDFs. After fitting many replicas, the quality of a fit is often determined by
-considering the $\chi^2$ between the experimental central values and the
-expectation value of the theory predictions
+the $k^{\rm th}$ set of PDFs. After fitting many replicas, the quality of a fit
+is often determined by considering the $\chi^2$ between the experimental central
+values and the expectation value of the theory predictions
 \begin{equation}\label{eq:centralchi2}
     \chi^2 = \frac{1}{\ndata} \sum_{ij} \diffcentone_i \invcov{ij} \diffcentone_j,
 \end{equation}
-where $\erep{\cdot}$ denotes the mean value across replicas, so $\erep{g}$ is the mean
-of the theory predictions across replicas. This $\chi^2$ is a
-measure of the difference between the expectation value of the prediction and
-the experimental central values in units of the covariance.
+where $\erep{\cdot}$ denotes the mean value across replicas, so $\erep{g}$ is
+the mean of the theory predictions across replicas. This $\chi^2$ is a measure
+of the difference between the expectation value of the prediction and the
+experimental central values in units of the covariance.
 
-In a fit to
-experimental data we are limited to this quanitity because we don't have knowledge
-of the underlying theory predictions of nature $\law$. In a closure test we use
-a pre-existing PDF as an input to obtain $\law$ and then generate both
-$\shift$ and $\noise$ from $\mathcal{N}(0, \cov)$, emulating the different levels
-of data. The underlying theory predictions are referred to as level zero data.
-We refer to the shifted central values as level one data, the underlying
-law plus a level one shift. The pseudodata which a given replica fits is then
-referred to as level two data.
+In a fit to experimental data we are limited to this quantity because we don't
+have knowledge of the underlying theory predictions of nature $\law$. In a
+closure test we use a pre-existing PDF as an input to obtain $\law$ and then
+generate both $\shift$ and $\noise$ from $\mathcal{N}(0, \cov)$, emulating the
+different levels of data. The underlying theory predictions are referred to as
+level zero data. We refer to the shifted central values as level one data, the
+underlying law plus a level one shift. The pseudodata which a given replica fits
+is then referred to as level two data.
