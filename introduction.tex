@@ -24,19 +24,20 @@ as input $x$ and $\ln x$ and returns 8 outputs, one for each flavour in the
 fitting basis, multiplied by some preproccessing exponents. The output for a
 single flavour $j$ is
 \begin{equation}
-    N(x, \ln x)_j * x^{1-\alpha_j} * (1-x)^{\beta_j},
+    NN(x, \ln x)_j * x^{1-\alpha_j} * (1-x)^{\beta_j},
 \end{equation}
-where each flavour has its own preproccessing exponents $\alpha$ and $\beta$
-which are parameters which are varied in these fits. The pseudodata replica is
-generated through Monte Carlo sampling according to the experimental
-uncertainty, by applying a shift to the experimental central values. After
-fitting many sets of PDF replicas (usually of order 100 sets), each set to an
-independently generated pseudodata replica, we have an ensemble of PDF replicas
-which is a sample of the probability distribution of the PDF given the data. The
-aim of this methodology, is to propagate the various sources of uncertainty
-involved with fitting PDFs into the functional PDF space. If we consider
-experimental data which we assume to be multigaussian then the experimental
-central values, $\levone$, are given by
+where each flavour has it's own preproccessing exponents $\alpha$ and $\beta$
+which are parameters which are varied in these fits and $NN(x, \ln x)_j$ is the
+$j^{\rm th}$ output from the neural network. The pseudodata replica is generated
+through Monte Carlo sampling according to the experimental uncertainty, by
+applying a shift to the experimental
+central values. After fitting many sets of PDF replicas (usually of order 100 sets),
+each set to an independently generated pseudodata replica, we have an ensemble of
+PDF replicas which is a sample of the probability distribution of the PDF given
+the data. The aim of this methodology, is to propagate the various sources of
+uncertainty involved with fitting PDFs into the functional PDF space. If we
+consider experimental data which we assume
+to be multigaussian then the experimental central values, $\levone$, are given by
 \begin{equation}
     \levone_{i} = \law_i + \shift_i
 \end{equation}

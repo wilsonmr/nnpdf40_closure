@@ -1,0 +1,114 @@
+# bootstrapped xi - in diagonal basis
+<table border="0" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>bootstrap mean $\xi_{1\sigma}$</th>
+<th>bootstrap std. $\xi_{1\sigma}$</th>
+</tr>
+<tr>
+<th>flavour</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>$\Sigma$</th>
+<td>0.6964</td>
+<td>4.180E-2</td>
+</tr>
+<tr>
+<th>gluon</th>
+<td>0.6874</td>
+<td>3.334E-2</td>
+</tr>
+<tr>
+<th>V</th>
+<td>0.6649</td>
+<td>4.722E-2</td>
+</tr>
+<tr>
+<th>V3</th>
+<td>0.6267</td>
+<td>4.337E-2</td>
+</tr>
+<tr>
+<th>V8</th>
+<td>0.7111</td>
+<td>4.145E-2</td>
+</tr>
+<tr>
+<th>T3</th>
+<td>0.8852</td>
+<td>2.780E-2</td>
+</tr>
+<tr>
+<th>T8</th>
+<td>0.4566</td>
+<td>4.185E-2</td>
+</tr>
+<tr>
+<th>Total</th>
+<td>0.7052</td>
+<td>1.893E-2</td>
+</tr>
+</tbody>
+</table>
+# bootstrapped sqrt ratio
+<table border="0" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>bootstrap mean sqrt ratio</th>
+<th>bootstrap std. sqrt ratio</th>
+</tr>
+<tr>
+<th>flavour</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>$\Sigma$</th>
+<td>0.8953</td>
+<td>4.960E-2</td>
+</tr>
+<tr>
+<th>gluon</th>
+<td>0.9001</td>
+<td>4.773E-2</td>
+</tr>
+<tr>
+<th>V</th>
+<td>1.025</td>
+<td>6.487E-2</td>
+</tr>
+<tr>
+<th>V3</th>
+<td>0.9914</td>
+<td>5.315E-2</td>
+</tr>
+<tr>
+<th>V8</th>
+<td>0.9108</td>
+<td>6.049E-2</td>
+</tr>
+<tr>
+<th>T3</th>
+<td>0.6179</td>
+<td>3.467E-2</td>
+</tr>
+<tr>
+<th>T8</th>
+<td>1.312</td>
+<td>5.212E-2</td>
+</tr>
+<tr>
+<th>Total</th>
+<td>0.9190</td>
+<td>2.977E-2</td>
+</tr>
+</tbody>
+</table>

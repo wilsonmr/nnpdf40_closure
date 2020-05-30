@@ -2,103 +2,216 @@
 
 We can calculate the same set of estimators in PDF space with minor alteration
 to the definitons. Firstly, we are free to choose our own data points which will
-be points in x and flavour for the PDFs at the initial scale. For this study we
-choose the number
-of points to be 6. For the singlet and gluon we choose 3 of those points to be
-logarithmically spaced between $10^-3<x<0.1$ and 3 to be linearly spaced $0.1<x<0.5$
-for the other flavours:  V, V3, V8, T3, and T8 we simply choose the points to be
-linearly spaced $0.1<x<0.5$. The covariance matrix which is used in the definition
+be points in x and flavour for the PDFs at the initial scale. For this study the
+points in x for singlet and gluon were chosen to be half logarithmically spaced
+between $10^-3<x<0.1$ and half linearly spaced between $0.1<x<0.5$. For the
+other flavours (V, V3, V8, T3, and T8) we simply choose the points to be
+linearly spaced $0.1<x<0.5$ which is supposed to roughly capture the data
+region of the PDFs.
+
+The covariance matrix which is used in the definition
 of bias and variance is estimated from the union of all of the replicas, allowing
-for correlations across different flavours. We also calculate $\xi_{1\sigma}$
+for correlations across different flavours. We can also calculate $\xi_{1\sigma}$
 in the basis which diagonalises this covariance matrix and show that this gives
-much better agreement between the expected $\xi_{1\sigma}$ and that measured
+much good agreement between the expected $\xi_{1\sigma}$ and that measured
 directly from the PDFs.
 
-First the ratio of bias/variance for each flavour and total.
+\subsection{Stability of estimated covariance matrix}
 
-\input{latex_tables/pdf_ratio_diag.tex}
+Before looking at the estimators, it's useful to see how stable the covariance
+matrix estimated from the PDF replicas is under variations of the number of x
+points for each flavour. We show the eigenvalues of the correlation matrices
+for $N_x = 4,\,6$ and $12$. We see that the l2-condition number of the
+correlation matrix starts to increase with $N_x$ rapidly even between $N_x=4$
+and $N_x=6$. This leads us to conclude that bias, variance and $\xi_{1\sigma}$
+in the basis which diagonalises the covariance matrix might have reliability
+issues beyond $N_x = 4$ because the amount of statistics to accurately
+calculate the covariance matrix becomes much greater.
 
-Now we compare the measured $\xi_{1\sigma}$ with the expected $\xi_{1\sigma}$
-calculated from bias/variance.
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.8\textwidth]{corr_eval_nx4.pdf}
+    \caption{The eigenvalues of the correlation matrix for the total correlation
+    matrix, for all flavours and x, with $N_x=4$. The matrix is estimated from
+    30 fits, each with 40 replicas.
+    The l2-condition number, 25.72, is the ratio of the
+    largest eigenvalue over the smallest. We see that all the eigenvalues are
+    fairly similar order of magnitude, which means the points are not too correlated
+    and we would expect a better estimate of the correlations with a smaller
+    number of replicas.}
+    \label{fig:correignx4}
+\end{figure}
 
-\input{latex_tables/pdf_compxi_diag.tex}
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.8\textwidth]{corr_eval_nx6.pdf}
+    \caption{The eigenvalues of the correlation matrix for the total correlation
+    matrix, for all flavours and x, with $N_x=6$. The matrix is estimated from
+    30 fits, each with 40 replicas.
+    The l2-condition number, 183.71, is the ratio of the
+    largest eigenvalue over the smallest. The condition number is already markedly
+    bigger than in figure \ref{fig:correignx4} and so we might expect that
+    our estimate from 1200 total replicas is already deteriorating in reliability.}
+    \label{fig:correignx6}
+\end{figure}
 
-For each flavour we can plot $\xi^{i}_{1\sigma}$, the contribution to $\xi_{1\sigma}$
-from each of eigenvectors
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.8\textwidth]{corr_eval_nx12.pdf}
+    \caption{The eigenvalues of the correlation matrix for the total correlation
+    matrix, for all flavours and x, with $N_x=12$. The matrix is estimated from
+    30 fits, each with 40 replicas.
+    The l2-condition number, 94173.94, is the ratio of the
+    largest eigenvalue over the smallest. The condition number is considerably
+    greater than for $N_x=4$ and so the estimate of the correlations is likely
+    very unreliable.}
+    \label{fig:correignx12}
+\end{figure}
+
+\subsection{Results for $N_x=4$}
+
+Given the eigenvalue plots in the previous section we first look at estimators
+which rely on estimation of a covariance matrix for $N_x=4$. This should ensure
+more reliable results. The two estimators considered here are
+$\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ and $\xi_{1\sigma}$ in the basis
+which diagonalises the estimated covariance matrix. First a table of
+$\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ for each flavour, and the total
+which allows for correlations between flavours. The table has two columns
+for the mean and standard deviation across 100 bootstrap samples.
+
+\input{latex_tables/pdf_sqrt_ratio_nx4}
+
+Now a table for $\xi_{1\sigma}$ in the diagonal basis, with two columns, with the
+mean and std. dev. across 100 bootstrap samples.
+
+\input{latex_tables/pdf_xi_nx4}
+
+As with the estimators in data-space we can compare the expected $\xi_{1\sigma}$
+from $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ by using eq. \eqref{eq:expectedxi}
+to the measured $\xi_{1\sigma}$.
+
+\input{latex_tables/pdf_xi_nx4}
+
+We see very good agreement between the two estimators. Also, the numbers
+are very comparable to those calculated in the space of data, for data not
+included in the fit.
+
+\subsection(Results in x-basis)
+
+Alternatively we can try calculating $\xi_{1\sigma}$ in the x-basis and ignore
+any correlations. This still will give an indication of whether the distribution
+at each point in x is similar between the PDF replicas for a given fit and the 
+expectation of the PDF replicas at each point in x across fits. Since there
+is no covariance matrix calculation we are free to increase the number of points
+in x, with the caveat that the average of $\xi_{1\sigma}^i$ across x values
+becomes the average of an increasingly correlated sample of points.
+
+First the values of $\xi_{1\sigma}$ in the x-basis for $N_x=4$
+
+\input{latex_tables/xbasis_xi_nx4}
+
+and the same table except for $N_x=12$
+
+\input{latex_tables/xbasis_xi_nx12}
+
+Something
+which is quite reassuring is that the $\xi_{1\sigma}$ is stable under variations
+of $N_x$.
+
+Finally we can plot $\xi_{1\sigma}$ for each point in x. Here the plots were
+produced with $N_x=4$, for which we can reliably look at results in both the
+x-basis and the basis which diagonalises the covariance matrix estimated
+from the replicas
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6 \textwidth]{diag_sigma.pdf}
+    \includegraphics[width=0.6 \textwidth]{plot_xi_xbasis_sigma.pdf}
     \caption{
-        $\xi^{i}_{1\sigma}$ for singlet PDF, in the basis which diagonalises
-        the covariance matrix, estimated from the union of all the replicas
-    }
-    \label{fig:pdfdiagsinglet}
+        $\xi^{i}_{1\sigma}$ for singlet PDF, in the x-basis, $N_x=4$. Note that
+        the first two points are logarithmically spaced from $10^{-3} < x < 0.1$
+        and the second two points are linearly spaced between $0.1 < x < 0.5$.}
+    \label{fig:pdfxisinglet}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6 \textwidth]{diag_gluon.pdf}
+    \includegraphics[width=0.6 \textwidth]{plot_xi_xbasis_gluon.pdf}
     \caption{
-        $\xi^{i}_{1\sigma}$ for gluon PDF, in the basis which diagonalises
-        the covariance matrix, estimated from the union of all the replicas
+        $\xi^{i}_{1\sigma}$ for gluon PDF, in the x-basis, $N_x=4$. Note that
+        the first two points are logarithmically spaced from $10^-3 < x < 0.1$
+        and the second two points are linearly spaced between $0.1 < x < 0.5$.
     }
-    \label{fig:pdfdiaggluon}
+    \label{fig:pdfxigluon}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6 \textwidth]{diag_v.pdf}
+    \includegraphics[width=0.6 \textwidth]{plot_xi_xbasis_v.pdf}
     \caption{
-        $\xi^{i}_{1\sigma}$ for V PDF, in the basis which diagonalises
-        the covariance matrix, estimated from the union of all the replicas
+        $\xi^{i}_{1\sigma}$ for V PDF, in the x-basis, $N_x=4$. Note that
+        the first two points are logarithmically spaced from $10^-3 < x < 0.1$
+        and the second two points are linearly spaced between $0.1 < x < 0.5$.
     }
-    \label{fig:pdfdiagv}
+    \label{fig:pdfxiv}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6 \textwidth]{diag_v3.pdf}
+    \includegraphics[width=0.6 \textwidth]{plot_xi_xbasis_v3.pdf}
     \caption{
-        $\xi^{i}_{1\sigma}$ for V3 PDF, in the basis which diagonalises
-        the covariance matrix, estimated from the union of all the replicas
+        $\xi^{i}_{1\sigma}$ for V3 PDF, in the x-basis, $N_x=4$. Note that
+        the first two points are logarithmically spaced from $10^-3 < x < 0.1$
+        and the second two points are linearly spaced between $0.1 < x < 0.5$.
     }
-    \label{fig:pdfdiagv3}
+    \label{fig:pdfxiv3}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6 \textwidth]{diag_v8.pdf}
+    \includegraphics[width=0.6 \textwidth]{plot_xi_xbasis_v8.pdf}
     \caption{
-        $\xi^{i}_{1\sigma}$ for V8 PDF, in the basis which diagonalises
-        the covariance matrix, estimated from the union of all the replicas
+        $\xi^{i}_{1\sigma}$ for V8 PDF, in the x-basis, $N_x=4$. Note that
+        the first two points are logarithmically spaced from $10^-3 < x < 0.1$
+        and the second two points are linearly spaced between $0.1 < x < 0.5$.
     }
-    \label{fig:pdfdiagv8}
+    \label{fig:pdfxiv8}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6 \textwidth]{diag_t3.pdf}
+    \includegraphics[width=0.6 \textwidth]{plot_xi_xbasis_t3.pdf}
     \caption{
-        $\xi^{i}_{1\sigma}$ for T3 PDF, in the basis which diagonalises
-        the covariance matrix, estimated from the union of all the replicas
+        $\xi^{i}_{1\sigma}$ for T3 PDF, in the x-basis, $N_x=4$. Note that
+        the first two points are logarithmically spaced from $10^-3 < x < 0.1$
+        and the second two points are linearly spaced between $0.1 < x < 0.5$.
     }
-    \label{fig:pdfdiagt3}
+    \label{fig:pdfxit3}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.6 \textwidth]{diag_t8.pdf}
+    \includegraphics[width=0.6 \textwidth]{plot_xi_xbasis_t8.pdf}
     \caption{
-        $\xi^{i}_{1\sigma}$ for T8 PDF, in the basis which diagonalises
-        the covariance matrix, estimated from the union of all the replicas
+        $\xi^{i}_{1\sigma}$ for T8 PDF, in the x-basis, $N_x=4$. Note that
+        the first two points are logarithmically spaced from $10^-3 < x < 0.1$
+        and the second two points are linearly spaced between $0.1 < x < 0.5$.
     }
-    \label{fig:pdfdiagt8}
+    \label{fig:pdfxit8}
 \end{figure}
 
-The PDF results are highly dependent on the number of points chosen in x. Also
-the results in the basis which diagonalise the covariance matrix stop us from
-seeing how the results depend on x, with the benefit of $\xi_{1\sigma}$ and
-the expected results from bias/variance agreeing well. Potentially a far greater
-number of fits and replicas are required to get a more reliable result, however
-the numbers in the first and second table don't look too bad.
+\subsection{Summary}
+
+The reliability of the covariance/correlation matrix is highly dependent on
+$N_x$. For the number of replicas we have access to, we appear to only get a
+reasonable result for $N_x=4$. For that value of $N_x$ we see good agreement
+between $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ and $\xi_{1\sigma}$.
+
+We can also look at $\xi_{1\sigma}$ in the x-basis. We see that results are
+much more stable under varying $N_x$ despite the fact that we are neglecting
+correlations. $\xi_{1\sigma}$ in the x-basis agrees fairly well, with boostrap
+error to that calculated in the diagonal basis with $N_x=4$. We can also
+plot $\xi_{1\sigma}^i$ in the x-basis and potentially use this as a diagnostic
+tool to see where in x uncertainties are over/under estimated.
+
+Generally the results for low $N_x$ or those calculated in the x-basis look good
+and seem consistent with the results for data which was not included in the fit.
