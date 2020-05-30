@@ -1,0 +1,45 @@
+Q: 1.651
+meta:
+  author: Michael Wilson
+  keywords: n3fit, closure, test
+  title: Multiple closure tests, xbasis xi plots, nx = 4
+
+multiclosure_nx: 4
+use_x_basis: true
+template_text: |
+  # Nx = {@multiclosure_nx@}
+  {@plot_xi_flavour_x@}
+fits:
+- 200106-mw-001
+- 200106-mw-002
+- 200106-mw-003
+- 200106-mw-004
+- 200106-mw-005
+- 200106-mw-006
+- 200106-mw-007
+- 200106-mw-008
+- 200106-mw-009
+- 200106-mw-010
+- 200106-mw-011
+- 200106-mw-012
+- 200106-mw-013
+- 200106-mw-014
+- 200106-mw-015
+- 200106-mw-016
+- 200106-mw-017
+- 200106-mw-018
+- 200106-mw-019
+- 200106-mw-020
+- 200106-mw-021
+- 200106-mw-022
+- 200106-mw-023
+- 200106-mw-024
+- 200106-mw-025
+- 200106-mw-026
+- 200106-mw-027
+- 200106-mw-028
+- 200106-mw-029
+- 200106-mw-030
+
+actions_:
+- report(main=True)
