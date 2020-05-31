@@ -1,28 +1,34 @@
 \section{Estimators}
 Since we have access to the underlying predictions in a closure test we can
-define some new estimators which can be used to determine how well a fit performs.
+define some new estimators which can be used to determine how well a fit
+performs.
 
 We start with the expectation of $\repchis$ across replicas
 \begin{equation}
-    \erep{\repchis} = \frac{1}{\ndata}\erep{ \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j}.
+    \label{eq:chi2kerep}
+    \erep{\repchis} = \frac{1}{\ndata} 
+    \erep{ \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j}.
 \end{equation}
-we can perform a decompositon of the above, by completing the square into
-4 terms
+The expectaio above can be decomposed, by completing the square, into 4 terms
 \begin{equation}
+    \label{eq:chi2decomp}
     \begin{split}
         \erep{\repchis} &= {\rm noise} + {\rm bias} + {\rm variance} - {\rm cross\,term} \\
         &=  {\rm noise} + {\rm variance} + \Delta_{\chi^2}, \\
         &= \chi^2 + {\rm variance}
     \end{split}
 \end{equation}
-where $\Delta_{\chi^2}$ was an estimator which has been discussed in previous
-NNPDF closure test studies, and $\chi^2$ was defined in eq. \eqref{eq:centralchi2}.
+where $\Delta_{\chi^2}$ is an estimator that has been discussed in previous
+NNPDF closure test studies, and $\chi^2$ was defined in eq.
+\eqref{eq:centralchi2}.
 
 \subsection{Bias}
 
-Defined as the difference between the central value of the replica predictions
-and the underlying predictions in units of the covariance, given by
+The {\em bias}\ is defined as the difference between the central value of the
+replica predictions and the predictions obtained from the underlying law in
+units of the covariance, \ie 
 \begin{equation}
+    \label{eq:BiasDef}
     \bias = \frac{1}{\ndata} \sum_{ij} \diffcentunder_i \invcov{ij} \diffcentunder_j.
 \end{equation}
 It is desirable for a fit to have a smaller bias because that indicates
@@ -30,48 +36,51 @@ that the fit is reproducing the underlying predictions well.
 
 \subsection{Variance}
 
-The variance of the replica predictions in units of the covariance
+The {\em variance} in the above decomposition refers to the variance of the
+replica predictions in units of the covariance
 \begin{equation}
+    \label{eq:VarDef}
     \var = \frac{1}{\ndata} \erep{ \sum_{ij} \diffcentrep_{i} \invcov{ij} \diffcentrep_{j}},
 \end{equation}
-which can be interpreted as the uncertainty of the PDF in the space of data. It's
-important to note that both variance and bias can be determined purely from the
-ensemble of PDF replicas and the underlying law.
+which can be interpreted as the propagation of the PDF uncertainty in the space
+of data. It is important to note that both variance and bias can be determined
+purely from the ensemble of PDF replicas and the underlying law.
 
 \subsection{Multiple Closure Fits}
 
-As well as being able to calculate the bias estimator in a closure test and
-see how well the underlying law is reproduced, an advantage to testing the
-methodology with closure tests is the ability to generate ensembles of
-level one data - or experimental central values. Running multiple closure fits
-on different configurations of level one shifts facilitates testing
-whether or not the distribution of replica predictions about the mean of the
-predictions for a given closure fit is statistically representative of the
-distribution of central value of the predictions for different closure fits
-about the underlying law. If we find that
-the two distributions are indeed the same then this supports the case that
-the methodology works given some caveats - such as the distribution of central
-values being accurately modelled by a multigaussian distribution with
-covariance given by the uncertainties which are provided by experimentalists.
+As well as being able to calculate the bias estimator in a closure test and see
+how well the underlying law is reproduced, an advantage to testing the
+methodology with closure tests is the ability to generate ensembles of level one
+data - or experimental central values. Running multiple closure fits on
+different configurations of level one shifts facilitates testing whether or not
+the distribution of replica predictions about their mean for a given closure fit
+is statistically representative of the distribution of central values of the
+predictions for different closure fits about the underlying law. If we find that
+the two distributions are indeed the same then this supports the case that the
+methodology works given some caveats - such as the distribution of central
+values being accurately modelled by a multigaussian distribution with covariance
+given by the uncertainties which are provided by experimentalists.
 
-There are different estimators to test if this
-is the case each with disadvantages and advantages.
+There are different estimators to test if this is the case each with
+disadvantages and advantages.
 
 \subsubsection{Bias-Variance Ratio}
 
 If the uncertainty is faithful then we would expect that upon refitting the
-difference between the central value of the replica predictions and the underlying
-law is represented properly by the uncertainty of a given PDF. If this is true
-then if we were to perform multiple fits with different shifts and calculate the
-expectation value of the bias across fits, $\eshift{\bias}$, then we should find
-that this equals $\eshift{\var}$, or equivalently
+difference between the central value of the replica predictions and the
+underlying law is represented properly by the uncertainty of a given PDF. If
+this is true then if we were to perform multiple fits with different level-1
+shifts and calculate the expectation value of the bias across fits,
+$\eshift{\bias}$, then we should find that this equals $\eshift{\var}$, or
+equivalently
 \begin{equation}
+    \label{eq:BiasVarRatio}
     \frac{\eshift{\bias}}{\eshift{\var}} = 1.
 \end{equation}
-We note that this quantity is slightly coarse: we are checking that the mean square
-difference between central predictions and underlying law is the same as the
-mean square difference between replica predictions and their central values.
-It's also worth noting that this quantity is a squared quantity, the square
+We note that this quantity is slightly coarse: we are checking that the mean
+square difference between central predictions and underlying law is the same as
+the mean square difference between replica predictions and their central values.
+It is also worth noting that this quantity is a squared quantity, the square
 root of this can be interpreted as how much uncertainty has been over or
 underestimated e.g $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}} = 0.5$ would
 mean the uncertainty for a given fit is, on average, over estimated by a factor
@@ -79,60 +88,69 @@ of 2.
 
 \subsubsection{Quantile statistics}
 
-A closure test estimator which was previously defined in PDF space was $\xi_{1\sigma}$.
-We define here an analogous estimator in data space
+A closure test estimator which was previously defined in PDF space was
+$\xi_{1\sigma}$. We define here an analogous estimator in data space
 \begin{equation}
-    \xi_{1\sigma} = \frac{1}{\ndata} \frac{1}{\nfits} \sum_{i}^{\ndata} \sum_{l}^{\nfits}
-    I_{[-\sigma_i^{(l)}, \sigma_i^{(l)}]}
-    \left( \erep{\model_i}^{(l)} - \law_i \right),
+    \label{eq:XiDataDef}
+    \xi_{1\sigma} = 
+        \frac{1}{\ndata} \sum_{i}^{\ndata} 
+        \frac{1}{\nfits} \sum_{l}^{\nfits}
+            I_{[-\sigma_i^{(l)}, \sigma_i^{(l)}]}
+            \left( \erep{\model_i}^{(l)} - \law_i \right),
 \end{equation}
 where $\sigma^{(l)}$ is the standard deviation of the theory predictions
 estimated from the replicas of fit $l$. $\xi_{1\sigma}$ aims to measure the same
 thing as $\frac{\eshift{\bias}}{\eshift{\var}}$: whether the distribution of
 replicas for a given fit matches the distribution of the central predictions
-around the underlying predictions. It's useful to define $\xi_{1\sigma}^{i}$ as
-the value of $\xi_{1\sigma}$ for an individual data point
-such that
+around the underlying predictions. It is useful to define $\xi_{1\sigma}^{i}$ as
+the value of $\xi_{1\sigma}$ for an individual data point such that
 \begin{equation}
+    \label{eq:XiDataIDel}
     \xi_{1\sigma} = \frac{1}{\ndata} \sum_i \xi_{1\sigma}^{i}.
 \end{equation}
-If we assume that
-the replica distribution is constant across
-fits then our definition $\xi_{1\sigma}^{i}$ is just a discretised expected value
-of the indicator function. In the case that we have infinite fits, then
+If we assume that the replica distribution is constant across fits then our
+definition $\xi_{1\sigma}^{i}$ is just a discretised expectation value of the
+indicator function. In the case that we have infinite fits, then
 \begin{equation}
-    \xi_{1\sigma}^{i} = \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}
-    p(\erep{\model_i} - \law_i)
+    \label{eq:XiIExpecVel}
+    \xi_{1\sigma}^{i} = 
+    \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}\, 
+    p(\erep{\model_i} - \law_i)\, 
     {\rm d}(\erep{\model_i} - \law_i).
 \end{equation}
-If we then assume that $p(\erep{\model_i} - \law_i)$ is a gaussian centered on zero
-with a standard deviation which we will denote as $\modelstd_i$ then the integral
-simplifies to
+If we then assume that $p(\erep{\model_i} - \law_i)$ is a gaussian centered on
+zero with a standard deviation which we will denote as $\modelstd_i$ then the
+integral simplifies to
 \begin{equation}
-    \xi_{1\sigma}^{i} = \erf \left( \frac{\sigma_i}{\modelstd_i \sqrt{2}}\right),
     \label{eq:expectedxi}
+    \xi_{1\sigma}^{i} = 
+    \erf \left( \frac{\sigma_i}{\modelstd_i \sqrt{2}}\right),
 \end{equation}
-which is the standard result of integrating a gaussian over some finite symmetric
-interval. Clearly if the distribution of central predictions about the underlying law
-matches the distribution of the replica predicitons around the central predictions
-then the expected value of $\xi_{1\sigma}^{i}$ is 0.68. This is consistent with
-the assumptions we made, it's the quantile statistics of a gaussian distribution.
+which is the standard result of integrating a gaussian over some finite
+symmetric interval. Clearly if the distribution of central predictions about the
+underlying law matches the distribution of the replica predicitons around the
+central predictions then the expected value of $\xi_{1\sigma}^{i}$ is 0.68. This
+is consistent with the assumptions we made, \viz\ it is  the quantile statistics
+of a gaussian distribution.
 
-One can also look at the variance of the indicator function across fits to
-get an idea of the fluctuation of $\xi_{1\sigma}^{i}$, which we will denote
-as $\Delta[\xi_{1\sigma}^{i}]$
+One can also look at the variance of the indicator function across fits to get
+an idea of the fluctuation of $\xi_{1\sigma}^{i}$, which we will denote as
+$\Delta[\xi_{1\sigma}^{i}]$
 \begin{equation}
+    \label{eq:XiIVar}
     \begin{split}
-        \Delta[\xi_{1\sigma}^{i}] =& \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}^2
-        p(\erep{\model_i} - \law_i)
-    {\rm d}(\erep{\model_i} - \law_i) - \\
-    &\left( \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}
-    p(\erep{\model_i} - \law_i)
-    {\rm d}(\erep{\model_i} - \law_i) \right)^2,
+        \Delta[\xi_{1\sigma}^{i}] 
+        =& \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}^2\, 
+            p(\erep{\model_i} - \law_i)\,
+            {\rm d}(\erep{\model_i} - \law_i) - \\
+        &- \left( \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}\,
+            p(\erep{\model_i} - \law_i)\,
+            {\rm d}(\erep{\model_i} - \law_i) \right)^2,
     \end{split}
 \end{equation}
 which can be simplified to
 \begin{equation}
+    \label{eq:XiIVarSimplified}
     \Delta[\xi_{1\sigma}^{i}] =
     \erf \left( \frac{\sigma_i}{\modelstd_i \sqrt{2}}\right) -
     \erf \left( \frac{\sigma_i}{\modelstd_i \sqrt{2}}\right)^2.
@@ -143,15 +161,15 @@ $\xi_{1\sigma}^{i}$ is bounded between 0 and 1.
 
 When taking the mean across datapoints to obtain $\xi_{1\sigma}$ we note that
 getting 0.68 relies on each sampled $\xi_{1\sigma}^{i}$ being statistically
-independent. This clearly will not be the case because there can be a big correlation
-between datapoints within the same dataset. We can calculate $\xi_{1\sigma}$
-in different basis and note that unlike $\chi^2$ and quantities of the form
-$v^T M v$, $\xi_{1\sigma}$ is
-not basis independent. There is a choice of basis, however it will be useful to
-compare the value $\xi_{1\sigma}$ and $\frac{\eshift{\bias}}{\eshift{\var}}$.
-Therefore, a natural basis to calculate
-$\xi_{1\sigma}$ is the basis which diagonalises the experimental covariance matrix
-because bias and variance are both calculated in units of the experimental
+independent. This clearly will not be the case because there can be a big
+correlation between datapoints within the same dataset. We can calculate
+$\xi_{1\sigma}$ in different basis and note that unlike $\chi^2$ and quantities
+of the form $v^T M v$, $\xi_{1\sigma}$ is not basis independent. There is a
+choice of basis, however it will be useful to compare the value $\xi_{1\sigma}$
+and $\frac{\eshift{\bias}}{\eshift{\var}}$. Therefore, a natural basis to
+calculate $\xi_{1\sigma}$ is the basis which diagonalises the experimental
+covariance matrix because bias and variance are both calculated in units of the
+experimental
 % Should I mention this without having tried it?
 covariance. Alternatively one could estimate the covariance of the difference
 between replicas and central values and then rotate the differences between
@@ -164,4 +182,4 @@ We want to calculate the closure test estimators on data which is out of sample
 to check uncertainty is faithful on predictions.
 
 \paragraph{TODO}{Review the toy model here and show that in/out of sample
-didn't make difference}
+didn't make difference - {\bf LDD}}
