@@ -1,48 +1,78 @@
 \pdfsuppresswarningpagegroup=1
 \section{Results - data not fitted}
 
-We look at the statistical estimators for data which was not fitted, we split
-that data into two groups: new processes and old processes. Since we are looking
-at closure test data which has not been fitted, we ignore any double counting
-in the data - for example jet measurements with different jet radii,
-or different single top distributions.
+We look at the statistical estimators computed using data which was not fitted,
+we split that data into two groups: new processes and old processes. Since we
+are looking at closure test data which has not been fitted, we ignore any double
+counting in the data - for example jet measurements with different jet radii, or
+different single top distributions.
 
 \subsection{Out of sample data, New processes}
 
-\input{latex_tables/summarise_fullout_data}
+\begin{table}[h!]
+    \label{tab:summarise_fullout_data}
+    \input{latex_tables/summarise_fullout_data}
+    \caption{Summary of the new processes, out of sample data used to compute the statistical estimators.}
+\end{table}
 
 \subsection{Out of sample data, Old process}
 
-\input{latex_tables/summarise_partial_data.tex}
+\begin{table}[h!]
+    \label{tab:summarise_partial_data}
+    \input{latex_tables/summarise_partial_data}
+    \caption{Summary of the old processes, out of sample data used to compute the statistical estimators.}
+\end{table}
+
+\FloatBarrier
 
 \subsection{Data space estimators}
 
-First we show $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ by experiment for data
-not included in the fit, but old processes.
+First we show $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ by experiment for
+data not included in the fit, but old processes.
 
-\input{latex_tables/partialout_sqrt_ratio.tex}
+\begin{table}[h!]
+    \label{tab:partialout_sqrt_ratio}
+    \input{latex_tables/partialout_sqrt_ratio}
+    \caption{Bias/variance ratio for each experiment, using data not included in the fit, old processes.}
+\end{table}
 
-Next we show the same estimator, $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$, by
-experiment for data not included in the fit, new processes
+Next we show the same estimator, $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$,
+by experiment for data not included in the fit, new processes
 
-\input{latex_tables/fullout_sqrt_ratio.tex}
+\begin{table}[h!]
+    \label{tab:fullout_sqrt_ratio}
+    \input{latex_tables/fullout_sqrt_ratio}
+    \caption{Bias/variance ratio for each experiment, using data not included in the fit, new processes.}
+\end{table}
 
-Now we compare the measured $\xi_{1\sigma}$ and estimated $\xi_{1\sigma}$ by experiment
-for data not included in the fit, old processes. To estimate $\xi_{1\sigma}$
-we we take $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ and substitute into
-eq. \eqref{eq:expectedxi}, assuming that $\frac{\sigma_i}{\modelstd_i}$ is
-constant across datapoints and equal to $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$.
+Now we compare the measured $\xi_{1\sigma}$ and estimated $\xi_{1\sigma}$ by
+experiment for data not included in the fit, old processes. To estimate
+$\xi_{1\sigma}$ we we take $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ and
+substitute into eq. \eqref{eq:expectedxi}, assuming that
+$\frac{\sigma_i}{\modelstd_i}$ is constant across datapoints and equal to
+$\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$.
 
-\input{latex_tables/partialout_xicomp.tex}
+\begin{table}[h!]
+    \label{tab:partialout_xicomp}
+    \input{latex_tables/partialout_xicomp}
+    \caption{Comparison between the measured value of $\xi_{1\sigma}$ and the value predicted from the bias/variance ratio for each experiment, using data not included in the fit, old processes.}
+\end{table}
 
 Similarly, we compare the same estimators $\xi_{1\sigma}$ and estimated
 $\xi_{1\sigma}$ by experiment for data not included in the fit, new processes.
 
-\input{latex_tables/fullout_xicomp.tex}
+\begin{table}[h!]
+    \label{tab:fullout_xicomp}
+    \input{latex_tables/fullout_xicomp}
+    \caption{Comparison between the measured value of $\xi_{1\sigma}$ and the value predicted from the bias/variance ratio for each experiment, using data not included in the fit, new processes.}
+\end{table}
 
-We now show $\xi_{1\sigma}^{i}$ for data which was not fitted, old processes. Split
-up by experiment, each scatter point is $\xi_{1\sigma}^{i}$ for a given datapoint
-in the basis which diagonalises the respective experimental covariance matrix.
+\FloatBarrier
+
+We now show $\xi_{1\sigma}^{i}$ for data which was not fitted, old processes.
+Split up by experiment, each scatter point is $\xi_{1\sigma}^{i}$ for a given
+datapoint in the basis which diagonalises the respective experimental covariance
+matrix.
 
 \begin{figure}[!b]
     \centering
@@ -96,6 +126,8 @@ in the basis which diagonalises the respective experimental covariance matrix.
     \label{fig:outoldlhcbxi}
 \end{figure}
 
+\FloatBarrier
+
 Now the corresponding plots for data which was not fitted, new processes.
 
 \begin{figure}[ht]
@@ -123,6 +155,8 @@ Now the corresponding plots for data which was not fitted, new processes.
     contour for reference.}
     \label{fig:outnewcmsxi}
 \end{figure}
+
+\FloatBarrier
 
 There is no noticeable trend between new and old processes with the data which
 was not fitted. Potentially we can condense the above plots significantly. At
