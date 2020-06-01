@@ -4,16 +4,32 @@
 Here is a summary of the data and settings used during the global closure test
 fits discussed in this report.
 
-\input{latex_tables/dataset_summary}
+\begin{table}[h!]
+    \label{tab:dataset_summary}
+    \input{latex_tables/dataset_summary}
+    \caption{Summary of the fitted data used to compute the statistical estimators.}
+\end{table}
+
+\FloatBarrier
 
 \subsection{Data space estimators}
 
 First we show $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ by experiment
 for data included in the fit.
 
-\input{latex_tables/fitted_sqrt_ratio.tex}
+\begin{table}[h!]
+    \label{tab:fitted_sqrt_ratio}
+    \input{latex_tables/fitted_sqrt_ratio}
+    \caption{Bias/variance ratio for each experiment, using data included in the fit.}
+\end{table}
+
+\FloatBarrier
 
 Now we compare the measured $\xi_{1\sigma}$ and estimated $\xi_{1\sigma}$ by experiment
 for data included in the fit.
 
-\input{latex_tables/fitted_xicomp.tex}
+\begin{table}[h!]
+    \label{tab:fitted_xicomp}
+    \input{latex_tables/fitted_xicomp}
+    \caption{Comparison between the measured value of $\xi_{1\sigma}$ and the value predicted from the bias/variance ratio for each experiment, using data included in the fit.}
+\end{table}
