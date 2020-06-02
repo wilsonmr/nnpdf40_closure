@@ -6,27 +6,27 @@ be points in x and flavour for the PDFs at the initial scale. For this study the
 points in x for singlet and gluon were chosen to be half logarithmically spaced
 between $10^-3<x<0.1$ and half linearly spaced between $0.1<x<0.5$. For the
 other flavours (V, V3, V8, T3, and T8) we simply choose the points to be
-linearly spaced $0.1<x<0.5$ which is supposed to roughly capture the data
-region of the PDFs.
+linearly spaced $0.1<x<0.5$ which is supposed to roughly capture the data region
+of the PDFs.
 
-The covariance matrix which is used in the definition
-of bias and variance is estimated from the union of all of the replicas, allowing
-for correlations across different flavours. We can also calculate $\xi_{1\sigma}$
-in the basis which diagonalises this covariance matrix and show that this gives
-much good agreement between the expected $\xi_{1\sigma}$ and that measured
-directly from the PDFs.
+The covariance matrix which is used in the definition of bias and variance is
+estimated from the union of all of the replicas, allowing for correlations
+across different flavours. We can also calculate $\xi_{1\sigma}$ in the basis
+which diagonalises this covariance matrix and show that this gives much good
+agreement between the expected $\xi_{1\sigma}$ and that measured directly from
+the PDFs.
 
 \subsection{Stability of estimated covariance matrix}
 
 Before looking at the estimators, it's useful to see how stable the covariance
 matrix estimated from the PDF replicas is under variations of the number of x
-points for each flavour. We show the eigenvalues of the correlation matrices
-for $N_x = 4,\,6$ and $12$. We see that the l2-condition number of the
-correlation matrix starts to increase with $N_x$ rapidly even between $N_x=4$
-and $N_x=6$. This leads us to conclude that bias, variance and $\xi_{1\sigma}$
-in the basis which diagonalises the covariance matrix might have reliability
-issues beyond $N_x = 4$ because the amount of statistics to accurately
-calculate the covariance matrix becomes much greater.
+points for each flavour. We show the eigenvalues of the correlation matrices for
+$N_x = 4,\,6$ and $12$. We see that the l2-condition number of the correlation
+matrix starts to increase with $N_x$ rapidly even between $N_x=4$ and $N_x=6$.
+This leads us to conclude that bias, variance and $\xi_{1\sigma}$ in the basis
+which diagonalises the covariance matrix might have reliability issues beyond
+$N_x = 4$ because the amount of statistics to accurately calculate the
+covariance matrix becomes much greater.
 
 \begin{figure}[]
     \centering
@@ -68,6 +68,8 @@ calculate the covariance matrix becomes much greater.
     \label{fig:correignx12}
 \end{figure}
 
+\FloatBarrier
+
 \subsection{Results for $N_x=4$}
 
 Given the eigenvalue plots in the previous section we first look at estimators
@@ -79,18 +81,34 @@ $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ for each flavour, and the total
 which allows for correlations between flavours. The table has two columns
 for the mean and standard deviation across 100 bootstrap samples.
 
-\input{latex_tables/pdf_sqrt_ratio_nx4}
+\begin{table}[h!]
+    \label{tab:pdf_sqrt_ratio_nx4}
+    \input{latex_tables/pdf_sqrt_ratio_nx4}
+    \caption{Bias/variance ratio, mean value and bootstrap standard deviation. }
+\end{table}
 
-Now a table for $\xi_{1\sigma}$ in the diagonal basis, with two columns, with the
-mean and std. dev. across 100 bootstrap samples.
+\FloatBarrier
 
-\input{latex_tables/pdf_xi_nx4}
+Now a table for $\xi_{1\sigma}$ in the diagonal basis, with two columns, with
+the mean and std. dev. across 100 bootstrap samples.
+
+\begin{table}[h!]
+    \label{tab:latex_tables/pdf_xi_nx4}
+    \input{latex_tables/pdf_xi_nx4}
+    \caption{Bias/variance ratio, and its standard deviation, in the diagonal basis. }
+\end{table}
+
+\FloatBarrier
 
 As with the estimators in data-space we can compare the expected $\xi_{1\sigma}$
 from $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}$ by using eq. \eqref{eq:expectedxi}
 to the measured $\xi_{1\sigma}$.
 
-\input{latex_tables/pdf_xicomp_nx4}
+\begin{table}[h!]
+    \label{tab:pdf_xicomp_nx4}
+    \input{latex_tables/pdf_xicomp_nx4}
+    \caption{Comparison between the measured value of $\xi_{1\sigma}$ and the value predicted from the bias/variance ratio for each experiment.}
+\end{table}
 
 We see very good agreement between the two estimators. Also, the numbers
 are very comparable to those calculated in the space of data, for data not
@@ -108,11 +126,23 @@ becomes the average of an increasingly correlated sample of points.
 
 First the values of $\xi_{1\sigma}$ in the x-basis for $N_x=4$
 
-\input{latex_tables/xbasis_xi_nx4}
+\begin{table}[h!]
+    \label{tab:xbasis_xi_nx4}
+    \input{latex_tables/xbasis_xi_nx4}
+    \caption{Bias/variance ratio, and its standard deviation, in the $x$ basis. Results for $N_x=4$. }
+\end{table}
+
+\FloatBarrier
 
 and the same table except for $N_x=12$
 
-\input{latex_tables/xbasis_xi_nx12}
+\begin{table}[h!]
+    \label{tab:xbasis_xi_nx12}
+    \input{latex_tables/xbasis_xi_nx12}
+    \caption{Bias/variance ratio, and its standard deviation, in the $x$ basis. Results for $N_x=12$. }
+\end{table}
+
+\FloatBarrier
 
 Something
 which is quite reassuring is that the $\xi_{1\sigma}$ is stable under variations
