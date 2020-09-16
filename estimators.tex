@@ -9,7 +9,7 @@ We start with the expectation of $\repchis$ across replicas
     \erep{\repchis} = \frac{1}{\ndata} 
     \erep{ \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j}.
 \end{equation}
-The expectaio above can be decomposed, by completing the square, into 4 terms
+This can be decomposed, by completing the square, into 4 terms
 \begin{equation}
     \label{eq:chi2decomp}
     \begin{split}
@@ -51,18 +51,32 @@ purely from the ensemble of PDF replicas and the underlying law.
 As well as being able to calculate the bias estimator in a closure test and see
 how well the underlying law is reproduced, an advantage to testing the
 methodology with closure tests is the ability to generate ensembles of level one
-data - or experimental central values. Running multiple closure fits on
+data - or experimental central values.
+
+Performing multiple closure fits on
 different configurations of level one shifts facilitates testing whether or not
 the distribution of replica predictions about their mean for a given closure fit
-is statistically representative of the distribution of central values of the
-predictions for different closure fits about the underlying law. If we find that
-the two distributions are indeed the same then this supports the case that the
-methodology works given some caveats - such as the distribution of central
-values being accurately modelled by a multigaussian distribution with covariance
-given by the uncertainties which are provided by experimentalists.
+is representative of the distribution of central values of the
+predictions for different closure fits about the underlying law. This is ultimately
+a test of whether the uncertainties provided with a single fit are
+representative.
 
-There are different estimators to test if this is the case each with
-disadvantages and advantages.
+\subsection{Thoughts on why Bias-Variance makes any sense}
+
+There is a clear geometric interpretation of $\frac{\eshift{\bias}}{\eshift{\var}} = 1$
+which I have shown before. In the basis which diagonalises the experimental
+covariance matrix the variance is the mean squared radius of the replica predictions for a
+given fit and the expected bias is the mean squared radius of the central value
+of the predictions. We assume that the variance has a value which is
+independent of $\shift$ and, with enough replicas, is constant across fits.
+
+Then $\frac{\eshift{\bias}}{\eshift{\var}}$ is measuring whether the second
+moment of the two distributions is equal. If the distributions are Gaussian
+then this condition is sufficient to say that the distributions have the same shape.
+Provided the distributions are at least symmetric, which seems reasonable at least
+near the maxima of the distribution, then given our full set of replicas are
+we now saying that the probability distribution that our replicas are drawn from
+is $p(f| {\rm data})$?
 
 \subsubsection{Bias-Variance Ratio}
 
