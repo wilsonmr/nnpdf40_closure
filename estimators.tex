@@ -9,7 +9,7 @@ We start with the expectation of $\repchis$ across replicas
     \erep{\repchis} = \frac{1}{\ndata} 
     \erep{ \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j}.
 \end{equation}
-The expectaio above can be decomposed, by completing the square, into 4 terms
+This can be decomposed, by completing the square, into 4 terms
 \begin{equation}
     \label{eq:chi2decomp}
     \begin{split}
@@ -51,40 +51,69 @@ purely from the ensemble of PDF replicas and the underlying law.
 As well as being able to calculate the bias estimator in a closure test and see
 how well the underlying law is reproduced, an advantage to testing the
 methodology with closure tests is the ability to generate ensembles of level one
-data - or experimental central values. Running multiple closure fits on
+data - or experimental central values.
+
+Performing multiple closure fits on
 different configurations of level one shifts facilitates testing whether or not
 the distribution of replica predictions about their mean for a given closure fit
-is statistically representative of the distribution of central values of the
-predictions for different closure fits about the underlying law. If we find that
-the two distributions are indeed the same then this supports the case that the
-methodology works given some caveats - such as the distribution of central
-values being accurately modelled by a multigaussian distribution with covariance
-given by the uncertainties which are provided by experimentalists.
+is representative of the distribution of central values of the
+predictions for different closure fits about the underlying law. This is ultimately
+a test of whether the uncertainties provided with a single fit are
+representative.
 
-There are different estimators to test if this is the case each with
-disadvantages and advantages.
+\subsection{Bias Variance ratio}
 
-\subsubsection{Bias-Variance Ratio}
-
-If the uncertainty is faithful then we would expect that upon refitting the
-difference between the central value of the replica predictions and the
-underlying law is represented properly by the uncertainty of a given PDF. If
-this is true then if we were to perform multiple fits with different level-1
+If we were to perform multiple fits with different level-1
 shifts and calculate the expectation value of the bias across fits,
-$\eshift{\bias}$, then we should find that this equals $\eshift{\var}$, or
-equivalently
+$\eshift{\bias}$, then we can calculate
 \begin{equation}
     \label{eq:BiasVarRatio}
-    \frac{\eshift{\bias}}{\eshift{\var}} = 1.
+    \frac{\eshift{\bias}}{\var} = 1.
 \end{equation}
-We note that this quantity is slightly coarse: we are checking that the mean
-square difference between central predictions and underlying law is the same as
-the mean square difference between replica predictions and their central values.
-It is also worth noting that this quantity is a squared quantity, the square
-root of this can be interpreted as how much uncertainty has been over or
-underestimated e.g $\sqrt{\frac{\eshift{\bias}}{\eshift{\var}}} = 0.5$ would
-mean the uncertainty for a given fit is, on average, over estimated by a factor
-of 2.
+There is a clear geometric interpretation of this quantity.
+In the basis which diagonalises the experimental
+covariance matrix the variance is the mean squared radius of the replica predictions for a
+given fit and the expected bias is the mean squared radius of the central value
+of the predictions. We assume that the variance has a value which is
+independent of $\shift$ and, with enough replicas, is constant across fits.
+In practice we will also take the expectation value of $\var$ across fits,
+because we will be running fits with finite replicas and so expect fluctuations
+across fits.
+
+If we look at the functional form of $\eshift{\bias}$ then we see that it is
+the same form as that of $\var$. The difference is the expectation value is
+being taken over fits instead of replicas and the difference is between the
+central predictions of a fit and the underlying law. We can rewrite the variance
+in the basis which diagonalises the experimental covmat as
+\begin{equation}
+    \var = \frac{1}{\ndata} \erep{ \sum_{i} \frac{(\hat{\Delta}_{i, \noise})^2}{\hat{\sigma}_{i}^2}},
+\end{equation}
+where $\underline{\hat{\Delta}}$ is the vector of differences, $\diffcentrep$,
+projected into the eigenbasis of the covmat and $\hat{\sigma}^2$ are the
+eigenvalues of the covmat. If we take the expectation over replicas before
+summing over the data points
+\begin{equation}
+    \var = \frac{1}{\ndata} \sum_{i} {\rm Var}(\frac{\hat{\Delta}_i}{\hat{\sigma}_i}),
+\end{equation}
+then we see that variance is the mean across data points of the second moment
+of the distribution of replica predictions about the central value of the predictions.
+A similar argument can be applied to $\eshift{\bias}$.
+
+Then $\frac{\eshift{\bias}}{\eshift{\var}}$ is an estimate of whether the average
+of the second moments of the distributions across data points is equal. This
+is a rough estimate of whether the second moment of the two distributions match
+which would clearly be determining if the covariance matrix of the two distributions
+was equal, element by element. Having a sufficient number of fits and replicas
+to be able to determine this quantity is unobtainable, even with the increased
+speed of fits and so instead we opt to calculate this cruder estimate.
+
+If the distribution of central predictions is Gaussian about the underlying law
+and the distribution of replica predictions is Gaussian about the central prediction
+then showing that the covariance matrix of each distribution is equal is equivalent
+to showing that the K-L divergence between the two distributions is 0. In this
+case it is clear that the replicas of a given fit are distributed as though
+they were drawn from $p(f|{\rm data})$, in which case the uncertainties on
+our predictions is faithful.
 
 \subsubsection{Quantile statistics}
 

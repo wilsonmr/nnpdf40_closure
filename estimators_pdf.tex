@@ -1,0 +1,55 @@
+\section{Calculating estimators in PDF space}
+
+We can calculate the same set of estimators in PDF space with minor alteration
+to the definitions. Instead of calculating the estimators on points in data space,
+we instead choose to sample the PDFs at the initial scale at discrete intervals
+in $x$ and flavour. For this study the
+points in x for singlet and gluon were chosen to be half logarithmically spaced
+between $10^-3<x<0.1$ and half linearly spaced between $0.1<x<0.5$. For the
+other flavours (V, V3, V8, T3, and T8) we simply choose the points to be
+linearly spaced $0.1<x<0.5$ which is supposed to roughly capture the data region
+of the PDFs.
+
+The covariance matrix which is used in the definition of bias and variance is
+estimated from the union of all of the replicas, allowing for correlations
+across different flavours. We can also calculate $\xi_{1\sigma}$ in the basis
+which diagonalises this covariance matrix and examine the
+agreement between the expected $\xi_{1\sigma}$ from calculated from
+$\frac{\eshift{\bias}}{\eshift{\var}}$, using eq. \eqref{eq:expectedxi} and
+the value measured directly from the PDFs. Clearly there is a slight circularity
+when using this definition of the covariance matrix
+\begin{equation}
+    \Sigma_{ij} = \frac{1}{\nfits}\frac{1}{\nreps} \sum_{l}^{\nfits} \sum_{k}^{\nreps} \diffcentrep^{(l)}_i \diffcentrep^{(l)}_j ,
+\end{equation}
+where $\Sigma_{ij}$ is the PDF space covariance matrix, so indices $i$ and $j$
+run over all points in $x$ and flavour, and $\model$ now refers to a point in
+PDF space. Because if our assumption is correct, that the distribution of
+replicas around the central value is the same for all fits in the limit of infinite
+replicas, then in this limit the variance for a given fit should tend to
+exactly 1. The definition of expected bias then becomes
+\begin{equation}
+    \begin{split}
+        \eshift{\bias} &= \frac{1}{\nfits} \frac{1}{\ndata} \sum^{\nfits}_{l} \sum^{\ndata}_{ij}
+    \diffcentunder^{(l)}_{i} \Sigma^{-1}_{ij} \diffcentunder^{(l)}_{j} \\
+    &= \frac{1}{\ndata} \sum_{ij}^{\ndata} \mathcal{C}_{ij} \Sigma^{-1}_{ij} \\
+    &= \frac{1}{\ndata} {\rm Tr}[\mathcal{C}\Sigma^{-1}]
+    \end{split}
+\end{equation}
+where we have labelled $\mathcal{C}$ the covariance of the central PDFs around
+the underlying law and denoted the number of points in flavour and $x$ as
+$\npoints = N_{x} \times N_{\rm flavours}$. We see then that requiring that
+$\frac{\eshift{\bias}}{\eshift{\var}}$
+when the covariance is estimated from the replicas themselves is actually
+a more stringent check on whether the second moment of the distribution of
+replicas around the central PDF is equal to the second moment of the distribution
+of central PDFs around the underlying law. Since it accounts for all correlations
+in each of the distribution, instead of just being a ratio of the mean squared
+radius.
+It is theoretically possible
+to calculate the analogue in data space, however in practice the number of points
+chosen in PDF space is $~10$ and so the covariance matrix can be estimated quite
+well. In data space, the number of points is $~1000$ and so the minimum number
+of replicas estimate a positive definite matrix is far greater, that also doesn't
+guarantee a stable estimation of the covariance, in the case that correlations
+between points is high then a much large sample is required to get a reliable
+estimate of the covariance matrix.
