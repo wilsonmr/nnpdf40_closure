@@ -14,18 +14,41 @@ single flavour $j$ is
 \end{equation}
 where each flavour has it's own preproccessing exponents $\alpha$ and $\beta$,
 parameters that are varied in these fits, and $NN(x, \ln x)_j$ is the
-$j^{\rm th}$ output from the neural network. The pseudodata replica is generated
-through Monte Carlo sampling according to the experimental uncertainty, by
-applying noise to the experimental
-central values. After fitting many sets of PDF replicas (usually of order 100 sets),
+$j^{\rm th}$ output from the neural network.
+When an experiment is included in an NNPDF fit, we take the published
+experimental central values and uncertainties (statistical and systematic)
+and use these pieces of information to generate the pseudodata.
+The pseudodata replica is generated
+through Monte Carlo sampling by applying noise to the experimental
+central values.
+After fitting many sets of PDF replicas (usually of order 100 sets),
 each set to an independently generated pseudodata replica, we have an ensemble of
-PDF replicas which is a sample of the probability distribution of the PDF given
-the data. The aim of this methodology, is to propagate the various sources of
-uncertainty involved with fitting PDFs into the functional PDF space.
+PDF replicas.
+The aim of this methodology, is to propagate the various sources of
+uncertainty involved with fitting PDFs into the functional PDF space in a faithful
+manner. This means that the distribution from which the PDF replicas are drawn
+from should be representative of the probability distribution of the true
+underlying PDF.
+
+The closure test was introduced alongside NNPDF3.0 and will be described below.
+At this stage it's important to note that the closure test may serve 3 purposes:
+We can test whether or not the ensemble of PDF replicas does reflect the
+probability distribution of the true underlying PDF; we can compare two different
+fitting methodologies and use estimators to determine which one performs better;
+we can try to understand different elements of our own methodology, such as
+the different contributions to the PDF uncertainty. The PDF uncertainty will
+be used as short-hand for referring to the distribution of replicas for a given
+fit, we consider this the PDF uncertainty because if the distribution
+of the true underlying PDF is reflected by the distribution of replicas for
+a given fit, then the standard deviation of the replicas in PDF space or the
+theory predictions obtained from those replicas in data space represents
+the uncertainty of the prediction having performed a fit.
+
+\subsection{Closure test.}
 
 If we consider experimental data which we assume
 to be multigaussian then the experimental central values, $\levone$, are given by
-\begin{equation}
+\begin{equation}\label{eq:levelonedata}
     \levone_{i} = \law_i + \shift_i,
 \end{equation}
 where $i$ is the index of the data point.
@@ -43,7 +66,20 @@ independently from $\mathcal{N}(0, \cov)$. The sampling of pseudodata permits
 correlations between individual data points through the covariance matrix,
 but not between different replicas or fits.
 
-The $\chi^2$ which is minimised for replica $k$ is then given by
+In a closure test, instead of assuming that the experimental central values are
+statistically consistent with an underlying law, as in \eqref{eq:levelonedata},
+we use a pre-existing PDF as an underlying law and generate the experimental
+central value, by drawing the vector of shifts from the distribution
+described by the experimental uncertainties. We refer to the predictions
+obtained from the underlying law as level 0 data, $\law$, and the generated
+experimental central values as level 1 data, $\levone$. Finally the pseudodata
+replicas are generated from the $\levone$ data, identically to a fit to
+a fit to experimental data. We refer to the pseudodata replicas as level 2
+data, $\levtwo$.
+
+The parameters of each PDF replica are determined by minimising $\chi^2$ between
+the predictions of each PDF replica and the corresponding pseudodata replica,
+as in a fit to experimental data:
 \begin{equation}
     \repchis = \frac{1}{\ndata} \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j,
 \end{equation}
@@ -59,11 +95,17 @@ the mean of the theory predictions across replicas. This $\chi^2$ is a measure
 of the difference between the expectation value of the prediction and the
 experimental central values in units of the covariance.
 
-In a fit to experimental data we are limited to this quantity because we don't
-have knowledge of the underlying theory predictions of nature $\law$. In a
-closure test we use a pre-existing PDF as proxy for $\law$ and then
-generate both $\shift$ and $\noise$ from $\mathcal{N}(0, \cov)$, emulating the
-different levels of data. The underlying theory predictions are referred to as
-level zero data. We refer to the shifted central values as level one data, the
-underlying law plus a level one shift. The pseudodata which a given replica fits
-is then referred to as level two data.
+In a fit to experimental data we are limited to assessing the performance of a fit
+using this quantity because we don't
+have knowledge of the underlying theory predictions, $\law$. What's more, the
+assumption that all datapoints across the global dataset used in a fit are
+mutually consistent with being generated from a single underlying law from
+the distribution defined by the uncertainties might not hold, often
+referred to as tension in the data. In particular, our model for generating pseudodata
+is based on rather coarse information and despite our best efforts we don't know
+if the distribution of our pseudodata truly represents the shape of the distribution
+the of the experimental central value, merely that we reproduce the first
+two moments of the distribution. Accepting these as unavoidable flaws in any
+fit to experimental data, we use the closure test to bypass these and check that
+at least in the ideal case where there is no tension in the data, and it is
+generated faithfully, that the fitting methodology performs well.

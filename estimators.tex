@@ -1,7 +1,7 @@
 \section{Estimators}
-Since we have access to the underlying predictions in a closure test we can
-define some new estimators which can be used to determine how well a fit
-performs.
+
+The performance of the model will be determined by calculating several estimators
+in addition to the $\chi^2$ described in \eqref{eq:centralchi2}.
 
 We start with the expectation of $\repchis$ across replicas
 \begin{equation}
@@ -9,7 +9,14 @@ We start with the expectation of $\repchis$ across replicas
     \erep{\repchis} = \frac{1}{\ndata} 
     \erep{ \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j}.
 \end{equation}
-This can be decomposed, by completing the square, into 4 terms
+It is useful to be able to decompose this kind of cost function as in <REF>.
+% TODO: reference high bias/ low variance approach...
+% [ref to https://doi.org/10.1016/j.physrep.2019.03.001]
+The differences between the cost function in the reference and that in \eqref{eq:chi2kerep}
+are that our pseudodata has an additional shuft, $\shift$, and that the
+$\chi^2$ takes into account the covariance of the data. Despite this, the cost
+function can be decomposed, by completing the square, into 4 terms
+%TODO: here add more details!!
 \begin{equation}
     \label{eq:chi2decomp}
     \begin{split}
@@ -19,8 +26,39 @@ This can be decomposed, by completing the square, into 4 terms
     \end{split}
 \end{equation}
 where $\Delta_{\chi^2}$ is an estimator that has been discussed in previous
-NNPDF closure test studies, and $\chi^2$ was defined in eq.
-\eqref{eq:centralchi2}.
+NNPDF closure test studies, and $\chi^2$ was defined in eq. \eqref{eq:centralchi2}.
+It is instructive to
+consider the geometrical interpretation of these quantities by examining a
+diagram of the replica predictions and underlying law on an axis, where
+the underlying law sits at the origin, and the basis vectors are the eigenvectors
+of the covariance matrix divide by the eigenvalues. The 1-sigma confidence interval
+of the gaussianly distributed level 1 data is then a unit hypersphere centered
+on the origin, likewise the 1-sigma confidence interval of the gaussianly
+distributed level 2 data is the unit hypersphere centered on the level 1 data.
+Since we are in the eigenbasis of the experimental covariance matrix,
+component of the data is generated independently. An example is given in
+two dimensions in figure ADD THIS DIAGRAM.
+
+In \eqref{eq:chi2decomp}, we implictly showed that $\Delta_{\chi^2}$ discussed
+in the closure test of NNPDF3.0 is given by
+\begin{equation}
+    \Delta_{\chi^2} = {\rm bias} - {\rm cross\,term}.
+\end{equation}
+In the NNDPF3.0 paper, $\Delta_{\chi^2}$ was said to indicate under or overfitting
+depending on its sign. Also it was said that $\Delta_{\chi^2}$ indicated that
+the underlying law was reproduced. We can see with this decomposition that
+if the underlying law is exactly obtained by the central value of the predictions,
+$\Delta_{\chi^2}=0$, however $\Delta_{\chi^2}=0$ does not necessarily imply that
+the underlying law is reproduced. By examining INSERT FIGURE, we see that
+$\Delta_{\chi^2} = 0$ defines a hypersphere which is centered on the level 1 data
+and passes through the underlying law. If $\Delta_{\chi^2} < 0$ then the central
+value of the predictions lies within this hypersphere, similarly if
+$\Delta_{\chi^2} > 0$ then the central value of the predictions lies outside
+of this hypersphere. Whilst this does give us some idea of whether the central
+predictions are closer to the level 1 data than the underlying law, we find
+under this new interpretation of the estimator that $\Delta_{\chi^2}$ is not
+very useful for considering whether or not the data is over or underfitted.
+
 
 \subsection{Bias}
 
@@ -31,8 +69,11 @@ units of the covariance, \ie
     \label{eq:BiasDef}
     \bias = \frac{1}{\ndata} \sum_{ij} \diffcentunder_i \invcov{ij} \diffcentunder_j.
 \end{equation}
-It is desirable for a fit to have a smaller bias because that indicates
-that the fit is reproducing the underlying predictions well.
+The smaller the bias, the closure the central value of the predictions is to
+the underlying law. This is clearly a positive feature for a fit to have and so
+we can use bias as a performance indicator, which can be used to distinguish
+between two fitting methodologies which are used to fit the same closure test
+data.
 
 \subsection{Variance}
 
@@ -43,23 +84,100 @@ replica predictions in units of the covariance
     \var = \frac{1}{\ndata} \erep{ \sum_{ij} \diffcentrep_{i} \invcov{ij} \diffcentrep_{j}},
 \end{equation}
 which can be interpreted as the propagation of the PDF uncertainty in the space
-of data. It is important to note that both variance and bias can be determined
+of data. Specifically we can rewrite \eqref{eq:VarDef} as
+\begin{equation}
+    \label{eq:VarDefalternative}
+    \var = \frac{1}{\ndata} {\rm Tr} \left[ \covrep \invcov{} \right],
+\end{equation}
+where $\covrep$ is the covariance matrix of the predictions
+from the PDF replicas.
+It is worth noting that both variance and bias can be determined
 purely from the ensemble of PDF replicas and the underlying law.
+
+It's clear that when choosing a fitting methodology we would like to minimise
+both the bias and the variance: minimising the bias means that the central
+value of the predictions is closer to the underlying law and minimising
+the variance means that the PDF uncertainty is reduced. As dicussed in [REF
+high bias/low variance], the general approach to reducing the bias is to
+increase the number of parameters but this often has the side effect of
+increasing the variance. In our case we have an additional subtlety, which is
+the interplay between the bias and the variance.
 
 \subsection{Multiple Closure Fits}
 
-As well as being able to calculate the bias estimator in a closure test and see
-how well the underlying law is reproduced, an advantage to testing the
-methodology with closure tests is the ability to generate ensembles of level one
-data - or experimental central values.
+It should be fairly clear that the bias defined in \eqref{eq:BiasDef} will have
+some dependence on the shift which is used to generate the level 1 data. We should
+check whether or not the variance is as well. In a fit to experimental
+data, we do not have any knowledge of the shift itself, rather the distribution
+we assume that it is drawn from. Also, we can not generate a different shift
+because the shift is fixed at the point that the experimental central values
+are published.
 
-Performing multiple closure fits on
-different configurations of level one shifts facilitates testing whether or not
-the distribution of replica predictions about their mean for a given closure fit
-is representative of the distribution of central values of the
-predictions for different closure fits about the underlying law. This is ultimately
-a test of whether the uncertainties provided with a single fit are
-representative.
+In a closure test, however, we can in principle perform many
+fits. Each fit can have independently generated level 1 data, as well as
+level 2 replicas. Upon running many fits we can then take the expectation value
+of the statistical estimators, bias and variance, across level 1 shifts. The expectation
+of the bias across fits is given by
+\begin{equation}
+    \frac{1}{\ndata} \eshift{ \sum_{ij} \diffcentunder_i \invcov{ij} \diffcentunder_j },
+\end{equation}
+which, in analogy to \eqref{eq:VarDefalternative}, can be rewritten as
+\begin{equation}
+    \label{eq:VarDefalternative}
+    \var = \frac{1}{\ndata} {\rm Tr} \left[ \covcent \invcov{} \right],
+\end{equation}
+except this time we have $\covcent$, the covariance of the central value
+of predictions. If we consider the central value of the theory predictions for
+a given fit as the reference point, then by rerunning multiple closure tests
+we are effectively sampling from the probability distribution of the
+difference between the central value of the predictions and the underlying law
+predictions, $p(\diffcentunder)$. Earlier we mentioned that the aim of the NNDPDF
+methodology is for the PDF replicas about the central value of the predictions,
+$q(\diffcentrep)$ to be representative of this distribution. The most common
+method of determining how close these distributions are would be to calculate
+the Kullback-Leibler (K-L) divergence between $p$ and $q$:
+\begin{equation}
+    D_{KL}(p || q) = \int_{-\infty}^{\infty} {\rm d} x \, p(x) \log \left(\frac{q(x)}{p(x)} \right).
+\end{equation}
+Note that the K-L divergence is not symmetric under the exchange of the reference
+distribution, $p(x)$, in our case the observed distribution of the underlying law
+about the central value of the prediction, and the model distribution, $q(x)$,
+the model being the MC approach used in an NNPDF fit. If both the distributions,
+$p(x)$ and $q(x)$ were multigaussian centered on the central value of the
+predictions, with covariance $\covcent$ and
+$\covrep$ respectively, then the K-L divergence simplifies to
+% TODO: CHECK THIS!!!!!!!!
+\begin{equation}
+    D_{KL}(p || q) = \frac{1}{2} \left[
+        \log\frac{|\covrep|}{|\covcent|}
+        - \ndata
+        + {\rm Tr} (\covcent {\covrep}^{-1})
+        \right].
+\end{equation}
+% TODO: CHECK THIS!!!!!!!!
+It is clear that if the covariance of the two distributions are equal, then
+the K-L divergence goes to zero. It's also clear that if this is the case,
+then we would expect that $\eshift{\bias}$ should be equal to $\var$. In reality,
+getting a reasonable estimate of $\covcent$ and $\covrep$ would require a huge
+number of fits, each with a large number of replicas. This would become
+especially relevant when inverting the covariance matrix $\covrep$ in the case
+that there were large correlations between theory predictions. In the next
+section we will discuss estimators that require fewer statistics and attempt
+to gauge the average behaviour of the two distributions across all data points.
+
+The merit of running multiple closure tests is now becoming clear. On the one
+hand we can check if one fitting methodology has a lower value of bias and
+variance, averaged across fits. This gives us a performance indicator with
+which we can rank fitting methodologies. In addition to this, we can validate
+whether or not the PDF uncertainties, represented by the MC replicas for a given
+fit, are "faithful". In NNPDF3.0 there were some attempts to answer this question,
+but at the time studies were limited by the length of time it took to run a fit
+and so instead of running multiple level 2 fits, single replicas fits were used
+as proxies for this.
+With the introduction of a faster fitting methodology it becomes feasible to
+actually perform multiple level 2 closure fits with our proposed methodology,
+and try to test how well the methodology performs, and whether uncertainties
+are faithful.
 
 \subsection{Bias Variance ratio}
 
@@ -79,12 +197,12 @@ independent of $\shift$ and, with enough replicas, is constant across fits.
 In practice we will also take the expectation value of $\var$ across fits,
 because we will be running fits with finite replicas and so expect fluctuations
 across fits.
+% ALSO SHOULD CHECK IF VARIANCE DOES DEPEND ON LEVEL 1 SHIFT
 
-If we look at the functional form of $\eshift{\bias}$ then we see that it is
-the same form as that of $\var$. The difference is the expectation value is
-being taken over fits instead of replicas and the difference is between the
-central predictions of a fit and the underlying law. We can rewrite the variance
-in the basis which diagonalises the experimental covmat as
+We already saw that the form of $\eshift{\bias}$ is the same as $\var$ and that
+the estimators are proportional to $\covcent$ and $\covrep$ respectively.
+We could also have written variance in the basis which diagonalises the
+experimental covariance matrix:
 \begin{equation}
     \var = \frac{1}{\ndata} \erep{ \sum_{i} \frac{(\hat{\Delta}_{i, \noise})^2}{\hat{\sigma}_{i}^2}},
 \end{equation}
@@ -100,20 +218,27 @@ of the distribution of replica predictions about the central value of the predic
 A similar argument can be applied to $\eshift{\bias}$.
 
 Then $\frac{\eshift{\bias}}{\eshift{\var}}$ is an estimate of whether the average
-of the second moments of the distributions across data points is equal. This
-is a rough estimate of whether the second moment of the two distributions match
-which would clearly be determining if the covariance matrix of the two distributions
-was equal, element by element. Having a sufficient number of fits and replicas
-to be able to determine this quantity is unobtainable, even with the increased
-speed of fits and so instead we opt to calculate this cruder estimate.
+of the second moments of the distributions across data points is equal. Specifically
+in units of the experimental covaraince matrix. It's clear that if the K-L
+divergence between the distribution of the level 0 data about the
+central prediction, $p(x)$, and the distribution of replica predictions about the central
+prediction, $q(x)$, is zero then $\frac{\eshift{\bias}}{\eshift{\var}} = 1$
+but that $\frac{\eshift{\bias}}{\eshift{\var}} = 1$ does not necessarily
+imply that the K-L divergence is 0. Of course the ideal measurement would be
+whether ${\rm Tr} (\covcent {\covrep}^{-1}) = \ndata$ but as discussed, despite
+the improved performance of the fitting methodology, calulating this estimator
+is still unfeasible but perhaps will be possible in a future iteration of the
+NNPDF methodology.
 
-If the distribution of central predictions is Gaussian about the underlying law
-and the distribution of replica predictions is Gaussian about the central prediction
-then showing that the covariance matrix of each distribution is equal is equivalent
-to showing that the K-L divergence between the two distributions is 0. In this
-case it is clear that the replicas of a given fit are distributed as though
-they were drawn from $p(f|{\rm data})$, in which case the uncertainties on
-our predictions is faithful.
+It's perhaps not entirely obvious why we should consider the moments of the two
+distributions in units of the experimental covariance. In the end this is a
+practical choice, by doing this we are examining the differences in units which
+the experimental data is most sensitive to, because directions which have lower
+experimental uncertainty will contribute more to the bias and variance. This
+seems like a good choice of units then, since in the end people will be comparing
+theory predictions to experimental data, and so we prioritise having low bias
+and low variance, as well as faithful uncertainties for directions in the space
+of data for which we have low uncertainty.
 
 \subsubsection{Quantile statistics}
 
@@ -200,15 +325,16 @@ calculate $\xi_{1\sigma}$ is the basis which diagonalises the experimental
 covariance matrix because bias and variance are both calculated in units of the
 experimental
 % Should I mention this without having tried it?
-covariance. Alternatively one could estimate the covariance of the difference
-between replicas and central values and then rotate the differences between
-the central predictions and the underlying law into the basis which diagonalises
-this replica covariance matrix.
+covariance. As previously discussed, this makes sense in light of using the PDFs
+to make data-theory comparisons.
 
 \subsection{Out of sample}
 
 We want to calculate the closure test estimators on data which is out of sample
-to check uncertainty is faithful on predictions.
-
-\paragraph{TODO}{Review the toy model here and show that in/out of sample
-didn't make difference - {\bf LDD}}
+to check uncertainty is faithful on new predictions and that the bias and variance
+are lower for out of sample data. We can choose to calculate \eqref{eq:chi2kerep}
+on data which is not used in the fit, in which case we refer to $\erep{\repchis}$
+the expected generalisation error. This is relevant because in general people
+will be using our PDFs to make predictions on data which has not been fitted
+and so it is particularly important that the performance is good, and that the
+PDF uncertainties are faithful when the data hasn't been fitted.
