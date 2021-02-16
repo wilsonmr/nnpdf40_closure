@@ -13,7 +13,7 @@ It is useful to be able to decompose this kind of cost function as in <REF>.
 % TODO: reference high bias/ low variance approach...
 % [ref to https://doi.org/10.1016/j.physrep.2019.03.001]
 The differences between the cost function in the reference and that in \eqref{eq:chi2kerep}
-are that our pseudodata has an additional shuft, $\shift$, and that the
+are that our pseudodata has an additional shift, $\shift$, and that the
 $\chi^2$ takes into account the covariance of the data. Despite this, the cost
 function can be decomposed, by completing the square, into 4 terms
 %TODO: here add more details!!
@@ -123,15 +123,15 @@ of the bias across fits is given by
 \end{equation}
 which, in analogy to \eqref{eq:VarDefalternative}, can be rewritten as
 \begin{equation}
-    \label{eq:VarDefalternative}
-    \var = \frac{1}{\ndata} {\rm Tr} \left[ \covcent \invcov{} \right],
+    \label{eq:BiasDefalternative}
+    \bias = \frac{1}{\ndata} {\rm Tr} \left[ \covcent \invcov{} \right],
 \end{equation}
 except this time we have $\covcent$, the covariance of the central value
 of predictions. If we consider the central value of the theory predictions for
 a given fit as the reference point, then by rerunning multiple closure tests
 we are effectively sampling from the probability distribution of the
 difference between the central value of the predictions and the underlying law
-predictions, $p(\diffcentunder)$. Earlier we mentioned that the aim of the NNDPDF
+predictions, $p(\diffcentunder)$. Earlier we mentioned that the aim of the NNPDF
 methodology is for the PDF replicas about the central value of the predictions,
 $q(\diffcentrep)$ to be representative of this distribution. The most common
 method of determining how close these distributions are would be to calculate
