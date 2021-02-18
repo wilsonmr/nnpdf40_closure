@@ -40,31 +40,122 @@ covariance matrix. Equation \eqref{eq:levelonedata} is our interpretation of the
 experimental data, which is often provided in different forms. In the case that
 the experimental data is a set of central values and a covariance matrix then
 this interpretation appears entirely natural.
-% we never talk about normalisation uncertainties.
+% we never talk about normalisation uncertainties - should we? Maybe later..
 
 The pseudodata which will be fitted is obtained by adding Monte Carlo
 noise, $\noise^{\repind}$, on top of the experimental central values
-\begin{equation}
+\begin{equation}\label{eq:leveltwodata1}
     \levtwo^{\repind}_{i} = \law_i + \shift_i + \noise^{\repind}_{i},
 \end{equation}
 where the replica index $k$ refers to each replica having a noise vector drawn
 independently from $\mathcal{N}(0, \cov)$. The sampling of pseudodata permits
 correlations between individual data points through the covariance matrix,
 however each replica is sampled independently from the others.
-% Still wonder if we should use 2C in the chi2 which is minimised by each replica.
-% what happens in the polynomial model?
-Each pseudodata replica gets independently fitted by a replica of the model.
-The end product of the fit is a sample of model replicas which are sampled from
-the distribution of possible models given the distribution of possible
-pseudodata replicas. Considering the observables generated from the model replicas
-for the fitted data, $\model^{\repind}$, the purpose of the level 2 noise
-is to induce a dispersion in the predictions. The parameters for each of the
-replicas will consequently have a dispersion and it seems reasonable to assume
-that observables generated from the model for new data which was not included
-in the fit will also have a dispersion, which can later be interpreted as the
-contribution to the uncertainty of that prediction from the model.
 
-\section{Data and Fitting}
+Each pseudodata replica gets independently fitted by a replica of the model.
+The end product of performing a fit is a sample of model replicas which are
+sampled from the distribution of possible models given the data we were provided
+with and the assumptions we made about it. Considering the vector of observables
+calculated from the model replica $k$
+for the fitted data, $\model^{\repind}$, the purpose of the level 2 noise
+is to induce a dispersion in the predictions calculated from each model replica.
+One of the conditions for a successful fit is that the true underlying law
+values $\law$ appears as though it could reasonably have been drawn from the
+same distribution as the model replicas. In other words, if the model replicas
+were drawn from a multivariate gaussian distribution (with correlations over
+the data points) then we would want $\law$ to fall within 1$\sigma$ of the mean
+across replicas of the observables for 68\% of the datapoints etc. Testing
+whether or not this has happened is clearly impossible with real experimental
+data, since we have no knowledge of the true values of nature. However the role
+of the closure test is to provide empiricle evidence that provided our assumptions
+of the data are valid, our methodology does indeed satisfy the condition set out
+above.
+
+\section{Fitting the model parameters}
+
+Each model replica has a set of parameters $\theta^\repind$, the theoretical
+predictions from model replica $k$ for datapoint $i$ is
+$\model_{i}(\theta^{\repind})$, where we have made it explicit that the observable
+values calculated from the model depend on the parameters, and the values of the
+parameters are distinct for each model replica. In order to determine the values
+which $\theta^{\repind}$ should take, we maximise the likelihood of the parameters
+given the data. The data which model replica $k$ "sees" is the corresponding
+pseudodata $\levtwo^{\repind}$ and so the likelihood of the parameters given
+that data is
+\begin{equation}
+    \mathcal{L}(\theta^{\repind} \vert \levtwo^{\repind}) = p(\levtwo^{\repind} | \theta^{\repind})
+\end{equation}
+where $\mathcal{L}$ is the likelihood function, which is equal to the probability
+density function, $p$, at fixed value $\levtwo^{\repind}$ given
+$\theta^{\repind}$. Given our assumption of how $\levtwo^{\repind}$ was obtained
+with two independent shifts drawn from the same multivariate gaussian
+$\mathcal{N}(0, \cov)$, the probability density function at
+$\levtwo^{\repind}$ is, up to normalisation,
+\begin{equation}
+    p(\levtwo^{\repind} | \theta^{\repind}) \sim
+    \exp \left( - \frac{1}{2} \sum_{ij} \diffreptwo_i {(2\cov)}^{-1}_{ij} \diffreptwo_j \right)
+\end{equation}
+which is the standard expression for a multigaussian with vector of means
+$\model(\theta^{\repind})$ and covariance $2C$, the covariance is $2C$ because
+when summing two independent multivariate variables of the same dimension, the
+sum is still normal with means and covariances summed. In otherwords we could
+rewrite \eqref{eq:leveltwodata1} as
+\begin{equation}
+    \levtwo^{\repind}_{i} = \law_i + \delta^{\repind}_{i}
+\end{equation}
+where $\delta$ is drawn from the multigaussian $\mathcal{N}(0, 2\cov)$. The
+index of $\delta^{\repind}_{i}$ is very confusing because it only explicitly
+sets dependence on the replica, and it's clear that the mean and covariance
+across replicas of $\levtwo^{\repind}_{i}$, with fixed $\shift$ are
+$\levone$ and $\cov$ respectively. It would make more sense to write the
+dependence of $\levtwo$ explicitly
+\begin{equation}
+    \levtwo(\noise^{\repind}, \shift, \law) = \law + \delta(\noise^{\repind}, \shift)
+\end{equation}
+where $\delta = \noise^{\repind} + \shift$ is still drawn from
+$\mathcal{N}(0, 2\cov)$. When fitting a single replica we should imagine that
+we do not know the exact value of $\noise^{\repind}$ and disregard the fact
+that we are fitting other replicas and simply try to find the set of parameters
+$\model(\theta^{\repind})$ which maximises the likelihood of giving that data
+when $\delta ~ \mathcal{N}(0, 2\cov)$ is applied. Whilst we are unable to
+bootstrap over $\shift$ because the experimental central values are fixed
+to the value which are published, will still should account for the fact that
+they are a stochastic variable in our model. If we were able to rerun all of
+the experiments from scratch then we would also be able to bootstrap over
+$\shift$, however this is clearly impossible with real data, but will be
+revisited when talking about the empirical closure test.
+
+In practice we actually maximise the log-likelihood,
+\begin{equation}
+    l(\theta^{\repind} \vert \levtwo^{\repind}) = \ln \left[
+        \mathcal{L}(\theta^{\repind} \vert \levtwo^{\repind}) \right],
+\end{equation}
+because $\ln$ is a monotonic function, so $l$ has a maximum at the same value
+of $\theta^{\repind}$. Furthermore, maximising the log-likelihood is the same
+as minimising the $\chi^2$ between $\levtwo(\noise^{\repind}, \shift, \law)$
+and $\model(\theta^{\repind})$ defined as
+\begin{equation}
+    \chi^2(\model(\theta^{\repind}); \levtwo(\noise^{\repind}, \shift, \law))
+    = \sum_{ij} \diffreptwo_i {(2\cov)}^{-1}_{ij} \diffreptwo_j.
+\end{equation}
+To be very precise, since
+we are interested in finding the minimimum with respespected to the parameters,
+or the point at which
+$\frac{\partial}{\partial \theta^{\repind}}
+\chi^2(\model(\theta^{\repind}); \levtwo(\noise^{\repind}, \shift, \law)) = 0$
+it doesn't matter in reality whether we minimise
+$\chi^2(\model(\theta^{\repind}); \levtwo(\noise^{\repind}, \shift, \law))$ or
+any scalar multiple of that. Also, since ${(2\cov)}^{-1} = \frac{1}{2}\invcov{}$
+then we actually minimise
+\begin{equation}
+    \repchis = \frac{1}{\ndata} \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j.
+\end{equation}
+The parameters obtained from minimising this function are the parameters which
+maximise the likelihood of
+$\mathcal{L}(\theta^{\repind} \vert \levtwo^{\repind})$.
+\section{Polynomial model}
+Here describe the definition of poly toy model and how to fit
+\section{Neural Network Parton distribution functions}
 % Should this section go later? I think so.
 When fitting experimental data we vary the parameters of a set of PDF replicas
 at the initial scale such that the $\chi^2$ is minimised between the
@@ -110,7 +201,7 @@ a given fit, then the standard deviation of the replicas in PDF space or the
 theory predictions obtained from those replicas in data space represents
 the uncertainty of the prediction having performed a fit.
 
-\subsection{Closure test.}
+\subsection{Closure test}
 
 In a closure test, instead of assuming that the experimental central values are
 statistically consistent with an underlying law, as in \eqref{eq:levelonedata},
