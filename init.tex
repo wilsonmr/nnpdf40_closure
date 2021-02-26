@@ -34,6 +34,12 @@
 \newcommand{\shift}{\eta}
 \newcommand{\noise}{\epsilon}
 
+% define vector
+\newcommand{\vv}[1]{\mathbf{#1}}
+% should we add a fit index?
+\newcommand{\vecdiffreptwo}{\left( \vv{\model}^{\repind} - \vv{\levtwo}^{\repind}  \right)}
+\newcommand{\vecdiffcentone}{\left( \erep{\vv{\model}} - \vv{\levone} \right)}
+
 % quality of life
 \newcommand{\ndata}{N_{\rm data}}
 \newcommand{\nfits}{N_{\rm fits}}
@@ -50,6 +56,9 @@
 \newcommand{\ie}{{\it i.e.}}
 \newcommand{\eg}{{\it e.g.}}
 \newcommand{\viz}{{\it viz.}}
+
+\newcommand{\likelihood}{\mathcal{L}}
+\newcommand{\logll}{l}
 
 % Difference vectors - might want to change these
 \newcommand{\diffreptwo}{\left( \model^{\repind} - \levtwo^{\repind} \right)}

@@ -1,0 +1,47 @@
+\section{Polynomial model}
+Here describe the definition of poly toy model and how to fit
+\section{Neural Network Parton distribution functions}
+% Should this section go later? I think so.
+When fitting experimental data we vary the parameters of a set of PDF replicas
+at the initial scale such that the $\chi^2$ is minimised between the
+corresponding theory predictions and a generated pseudodata replica. A set of
+PDFs usually refers to a set of seperate continuous functions, one for each
+flavour of PDF in a particular basis. In this specific study, fits performed
+with \nfit\ parameterise the set of PDFs as a single neural network which takes
+as input $x$ and $\ln x$ and returns 8 outputs, one for each flavour in the
+fitting basis, multiplied by some preproccessing exponents. The output for a
+single flavour $j$ is
+\begin{equation}
+    NN(x, \ln x)_j * x^{1-\alpha_j} * (1-x)^{\beta_j},
+\end{equation}
+where each flavour has it's own preproccessing exponents $\alpha$ and $\beta$,
+parameters that are varied in these fits, and $NN(x, \ln x)_j$ is the
+$j^{\rm th}$ output from the neural network.
+When an experiment is included in an NNPDF fit, we take the published
+experimental central values and uncertainties (statistical and systematic)
+and use these pieces of information to generate the pseudodata.
+The pseudodata replica is generated
+through Monte Carlo sampling by applying noise to the experimental
+central values.
+After fitting many sets of PDF replicas (usually of order 100 sets),
+each set to an independently generated pseudodata replica, we have an ensemble of
+PDF replicas.
+The aim of this methodology, is to propagate the various sources of
+uncertainty involved with fitting PDFs into the functional PDF space in a faithful
+manner. This means that the distribution from which the PDF replicas are drawn
+from should be representative of the probability distribution of the true
+underlying PDF.
+
+The closure test was introduced alongside NNPDF3.0 and will be described below.
+At this stage it's important to note that the closure test may serve 3 purposes:
+We can test whether or not the ensemble of PDF replicas does reflect the
+probability distribution of the true underlying PDF; we can compare two different
+fitting methodologies and use estimators to determine which one performs better;
+we can try to understand different elements of our own methodology, such as
+the different contributions to the PDF uncertainty. The PDF uncertainty will
+be used as short-hand for referring to the distribution of replicas for a given
+fit, we consider this the PDF uncertainty because if the distribution
+of the true underlying PDF is reflected by the distribution of replicas for
+a given fit, then the standard deviation of the replicas in PDF space or the
+theory predictions obtained from those replicas in data space represents
+the uncertainty of the prediction having performed a fit.
