@@ -1,32 +1,157 @@
 \section{Estimators}
 
-The performance of the model will be determined by calculating several estimators
-in addition to the $\chi^2$ described in \eqref{eq:centralchi2}.
-
 We start with the expectation of $\repchis$ across replicas
 \begin{equation}
     \label{eq:chi2kerep}
     \erep{\repchis} = \frac{1}{\ndata} 
-    \erep{ \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j}.
+    \erep{ {\vecdiffreptwo}^{T} \invcov{} \vecdiffreptwo}.
 \end{equation}
-It is useful to be able to decompose this kind of cost function as in <REF>.
+It is useful perform a decomposition of this expression, as in <REF>.
 % TODO: reference high bias/ low variance approach...
 % [ref to https://doi.org/10.1016/j.physrep.2019.03.001]
-The differences between the cost function in the reference and that in \eqref{eq:chi2kerep}
-are that our pseudodata has an additional shift, $\shift$, and that the
-$\chi^2$ takes into account the covariance of the data. Despite this, the cost
-function can be decomposed, by completing the square, into 4 terms
-%TODO: here add more details!!
+The differences between the cost function in the reference and that in
+\eqref{eq:chi2kerep} are that our pseudodata has an additional shift, $\shift$,
+and that the $\repchis$ takes into account the correlations between data points.
+The decomposition can be easily performed by rotating into the basis which
+diagonalises the experimental covmat. Since the covariance matrix is positive
+definite, we can project $\vecdiffreptwo$ onto the eigenvectors of $\cov$
+\begin{equation}
+    \erep{\repchis} = \frac{1}{\ndata} \sum_{i=1}^{\ndata} \frac{(\diag{\model}^{\repind} - \diag{\levtwo}^{\repind})_i^2}{\coveig_i}
+\end{equation}
+where $\coveig_i$ is the eigenvalue associated with the $i^{th}$ eigenvector of
+the covmat. Then we complete the square
+\begin{equation}\label{eq:chi2decomp1}
+    \begin{split}
+        \erep{\repchis} &=
+        \erep{\frac{1}{\ndata} \sum_{i=1}^{\ndata}
+            \frac{
+                (\diag{\model}^{\repind} - \diag{\law} + \diag{\law} - \diag{\levtwo}^{\repind})_i^2
+            }{\coveig_i} } \\
+        &= \erep{\frac{1}{\ndata} \sum_{i=1}^{\ndata}
+            \frac{(\diag{\model}^{\repind} - \diag{\law})^2_i}{\coveig_i} +
+            \frac{(\diag{\law} - \diag{\levtwo}^{\repind})_i^2}{\coveig_i} +
+            \frac{2(\diag{\model}^{\repind} - \diag{\law})_i(\diag{\law} - \diag{\levtwo}^{\repind})_i}{\coveig_i}}.
+    \end{split}
+\end{equation}
+The first term in the second line can be simplified further by completing the
+square again
+\begin{equation}
+    \begin{split}
+        \frac{1}{\ndata}\erep{\frac{(\diag{\model}^{\repind} - \diag{\law})^2_i}{\coveig_i}} &=
+        \frac{1}{\ndata}\erep{\frac{(\diag{\model}^{\repind} - \erep{\diag{\model}} + \erep{\diag{\model}} - \diag{\law})^2_i}{\coveig_i}} \\
+        &= \frac{1}{\ndata}\erep{\frac{(\diag{\model}^{\repind} - \erep{\diag{\model}})_i^2}{\coveig_i} +
+        \frac{(\erep{\diag{\model}} - \diag{\law})^2_i}{\coveig_i} +
+        \frac{2(\diag{\model}^{\repind} - \erep{\diag{\model}})_i(\erep{\diag{\model}} - \diag{\law})_i}{\coveig_i}} \\
+        &= \frac{1}{\ndata}\erep{\frac{(\diag{\model}^{\repind} - \erep{\diag{\model}})_i^2}{\coveig_i}} +
+        \frac{1}{\ndata}\frac{(\erep{\diag{\model}} - \diag{\law})^2_i}{\coveig_i} \\
+        &= \var + \bias,
+    \end{split}
+\end{equation}
+where we made use of the fact that $\diag{\law}$ and $\erep{\diag{\model}}$
+are constant across replicas. The second term in the last line of equation
+\eqref{eq:chi2decomp1} can also be slightly simplified as
+\begin{equation}
+    \begin{split}
+        \frac{1}{\ndata}\erep{\frac{(\diag{\law} - \diag{\levtwo}^{\repind})_i^2}{\coveig_i}} &=
+        \frac{1}{\ndata}\erep{\frac{(-\shift - \noise)_i^2}{\coveig_i}} \\
+        &= \frac{1}{\ndata}\erep{\frac{\shift^2 + \noise^2 + 2\shift\noise)_i}{\coveig_i}} \\
+        &= \frac{1}{\ndata} \left(\frac{\shift_i^2}{\coveig_i} + \frac{\erep{\noise_i^2}}{\coveig_i} \right) \\
+        &= {\rm shift} + {\rm noise}
+    \end{split}
+\end{equation}
+Finally we have the cross term,
+\begin{equation}
+    \begin{split}
+        \frac{1}{\ndata}\frac{2(\diag{\model}^{\repind} - \diag{\law})_i(\diag{\law} - \diag{\levtwo}^{\repind})_i}{\coveig_i} &=
+             - \frac{1}{\ndata} \left( \frac{2(\erep{\diag{\model}} - \diag{\law})_i\shift_i}{\coveig_i} +
+             \frac{2\erep{\diag{\model_i}^{\repind} \noise_i}}{\coveig_i} \right) \\
+         &= - \left( \shiftcross + \noisecross \right).
+    \end{split}
+\end{equation}
+At this stage it's interesting to note that if the data we are calculating this
+expression on is data which was not used in the fit, then the noise cross term
+will go to zero, since $\diag{\model_i}^{\repind}$ and $\noise$ would be
+independent. In NNPDF3.1 there was an estimator which aimed to measure
+"over-fitting", $\Delta_{\chi^2}$, which using the notation here is defined as
+\begin{equation}
+    \Delta_{\chi^2} = \frac{1}{\ndata}\frac{(\erep{\diag{\model}} - \diag{\levone})_i^2 - \diag{\shift}_i^2}{\coveig_i},
+\end{equation}
+where we have normalised by $\ndata$ rather than in <REF> which instead normalised
+by $\sum_i^{\ndata} \frac{\diag{\shift}_i^2}{\coveig_i}$. It's clear that in the large
+$\ndata$ limit that you would expect the two normalisations to be converge. The
+idea of $\Delta_{\chi^2}$ is that it measures whether the central predictions
+fit the level one data better than the underlying law. If $\Delta_{\chi^2}$
+is negative then the central predictions overfit the level one data, whereas
+if $\Delta_{\chi^2}$ is positive the central predictions underfit the level one
+data. Ideally we would want to have $\Delta_{\chi^2}$ as close to zero as possible.
+We can use the same trick of completing the square
+\begin{equation}\label{eq:deltachi2def}
+    \begin{split}
+        \Delta_{\chi^2} &= \frac{1}{\ndata}\frac{(\erep{\diag{\model}} - \diag{\law} + \diag{\law} - \diag{\levone})_i^2 - \diag{\shift}_i^2}{\coveig_i} \\
+        &= \frac{1}{\ndata}\frac{(\erep{\diag{\model}} - \diag{\law})_i^2 + (\diag{\law} - \diag{\levone})_i^2 + 2(\erep{\diag{\model}} - \diag{\law})_i(\diag{\law} - \diag{\levone})_i - \diag{\shift}_i^2}{\coveig_i} \\
+        &= \bias - \shiftcross,
+    \end{split}
+\end{equation}
+where in the second line the second and last terms cancel. We can actually define
+a similar expression for each replica, and take the expectation value across
+replicas:
+\begin{equation}\label{eq:erepdeltachi2def}
+    \erep{\Delta_{\repchis}} = \erep{\frac{1}{\ndata} \frac{(\diag{\model}^{\repind} - \diag{\levtwo}^{\repind})_i^2 - (\diag{\law} - \diag{\levtwo}^{\repind})_i^2}{\coveig_i}}
+\end{equation}
+in analogy to \eqref{eq:deltachi2def} if this quantity is negative, it's because
+the average behaviour is that the replicas fit the level two data better than
+the underlying law whereas if the quantity is positive, it's because the
+level two replicas underfit the underlying law. By comparing the numerator with
+some of the previously defined components of $\erep{\repchis}$ it's possible to
+convince ourselves that
+\begin{equation}
+    \begin{split}
+        \erep{\Delta_{\repchis}} &= \bias - \shiftcross + \var - \noisecross \\
+        &= \Delta_{\chi^2} + \var - \noisecross,
+    \end{split}
+\end{equation}
+where in the second line we reduced the first two terms using
+\eqref{eq:deltachi2def}. The second term has a similar form, we define this as
+\begin{equation}\label{eq:deltaepsdef}
+    \begin{split}
+        \deltaeps &= \var - \noisecross \\
+        &= \frac{1}{\ndata}\erep{ \frac{(\diag{\model}^{\repind} - \erep{\diag{\model}})_i^2}{\coveig_i}
+        - \frac{2\diag{\model_i}^{\repind} \noise_i}{\coveig_i}} \\
+        &= \frac{1}{\ndata}\erep{ \frac{(\diag{\model}^{\repind} - \erep{\diag{\model}})_i^2}{\coveig_i}
+        - \frac{2(\diag{\model_i}^{\repind} - \erep{\diag{\model}}) \noise_i}{\coveig_i}},
+    \end{split}
+\end{equation}
+where in the last line we used the fact that a term which is linear in $\noise$
+will have an expectation value across replicas of zero. Qualitatively, the last
+line of equation \eqref{eq:deltaepsdef} is the variance of the model replica
+predictions, $\model^{\repind}$ minus two times the covariance of the model
+replica predictions and the pseudodata replicas. This makes sense, the expression
+tells us whether the replica predictions fluctuate about their mean covariantly
+with the pseudodata replicas. Consider the case where $\erep{\model}$ is exactly
+equal to $\law$ but the difference between the replica predictions and the
+central replica predictions is equal to the noise applied to the corresponding
+pseudodata replica. Then it's clear that $\Delta_{\chi^2}=0$ and $\deltaeps=-1$
+so we have maximal overfitting of the noise. Likewise if every replica were to
+exactly pass through the level one data, $\levone$, then $\Delta_{\chi^2}=-1$
+but $\deltaeps=0$. These two examples demonstrate how the two terms can combine
+to give the overall picture of whether the model replicas overfit the level two
+data.
+
+Collecting all of the terms defined above we can write down the following
 \begin{equation}
     \label{eq:chi2decomp}
     \begin{split}
-        \erep{\repchis} &= {\rm noise} + {\rm bias} + {\rm variance} - {\rm cross\,term} \\
-        &=  {\rm noise} + {\rm variance} + \Delta_{\chi^2}, \\
-        &= \chi^2 + {\rm variance}
+        \erep{\repchis} &= {\rm shift} + {\rm noise} + {\rm bias} - \shiftcross + {\rm variance} - \noisecross \\
+        &=  {\rm shift} + {\rm noise} + \Delta_{\chi^2} + \deltaeps,\\
+        &= {\rm shift} + {\rm noise} + \erep{\Delta_{\repchis}} \\
+        &= \chi^2 + {\rm noise} + \deltaeps
     \end{split}
 \end{equation}
-where $\Delta_{\chi^2}$ is an estimator that has been discussed in previous
-NNPDF closure test studies, and $\chi^2$ was defined in eq. \eqref{eq:centralchi2}.
+where in the third line we have essentially just rearranged
+\eqref{eq:erepdeltachi2def} and in the fourth line we relate the replica
+$\repchis$ to $\chi^2$, defined in \eqref{eq:centralchi2}, which is between the
+central predictions and the level one data.
+
 It is instructive to
 consider the geometrical interpretation of these quantities by examining a
 diagram of the replica predictions and underlying law on an axis, where
@@ -35,7 +160,7 @@ of the covariance matrix divide by the eigenvalues. The 1-sigma confidence inter
 of the gaussianly distributed level 1 data is then a unit hypersphere centered
 on the origin, likewise the 1-sigma confidence interval of the gaussianly
 distributed level 2 data is the unit hypersphere centered on the level 1 data.
-Since we are in the eigenbasis of the experimental covariance matrix,
+Since we are in the eigenbasis of the experimental covariance matrix, each
 component of the data is generated independently. An example is given in
 two dimensions in figure ADD THIS DIAGRAM.
 
