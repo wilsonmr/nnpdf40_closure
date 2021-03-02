@@ -71,7 +71,7 @@ Finally we have the cross term,
 At this stage it's interesting to note that if the data we are calculating this
 expression on is data which was not used in the fit, then the noise cross term
 will go to zero, since $\diag{\model_i}^{\repind}$ and $\noise$ would be
-independent. In NNPDF3.1 there was an estimator which aimed to measure
+independent. In NNPDF3.0 there was an estimator which aimed to measure
 "over-fitting", $\Delta_{\chi^2}$, which using the notation here is defined as
 \begin{equation}
     \Delta_{\chi^2} = \frac{1}{\ndata}\frac{(\erep{\diag{\model}} - \diag{\levone})_i^2 - \diag{\shift}_i^2}{\coveig_i},
@@ -179,11 +179,18 @@ $\Delta_{\chi^2} = 0$ defines a hypersphere which is centered on the level 1 dat
 and passes through the underlying law. If $\Delta_{\chi^2} < 0$ then the central
 value of the predictions lies within this hypersphere, similarly if
 $\Delta_{\chi^2} > 0$ then the central value of the predictions lies outside
-of this hypersphere. Whilst this does give us some idea of whether the central
-predictions are closer to the level 1 data than the underlying law, we find
-under this new interpretation of the estimator that $\Delta_{\chi^2}$ is not
-very useful for considering whether or not the data is over or underfitted.
-
+of this hypersphere. We should bear this in mind when talking about overfitting
+with regards to both $\Delta_{\chi^2}$ and $\deltaeps$, we are specifically
+defining that type of overfitting as fitting the fluctuated data better than
+the underlying law. In the large $\ndata$ limit this manifests itself as
+having enough freedom in the parameterisation that the minimum of the likelihood
+function is lower than the expected value if the data were generated from that
+model, this would be the case if $\chi^2 < 1$
+(in a statistical significant way) or $\erep{\repchis} < 2$ for
+$\Delta_{\chi^2}$ and $\erep{\Delta_{\repchis}}$ respectively. As previously discussed,
+in the latter case there is an interplay between the overfitting of the central
+predictions and the overfitting of the level two noise $\noise$ so it becomes
+advantageous to consider $\Delta_{\chi^2}$ and $\deltaeps$ separately.
 
 \subsection{Bias}
 
