@@ -1,7 +1,150 @@
 \section{Polynomial model}
-Here describe the definition of poly toy model and how to fit
+
+The parameterisation considered is a polynomial model. The underlying law
+predictions are generated from a fixed order polynomial
+\begin{equation}
+    \begin{split}
+        \law_i & = c_{0} + c_{1} x_i + \ldots + c_{\nlaw} x_i^{\nlaw} \\
+        &= \sum_{\alpha}^{\nlaw} c_{\alpha} x_i^{\alpha}
+    \end{split}
+\end{equation}
+where $\nlaw$ is the order of the underlying law polynomial. The data is
+generated as a multigaussian, as outlined in the previous section. The model
+replicas are also polynomials, of order $\nmodel$ so
+\begin{equation}
+    g_i = \sum_{\alpha}^{\nmodel} \gamma_{\alpha} x_i^{\alpha}.
+\end{equation}
+Each replica is fitted by minimising $\repchis$ with respect to $\{ \gamma \}$,
+which can be performed analytically with a polynomial model by solving
+\begin{equation}
+    \frac{\partial}{\partial \gamma_\beta} \frac{1}{\ndata} (\vv{\model} - \vv{\levtwo})^T \invcov{} (\vv{\model} - \vv{\levtwo}) = 0
+\end{equation}
+for $\beta = 0, \ldots, \nmodel$. This leads to a set of simultaneous equations
+\begin{equation}
+    \begin{bmatrix}
+        \vv{1}^T \invcov{} \vv{1}  & \vv{1}^T \invcov{} \vv{x} & \ldots& \vv{1}^T \invcov{} \vv{x}^{\nmodel} \\ 
+        \vv{x}^T \invcov{} \vv{1}  & \vv{x}^T \invcov{} \vv{x} & \ldots& \vv{x}^T \invcov{} \vv{x}^{\nmodel} \\ 
+        \vdots  & \vdots & \vdots& \vdots \\ 
+        {\vv{x}^{\nmodel}}^T \invcov{} \vv{1}  & {\vv{x}^{\nmodel}}^T \invcov{} \vv{x} & \ldots& {\vv{x}^{\nmodel}}^T \invcov{} \vv{x}^{\nmodel} 
+    \end{bmatrix}
+    \begin{bmatrix}
+        \gamma_0 \\
+        \gamma_1 \\
+        \vdots \\
+        \gamma_{\nmodel}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \vv{1}^T \invcov{} \vv{y} \\
+        \vv{x}^T \invcov{} \vv{y} \\
+        \vdots \\
+        {\vv{x}^{\nmodel}}^T \invcov{} \vv{y}
+    \end{bmatrix}.
+\end{equation}
+If we define
+\begin{equation}
+    X =
+    \begin{bmatrix}
+        1  & x_1 & \ldots& x_1^{\nmodel} \\ 
+        1  & x_2 & \ldots& x_2^{\nmodel} \\ 
+        \vdots  & \vdots & \vdots& \vdots \\ 
+        1  & x_{\ndata} & \ldots & x_{\ndata}^{\nmodel} 
+    \end{bmatrix},
+\end{equation}
+Then we can write the simultaneous equations as
+\begin{equation}
+    X^T \invcov{} X \vv{\gamma} = X^T \invcov{} \vv{y},
+\end{equation}
+and the task of finding the parameters which minimise the likelihood function is
+achieved by inverting $X^T \invcov{} X$. From now on we will define
+$A = X^T \invcov{} X$, the matrix which is to be inverted to find the parameters
+of the polynomial model.
+% X rank is limited by distinct number of points and number of points exceeding
+% number of parameters. A = B^T B where B = L^T X so as long as covmat is
+% pos definite, number of parameters is less than number of data then A is
+% invertible because it will be full rank. -> use rank of X
+Since $\vv{y} = X \vv{c} + \vv{\shift} + \vv{\noise}$, we have
+\begin{equation}
+    \vv{\gamma} = \vv{c} + A^{-1} X^T \invcov{} \vv{\shift} + A^{-1} X^T \invcov{} \vv{\noise},
+\end{equation}
+% what is correct way of saying this?
+where $\vv{c}$ is the vector of underlying law parameters. We have to be a bit
+careful here, because the vector space of parameters has number of dimensions
+$\nmodel$. If $\nlaw > \nmodel$ then $\vv{c}$ is the subset of the first
+$\nmodel$ parameters of the underlying law. Alternatively if $\nlaw < \nmodel$
+then $\vv{c}$ contains all the parameters of the underlying law and then zeros
+for the dimensions corresponding to redundant parameters in the model. From
+now on we will always consider $\nlaw \leq \nmodel$, where the model has
+redundant parameters.
+
+\subsection{Closure estimators}
+
+Since the model replica predictions are given by
+\begin{equation}
+    \begin{split}
+        \vv{\model} &= X \vv{\gamma} \\
+        &= X \left( \vv{c} + A^{-1} X^T \invcov{} \vv{\shift} + A^{-1} X^T \invcov{} \vv{\noise} \right),
+    \end{split}
+\end{equation}
+we can explicitly calculate the asymptotic limits of the closure test estimators.
+First the difference between replica and central prediction
+\begin{equation}
+    \erep{\vv{\model}} - \vv{\model} = - X A^{-1} X^T \invcov{} \vv{\noise},
+\end{equation}
+since the terms which depend on the shift and underlying law parameters cancel
+and the expectation across replicas of the term linear in the noise is zero
+in the asymptotic limit. The difference between the central prediction and the
+underlying law is
+\begin{equation}
+    \erep{\vv{\model}} - \vv{\law} = X A^{-1} X^T \invcov{} \vv{\shift}.
+\end{equation}
+The variance is then
+\begin{equation}\label{eq:polymodelvar}
+    \begin{split}
+        \var &= \frac{1}{\ndata}\erep{(X A^{-1} X^T \invcov{} \vv{\noise})^T \invcov{} X A^{-1} X^T \invcov{} \vv{\noise}} \\
+        & = \frac{1}{\ndata}\erep{\sum_{ijklmn} \noise_i \invcov{ij} X_{jk} A^{-1}_{kl} X^T_{lm} \invcov{mn} \noise_{n}} \\
+        & = \frac{1}{\ndata}\sum_{lk} A_{lk} A^{-1}_{kl} \\
+        & = \frac{\nmodel}{\ndata}
+    \end{split}
+\end{equation}
+where we used $\erep{\noise_i \noise_{n}} = \cov_{in}$ and then the expression
+reduced to the trace of $A A^{-1}$, where $A$ is symmetric with dimensions
+$\nmodel \times \nmodel$. A similar expression can be found for $\eshift{\bias}$
+in an analagous way, except substituting $\shift$ for $\noise$. In this case
+we see that in the toy model the condition of $\eshift{\bias} / \var$ is
+automatically fulfilled.
+
+Interestingly enough we note that the polynomial model
+essentially maximally overfits the data, the maximum number of parameters the
+model can have whilst $A$ is still invertible is $\ndata$, in this case the
+polynomial passes through every single pseudodata replica point and the
+variance and bias reach the maximum of 1 each. If we calculate the cross terms
+then we can also find expressions for $\Delta_{\chi^2}$ and $\Delta_\epsilon$.
+The expectation across replicas of the noise cross term is
+\begin{equation}
+    \begin{split}
+        \erep{\noisecross} &= \frac{2}{\ndata}\erep{(X A^{-1} X^T \invcov{} \vv{\noise})^T \invcov{} \noise} \\
+        &= \frac{2}{\ndata} \erep{\sum_{ijklmn} \noise_i \invcov{ij} X_{jk} A^{-1}_{kl} X^T_{lm} \invcov{mn} \noise_n } \\
+        &= \frac{2 \nmodel}{\ndata},
+    \end{split}
+\end{equation}
+which, in analogy to \eqref{eq:polymodelvar}, used the fact that
+$\erep{\noise_i \noise_{n}} = \cov_{in}$ to simplify the whole expression into
+a trace. It's clear that the shift cross term will follow the same schematic,
+once we take the expectation across shifts, and so we can write down the
+expression of $\eshift{\erep{\Delta_{\repchis}}}$ as
+\begin{equation}
+    \eshift{\erep{\Delta_{\repchis}}} = - \frac{2 \nmodel}{\ndata}.
+\end{equation}
+Since the polynomial replica predictions are fitted analytically, the bias
+and variance are driven solely by the shift and noise terms respectively. The
+directions in which the central predictions vary from the underlying law and
+the replicas fluctuate from the central predictions are completely correlated
+with the shift and noise, and so the only way to reduce overfitting is to
+increase the number of data points.
+
 \section{Neural Network Parton distribution functions}
-% Should this section go later? I think so.
+
 When fitting experimental data we vary the parameters of a set of PDF replicas
 at the initial scale such that the $\chi^2$ is minimised between the
 corresponding theory predictions and a generated pseudodata replica. A set of

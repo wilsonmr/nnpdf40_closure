@@ -73,7 +73,7 @@ expression on is data which was not used in the fit, then the noise cross term
 will go to zero, since $\diag{\model_i}^{\repind}$ and $\noise$ would be
 independent. In NNPDF3.0 there was an estimator which aimed to measure
 "over-fitting", $\Delta_{\chi^2}$, which using the notation here is defined as
-\begin{equation}
+\begin{equation}\label{eq:deltachi2def1}
     \Delta_{\chi^2} = \frac{1}{\ndata}\frac{(\erep{\diag{\model}} - \diag{\levone})_i^2 - \diag{\shift}_i^2}{\coveig_i},
 \end{equation}
 where we have normalised by $\ndata$ rather than in <REF> which instead normalised
@@ -92,7 +92,30 @@ We can use the same trick of completing the square
         &= \bias - \shiftcross,
     \end{split}
 \end{equation}
-where in the second line the second and last terms cancel. We can actually define
+where in the second line the second and last terms cancel. The last line indicates
+that $\Delta_{\chi^2}$ will likely appear in the decomposition of $\repchis$.
+The first line of \eqref{eq:deltachi2def1} can be written as
+\begin{equation}
+    \Delta_{\chi^2} = \frac{1}{\ndata}\log \left[ \frac{p(\vv{\levone}| \vv{\law})}{p(\vv{\levone}| \erep{\vv{\model}})} \right]
+\end{equation}
+or the log of the conditional probability of getting the level one
+data given the underlying law over the conditional probability of getting the
+level one data given the central value of the model predictions. If we take the
+expectation value across level one shifts
+\begin{equation}\label{eq:deltachi2kldef}
+    \begin{split}
+        \eshift{\Delta_{\chi^2}} = \frac{1}{\ndata} \eshift{
+            \log \left[ \frac{p(\vv{\levone}| \vv{\law})}{
+                p(\vv{\levone}| \erep{\vv{\model}})} \right]}
+    \end{split}
+\end{equation}
+then the expression takes the form of a KL divergence between the true conditional
+probability distribution of the level one data given the underlying law and the
+conditional probability of the level one data given the model predictions. There
+is a feedback loop, because $\erep{\vv{\model}}$ is expected to have some
+dependence on the shift.
+
+We can actually define
 a similar expression for each replica, and take the expectation value across
 replicas:
 \begin{equation}\label{eq:erepdeltachi2def}
@@ -127,7 +150,12 @@ line of equation \eqref{eq:deltaepsdef} is the variance of the model replica
 predictions, $\model^{\repind}$ minus two times the covariance of the model
 replica predictions and the pseudodata replicas. This makes sense, the expression
 tells us whether the replica predictions fluctuate about their mean covariantly
-with the pseudodata replicas. Consider the case where $\erep{\model}$ is exactly
+with the pseudodata replicas. If we take the expectation of \eqref{eq:deltaepsdef}
+across fits, then we will obtain a similar expression to
+\eqref{eq:deltachi2kldef} - a KL divergence between the conditional probabilities
+of the data given the underlying law and model replicas respectively.
+
+Now consider the case where $\erep{\model}$ is exactly
 equal to $\law$ but the difference between the replica predictions and the
 central replica predictions is equal to the noise applied to the corresponding
 pseudodata replica. Then it's clear that $\Delta_{\chi^2}=0$ and $\deltaeps=-1$
@@ -459,7 +487,9 @@ experimental
 % Should I mention this without having tried it?
 covariance. As previously discussed, this makes sense in light of using the PDFs
 to make data-theory comparisons.
-
+% We use xi to compare to bias/variance
+% should we summarise the estimators of interest here?
+% bias, variance, delta chi2, delta epsilon
 \subsection{Out of sample}
 
 We want to calculate the closure test estimators on data which is out of sample
