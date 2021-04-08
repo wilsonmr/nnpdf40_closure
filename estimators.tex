@@ -150,7 +150,7 @@ line of equation \eqref{eq:deltaepsdef} is the variance of the model replica
 predictions, $\model^{\repind}$ minus two times the covariance of the model
 replica predictions and the pseudodata replicas. This makes sense, the expression
 tells us whether the replica predictions fluctuate about their mean covariantly
-with the pseudodata replicas. If we take the expectation of \eqref{eq:deltaepsdef}
+with the pseudodata replicas. If we take the expectation of \eqref{eq:erepdeltachi2def}
 across fits, then we will obtain a similar expression to
 \eqref{eq:deltachi2kldef} - a KL divergence between the conditional probabilities
 of the data given the underlying law and model replicas respectively.
@@ -190,7 +190,22 @@ on the origin, likewise the 1-sigma confidence interval of the gaussianly
 distributed level 2 data is the unit hypersphere centered on the level 1 data.
 Since we are in the eigenbasis of the experimental covariance matrix, each
 component of the data is generated independently. An example is given in
-two dimensions in figure ADD THIS DIAGRAM.
+two dimensions in figure \ref{fig:diagram2destimators}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{diagonal_basis_2d_estimators_diagram.png}
+    \caption{Example of geometric interpretation of closure test estimators. The origin
+    is the predictions of the underlying law. The level one data is shifted away from this
+    by $\shift$. In the basis which diagonalises the experimental covariance matrix, normalised by
+    the square root of the eigenvalues, the 1-sigma noise vector confidence interval
+    is a unit circle centered on the origin and the 1-sigma confidence interval
+    of the level 2 data is a unit circle centered $\levone$. Some closure
+    estimators can be understood as l2 norms of the vectors connecting points,
+    i.e the bias is the l2 norm of the vector from the origin to the central
+    value of the predictions.}
+    \label{fig:diagram2destimators}
+\end{figure}
 
 In \eqref{eq:chi2decomp}, we implictly showed that $\Delta_{\chi^2}$ discussed
 in the closure test of NNPDF3.0 is given by
@@ -202,9 +217,10 @@ depending on its sign. Also it was said that $\Delta_{\chi^2}$ indicated that
 the underlying law was reproduced. We can see with this decomposition that
 if the underlying law is exactly obtained by the central value of the predictions,
 $\Delta_{\chi^2}=0$, however $\Delta_{\chi^2}=0$ does not necessarily imply that
-the underlying law is reproduced. By examining INSERT FIGURE, we see that
-$\Delta_{\chi^2} = 0$ defines a hypersphere which is centered on the level 1 data
-and passes through the underlying law. If $\Delta_{\chi^2} < 0$ then the central
+the underlying law is reproduced. On figure \ref{fig:diagram2destimators},
+$\Delta_{\chi^2} = 0$ would define a hypersphere which is centered on the level
+1 data and passes through the underlying law (so has radius equal to magnitude of
+the vector from $\law$ to $\levone$). If $\Delta_{\chi^2} < 0$ then the central
 value of the predictions lies within this hypersphere, similarly if
 $\Delta_{\chi^2} > 0$ then the central value of the predictions lies outside
 of this hypersphere. We should bear this in mind when talking about overfitting
