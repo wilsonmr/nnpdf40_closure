@@ -6,9 +6,7 @@ We start with the expectation of $\repchis$ across replicas
     \erep{\repchis} = \frac{1}{\ndata} 
     \erep{ {\vecdiffreptwo}^{T} \invcov{} \vecdiffreptwo}.
 \end{equation}
-It is useful perform a decomposition of this expression, as in <REF>.
-% TODO: reference high bias/ low variance approach...
-% [ref to https://doi.org/10.1016/j.physrep.2019.03.001]
+It is useful perform a decomposition of this expression, as in \cite{mlforphysics}.
 The differences between the cost function in the reference and that in
 \eqref{eq:chi2kerep} are that our pseudodata has an additional shift, $\shift$,
 and that the $\repchis$ takes into account the correlations between data points.
@@ -76,7 +74,7 @@ independent. In NNPDF3.0 there was an estimator which aimed to measure
 \begin{equation}\label{eq:deltachi2def1}
     \Delta_{\chi^2} = \frac{1}{\ndata}\frac{(\erep{\diag{\model}} - \diag{\levone})_i^2 - \diag{\shift}_i^2}{\coveig_i},
 \end{equation}
-where we have normalised by $\ndata$ rather than in <REF> which instead normalised
+where we have normalised by $\ndata$ rather than in \cite{nnpdf30} which instead normalised
 by $\sum_i^{\ndata} \frac{\diag{\shift}_i^2}{\coveig_i}$. It's clear that in the large
 $\ndata$ limit that you would expect the two normalisations to be converge. The
 idea of $\Delta_{\chi^2}$ is that it measures whether the central predictions
@@ -273,8 +271,8 @@ purely from the ensemble of PDF replicas and the underlying law.
 It's clear that when choosing a fitting methodology we would like to minimise
 both the bias and the variance: minimising the bias means that the central
 value of the predictions is closer to the underlying law and minimising
-the variance means that the PDF uncertainty is reduced. As dicussed in [REF
-high bias/low variance], the general approach to reducing the bias is to
+the variance means that the PDF uncertainty is reduced. As dicussed in \cite{mlforphysics},
+the general approach to reducing the bias is to
 increase the number of parameters but this often has the side effect of
 increasing the variance. In our case we have an additional subtlety, which is
 the interplay between the bias and the variance.
@@ -346,10 +344,12 @@ hand we can check if one fitting methodology has a lower value of bias and
 variance, averaged across fits. This gives us a performance indicator with
 which we can rank fitting methodologies. In addition to this, we can validate
 whether or not the PDF uncertainties, represented by the MC replicas for a given
-fit, are "faithful". In NNPDF3.0 there were some attempts to answer this question,
-but at the time studies were limited by the length of time it took to run a fit
-and so instead of running multiple level 2 fits, single replicas fits were used
-as proxies for this.
+fit, are "faithful". In NNPDF3.0 a first attempt to answer this was made,
+at the time studies were limited by the length of
+time it took to run a fit
+and so instead of running multiple level 2 fits, single replicas fitted directly
+to the level one data were used as proxies for full fits.
+
 With the introduction of a faster fitting methodology it becomes feasible to
 actually perform multiple level 2 closure fits with our proposed methodology,
 and try to test how well the methodology performs, and whether uncertainties
