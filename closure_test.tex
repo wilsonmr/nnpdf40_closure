@@ -1,25 +1,31 @@
 \section{Monte Carlo approach to fitting data}
 % Generally propagating uncertainty such that the result of the fit contains
 % Information on possible outcomes of a fit.
-Without making this too much about PDFs want to say
+Something I think we should highlight:
 \begin{itemize}
-    \item Have some data with some error
-    \item use that to make an assumption of the distribution of the data central values
-    \item consider the use case of our product - people make new predictions and
-    test consistency with input assumptions.
-    \item we want to provide a distribution of possible outcomes of a fit based
-    taking into account the experiment uncertainty, fitting inefficiency etc.
-    \item one way of doing this is to instead provide a sample of that
-    distribution in the form of MC replicas, from which somebody can generate
-    a sample of new predictions
-    \item advantage is that we don't need to be able to parameterise the
-    distribution in function space, so we don't have to rely on using a simple
-    parameterisation and assuming gaussianity (hessian approach)
-    \item does this actually work in theory? Test with simple models, work up
-    to actual fit, try and determine potential pitfalls along the way.
-    \item the aim of this paper is not to decide whether or NNPDF4.0 is a success
-    but to present a set of tools which can determine if the fit is successful
-    with some input assumptions being satisfied.
+    \item We assume that our parameterisation is sufficiently flexible that
+    the bias really does tend to 0 in infinite data limit.
+    \item This is *not* the case i.e with linear model fitting quadratic law
+    \item E in and E out converge with enough data. I think we can show this
+    in the polynomial model
+    \item Closure test bakes in this assumption in 4.0 because we take underlying
+    law from the space of functions we explore in a fit. Obviously we could use
+    other underlying law but we are somewhat limited by the fact that we have the
+    most flexible parameterisation.
+    \item we also bake in that the shift is consistent with the uncertainty
+    *and* the input function (no MHOU).
+    \item In that case do we get faithful uncertainties? Minimal check.
+    \item One weakness is it's hard to get good statistics even with improved
+    fitting performance, so we relax slightly this requirement
+    \item Finally can check performance. If you think that the first requirement
+    is satisfied (bias equals variance) then since variance $\equiv {\rm phi}^2$ and can be
+    calculated for real fit then you can actually choose fit with smallest phi.
+    One could wonder if we should perform hyperopt on closure data - I don't think
+    so because from poly model we see that we would probably find the smallest
+    architecture which fulfills assumption 1 in this list if we were to minimise
+    bias (with fixed Ndata) however we *can* hyperopt with like 5-10 rep fits
+    and minimise Erep[chi2](out of sample) (because noise cross term goes to zero
+    and shift cross term goes down with Ndata so we really minimise bias and variance)
 \end{itemize}
 The next section I think should be assumptions of the data, which is consistent
 throughout. Then we can talk about what is minimised in the fit. Possibly
