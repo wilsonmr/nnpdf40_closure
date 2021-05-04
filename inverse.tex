@@ -3,7 +3,7 @@
 \label{sec:inverse-problems}
 
 The problem of determining PDFs from a set of experimental data falls
-under the general category of {\em inverse problems}, \ie the problem
+under the general category of {\em inverse problems}, \ie\ the problem
 of finding the input to a given model knowing a (finite) set of
 observations. The model is specified by a {\em forward map}
 \begin{align}
@@ -20,18 +20,20 @@ being a PDF and $r$ a DIS structure function:
   \label{eq:DISExample}
   r(x,Q^2) = \int dz\, C(x/z) u(z)\, .
 \end{align}
-Note that in this example the forward maps one real function into
+Note that in this example the forward map maps one real function into
 another real function. Experiments will not have access at the full
 function $r$ but only to a subset of $\ndata$ observations. In order
-to have a formal mathematical expression to take the measurement ino
-account, we introduce an {\em observation operator}
+to have a formal mathematical expression to take into account the fact
+that we have a finite number of meaasurements, we introduce an {\em
+  observation operator}
 \begin{align}
   O : ~& R \to \mathbb{R}^{\ndata} \nonumber \\
        & r \mapsto y \, ,
 \end{align}
 where $y \in \mathbb{R}^{\ndata}$ is a vector that contains all the
-experimetal results, \eg for different values of the kinematics. The
-quantity of interest is the composed operator 
+experimental results, \eg\ the value of the structure function for
+different values of the kinematics. The quantity of interest is the
+composed operator
 \begin{align}
   \mathcal{G} : ~& X \to \mathbb{R}^{\ndata} \nonumber \\
                  & \mathcal{G} = O \circ G\, ,
@@ -44,16 +46,20 @@ can write
   y = \mathcal{G}(u) + \eta\, ,
 \end{align}
 where $\eta$ is a random variable defined over $\mathbb{R}^{\ndata}$
-with probability density $\rho(\eta)$.
+with probability density $\rho(\eta)$. We will refer to $\eta$ as the
+{\em observational noise}. The inverse problem becomes finding $u$
+given $y$. It is often the case that inverse problems are ill-defined
+in the sense that the solution may not exist, may not be unique, or
+may be unstable under small variations of the problem. 
 
 In this context we are going to adopt a Bayesian point of view; our
 prior knowledge about $u$ is encoded in a prior probability measure
 $\mu_0$, and we use Bayes' theorem to compute the posterior
-probability of $u$ given the data $y$, which we denote as $\mu^y$. We
-denote the probability densities associated to $\mu_0$ and $\mu^y$ by
-$\pi_0$ and $\pi^y$ respectively. Then, using
-Eq.~(\ref{eq:NoisyInverseProblem}), we can write the data likelyhood,
-\ie the probability density of $y$ given $u$,
+probability measure of $u$ given the data $y$, which we denote as
+$\mu^y$. We denote the probability densities associated to $\mu_0$ and
+$\mu^y$ by $\pi_0$ and $\pi^y$ respectively. Then, using
+Eq.~(\ref{eq:NoisyInverseProblem}), we can write the data likelihood,
+\ie\ the probability density of $y$ given $u$,
 \begin{align}
   \label{eq:YGivenUProbDensity}
   \rho(y|u) = \rho(y-\mathcal G(u))\, ,
@@ -63,9 +69,65 @@ and Bayes' theorem yields
   \label{eq:BayesThmInversePosterior}
   \pi^y(u) \propto \rho(y-\mathcal G(u)) \pi_0(u)\, .
 \end{align}
-Eq.~(\ref{eq:BayesThmInversePosterior}) shows that $\rho$ can be seen
-as the Radon-Nikodym derivative of the probability measures $\mu^y$
-and $\mu_0$, \viz 
+
+The concepts that we have introduced are very familiar are best exemplified
+by considering the case where both the observational noise and the
+prior are Gaussian:
+\begin{align}
+  \label{eq:RhoGauss}
+  \rho(\eta) &\propto \exp\left(
+               -\frac12 \left|\eta\right|_C^2
+               \right)\, , \\
+  \label{eq:PiZeroGauss}
+  \pi_0(u)  &\propto \exp\left(
+              -\frac12 \left|(u-m_0)\right|_{\Sigma_0}^2
+              \right)\, .
+\end{align}
+Note that in the above expressions we used the norms in $X$ and
+$\mathbb{R}^{\ndata}$ respectively, and introduced the short-hand
+notation
+\begin{align}
+  \left|v\right|_M^2 = \left| M^{-1/2} v\right|^2\, .
+\end{align}
+For the case where $v \in \mathbb{R}^{\ndata}$, we can use the usual
+Euclidean norm  and
+\begin{align}
+  \left|v\right|_M^2 = \sum_{i,j} v_i M_{ij} v_j\, ,
+\end{align}
+and the indices $i,j$ run from 1 to $\ndata$.  The matrix $C$ is the
+covariance of the experimental data, while $\Sigma_0$ is the
+covariance of the Gaussian prior for $u$. Using Bayes' theorem we
+obtain
+\begin{align}
+  \label{eq:PosteriorModel}
+  \pi^y(u) \propto 
+  \exp\left(
+  -\frac12 \left|y - \mathcal G(u)\right|_C^2
+  -\frac12 \left|(u-m_0)\right|_{\Sigma_0}^2
+  \right)\, .
+\end{align}
+Eq.~(\ref{eq:PosteriorModel}) is the Bayesian answer to the inverse
+problem, our knowledge of the model $u$ is encoded in the probability
+measure $\mu^y$, which is fully specified by the density
+$\pi^y$. There are several ways to characterise a probability
+distribution. Here we will focus on the {\em Maximum A Posteriori
+  (MAP)} estimator, \ie\ the element $u \in X$ that maximises
+$\pi^y(u)$:
+\begin{align}
+  u^* = \arg\min_{u \in X} 
+  \left(
+  -\frac12 \left|y - \mathcal G(u)\right|_C^2
+  -\frac12 \left|(u-m_0)\right|_{\Sigma_0}^2
+  \right)\, .
+\end{align}
+For every instance of the data $y$, the MAP estimator can computed by
+minimising a regulated $\chi^2$. Note that in the Bayesian approach,
+the regulator is provided by specifying carefully all the assumptions
+that enter in the prior. 
+
+Eq.~(\ref{eq:BayesThmInversePosterior}) shows that $\rho$ is
+the Radon-Nikodym derivative of the probability measures $\mu^y$
+with respect to $\mu_0$, \viz 
 \begin{align}
   \label{eq:RadonNikodym}
   \frac{d\mu^y}{d\mu_0} (u) \propto \rho(y-\mathcal G(u)) \pi_0(u)\, .
@@ -81,6 +143,8 @@ and therefore
   \label{eq:RadonNikodymTwo}
   \frac{d\mu^y}{d\mu_0} (u) \propto \exp\left(-\Phi(u;y)\right)\, .
 \end{align}
-While in finite-dimensional spaces, these are trivial manipulations,
-the last expression, Eq.~(\ref{eq:RadonNikodymTwo}), can be
-properly defined when $X$ is infinite-dimensional.
+In finite-dimensional spaces, the three equations above are just
+definitions that do not add much content. Their interest resides in
+the fact that the last expression, Eq.~(\ref{eq:RadonNikodymTwo}), can
+be properly defined when $X$ is infinite-dimensional.
+
