@@ -1,0 +1,86 @@
+
+\section{Inverse Problems}
+\label{sec:inverse-problems}
+
+The problem of determining PDFs from a set of experimental data falls
+under the general category of {\em inverse problems}, \ie the problem
+of finding the input to a given model knowing a (finite) set of
+observations. The model is specified by a {\em forward map}
+\begin{align}
+  \label{eq:ForwardMap}
+  G : ~& X \to R \nonumber \\
+      & u \mapsto r=G(u) \, ,
+\end{align}
+which associates a response $r \in R$ to the input $u \in X$, where we
+assume that $X$ and $R$ are Banach spaces.~\footnote{Banach spaces are
+  complete normed vector spaces. We do not need to get into a more
+  detailed discussion here.} As an example we can think of $u$ as
+being a PDF and $r$ a DIS structure function:
+\begin{align}
+  \label{eq:DISExample}
+  r(x,Q^2) = \int dz\, C(x/z) u(z)\, .
+\end{align}
+Note that in this example the forward maps one real function into
+another real function. Experiments will not have access at the full
+function $r$ but only to a subset of $\ndata$ observations. In order
+to have a formal mathematical expression to take the measurement ino
+account, we introduce an {\em observation operator}
+\begin{align}
+  O : ~& R \to \mathbb{R}^{\ndata} \nonumber \\
+       & r \mapsto y \, ,
+\end{align}
+where $y \in \mathbb{R}^{\ndata}$ is a vector that contains all the
+experimetal results, \eg for different values of the kinematics. The
+quantity of interest is the composed operator 
+\begin{align}
+  \mathcal{G} : ~& X \to \mathbb{R}^{\ndata} \nonumber \\
+                 & \mathcal{G} = O \circ G\, ,
+\end{align}
+which maps the input to the forward map to the set of data. Taking
+into account the fact that experimental data are subject to noise, we
+can write
+\begin{align}
+  \label{eq:NoisyInverseProblem}
+  y = \mathcal{G}(u) + \eta\, ,
+\end{align}
+where $\eta$ is a random variable defined over $\mathbb{R}^{\ndata}$
+with probability density $\rho(\eta)$.
+
+In this context we are going to adopt a Bayesian point of view; our
+prior knowledge about $u$ is encoded in a prior probability measure
+$\mu_0$, and we use Bayes' theorem to compute the posterior
+probability of $u$ given the data $y$, which we denote as $\mu^y$. We
+denote the probability densities associated to $\mu_0$ and $\mu^y$ by
+$\pi_0$ and $\pi^y$ respectively. Then, using
+Eq.~(\ref{eq:NoisyInverseProblem}), we can write the data likelyhood,
+\ie the probability density of $y$ given $u$,
+\begin{align}
+  \label{eq:YGivenUProbDensity}
+  \rho(y|u) = \rho(y-\mathcal G(u))\, ,
+\end{align}
+and Bayes' theorem yields
+\begin{align}
+  \label{eq:BayesThmInversePosterior}
+  \pi^y(u) \propto \rho(y-\mathcal G(u)) \pi_0(u)\, .
+\end{align}
+Eq.~(\ref{eq:BayesThmInversePosterior}) shows that $\rho$ can be seen
+as the Radon-Nikodym derivative of the probability measures $\mu^y$
+and $\mu_0$, \viz 
+\begin{align}
+  \label{eq:RadonNikodym}
+  \frac{d\mu^y}{d\mu_0} (u) \propto \rho(y-\mathcal G(u)) \pi_0(u)\, .
+\end{align}
+Finally, using the fact that the density $\rho$ is a positive
+function, we can rewrite 
+\begin{align}
+  \label{eq:PotentialDef}
+  \rho(y-\mathcal G(u)) = \exp\left(-\Phi(u;y)\right)\, ,
+\end{align}
+and therefore
+\begin{align}
+  \label{eq:RadonNikodymTwo}
+  \frac{d\mu^y}{d\mu_0} (u) \propto \exp\left(-\Phi(u;y)\right)\, .
+\end{align}
+While in finite-dimensional spaces, these are trivial manipulations,
+the last expression, Eq.~(\ref{eq:RadonNikodymTwo}), can be
+properly defined when $X$ is infinite-dimensional.
