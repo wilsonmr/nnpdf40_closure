@@ -64,7 +64,7 @@ of the polynomial model.
 % pos definite, number of parameters is less than number of data then A is
 % invertible because it will be full rank. -> use rank of X
 Since $\vv{y} = X \vv{c} + \vv{\shift} + \vv{\noise}$, we have
-\begin{equation}
+\begin{equation}\label{eq:polymodelparam}
     \vv{\gamma} = \vv{c} + A^{-1} X^T \invcov{} \vv{\shift} + A^{-1} X^T \invcov{} \vv{\noise},
 \end{equation}
 % what is correct way of saying this?
@@ -76,6 +76,31 @@ then $\vv{c}$ contains all the parameters of the underlying law and then zeros
 for the dimensions corresponding to redundant parameters in the model. From
 now on we will always consider $\nlaw \leq \nmodel$, where the model has
 redundant parameters.
+
+\subsection{Posterior distribution of model parameters}
+
+We remind ourselves that the goal when approaching inverse problems from a
+MC perspective is to generate a sample from the posterior
+distribution of model parameters given the data. If there is no prior information
+on the model parameters, this is often represented by a "flat" distribution
+on the model parameters. In theory one still needs to choose limits on the flat
+model prior, however this presents itself as a volume factor in the expression
+for the posterior distribution of model parameters and so in practice is ommited.
+If the likelihood of the data given the model is assumed to be gaussian, and
+the model is linear in its parameters, such is the case with a polynomial model,
+then the posterior distribution of the model parameters is a gaussian
+\begin{equation}
+    \begin{split}
+        p(\gamma \vert z) &\propto \exp \left( - \frac{1}{2} (X \gamma - z)^T \invcov{} (X \gamma - z)\right) \\
+        &=\exp \left( - \frac{1}{2} (\gamma - X^+ z)^T X^T \invcov{} X (\gamma - X^+ z)\right)
+    \end{split}
+\end{equation}
+where $X^+$ is the pseudo-inverse of $X$. Written in this way we seem that
+$p(\gamma \vert z)$ is a gaussian with mean $X^+ z$ and covariance
+$(X^T \invcov{} X)^-1 = X^+ \cov (X^T)^+$. If we take the expression for our
+model parameters, equation \eqref{eq:polymodelparam}, then indeed we see that
+the model parameters obtained from maximising the likelihood on pseudo-data are
+gaussian with mean and covariance $X^+ z$ and $X^+ \cov (X^T)^+$ respectively.
 
 \subsection{Closure estimators}
 

@@ -4,8 +4,11 @@
 Something I think we should highlight:
 \begin{itemize}
     \item We assume that our parameterisation is sufficiently flexible that
-    the bias really does tend to 0 in infinite data limit.
+    the bias really does tend to 0 in infinite data limit. This is whether
+    or not our likelihood is actually valid. Does the true PDF live inside
+    our parameter space, or at least a good enough approximation.
     \item This is *not* the case i.e with linear model fitting quadratic law
+    (we break the likelihood then bias / variance doesn't equal 1)
     \item E in and E out converge with enough data. I think we can show this
     in the polynomial model
     \item Closure test bakes in this assumption in 4.0 because we take underlying
@@ -13,8 +16,9 @@ Something I think we should highlight:
     other underlying law but we are somewhat limited by the fact that we have the
     most flexible parameterisation.
     \item we also bake in that the shift is consistent with the uncertainty
-    *and* the input function (no MHOU).
-    \item In that case do we get faithful uncertainties? Minimal check.
+    *and* the input function (no MHOU). Again the likelihood function is correct.
+    \item In that case do we get faithful uncertainties in space of data?
+    Evidence of posterior distribution of model parameters.
     \item One weakness is it's hard to get good statistics even with improved
     fitting performance, so we relax slightly this requirement
     \item Finally can check performance. If you think that the first requirement
@@ -48,44 +52,45 @@ a basis, but it is typical to consider $\vv{\levone}$ in the basis we call the
 data basis, where basis vector corresponds to a data point, and the vector of
 shifts $\vv{\shift}$ permits correlations between data points.
 Equation \eqref{eq:levelonedata} is our interpretation of the
-experimental data, which is often provided in different forms. In the case that
-the experimental data is a set of central values and a covariance matrix then
-this interpretation appears entirely natural.
+experimental data, can often be provided in different formats, such as central
+values and a breakdown of systematic uncertainties. Our assumptions about the data
+{\em and} the true underlying values, $\vv{\law}$,
+are reflected in the posterior distribution, Eq.~(\ref{eq:PosteriorModel}).
 % we never talk about normalisation uncertainties - should we? Maybe later..
 
-The pseudodata which will be fitted is obtained by adding Monte Carlo
-noise, $\noise^{\repind}$, on top of the experimental central values
+Instead of simply providing the most likely model given the data, which is
+the result of performing a MAP fit described in \ref{sec:inverse-problems},
+we take a Monte Carlo (MC) approach to solving the inverse problem. Instead
+of fitting the data, $\levone$, directly model replicas are fitted to
+pseudo-data replicas. The fitted pseudo-data is generated according by
+augmenting the data with some noise, $\noise^{\repind}$,
 \begin{equation}\label{eq:leveltwodata1}
     \vv{\levtwo}(\vv{\law},\,\vv{\shift},\,\vv{\noise}^{\repind})
     = \vv{\law} + \vv{\shift} + \vv{\noise}^{\repind},
 \end{equation}
 where the replica index $k$ refers to each replica having a noise vector drawn
-independently from $\vv{\noise} \sim \mathcal{N}(0, \cov)$. The sampling of
-pseudodata permits correlations between individual data points through the
-covariance matrix, however each replica is sampled independently from the others.
+independently from $\vv{\noise} \sim \mathcal{N}(0, \cov)$.
 
-Each pseudodata replica gets independently fitted by a replica of the model.
-Our claim is that the end product of performing a fit is an ensemble of model
-replicas which are sampled from the distribution of possible models given the
-data we were provided
-with and the assumptions we made about it. This ensemble of models can then
-be used to generate an ensemble of theory predictions, and so the dispersion
-of models in functional space can be propagated through to the space of data.
-It's clear that the true test of the methodology would determine whether the
-model replicas are truly distributed according to the distribution of possible
-models given the data, however this would require understanding how to define
-a probability distribution in the space of functions. Here we will attempt a
-more practical empirical approach to determine if the methodology produces a
-successful fit: since the models will be used to produce theoretical predictions
-we can instead define estimators in the space of data, which means we are
-considering distributions in a finite dimensional vector space, which has a
-cardinality equal to the number of distinct data points. There is a choice
-of which data points we will consider. Later on we will discuss a distinction
-we make between data which is fitted, and data which is not included in the fit
-which we make considering the practical application of our models.
+The parameters for each model replica are the result of maximising the
+likelihood function of the corresponding pseudo-data replicas. Qualitatively,
+we often refer to propagating the data uncertainty into the space of functions.
+More precisely we propagate the data uncertainty into the space of model
+parameters. In more formal language, we claim that the objective of this
+approach is to obtain a sample of model parameters from the posterior distribution
+of the parameters given the data. Whilst it's not immediately obvious that our
+MC methodology, maximising the likelihood on an ensemble of pseudo-data replicas,
+should guarantee that the model replicas are indeed sampled from the posterior
+distribution of parameters given data we will show that our methodology is valid
+in the case that the predictions are linear in the model parameters. Then
+we will provide some practical estimators in the space of data which
+provide evidence, even for non-linear models, that the model uncertainties
+are faithful. We present these estimators in the context of the NNPDF closure
+test and will conclude with some discussions of the limitations of these estimators
+and some potential directions for future work.
 
 \section{Fitting the model parameters}
 
+% need consistent notation with inverse section.
 Each model replica has a set of parameters $\{\theta^{\repind} \}$, the theoretical
 prediction from model replica $k$ for datapoint $i$ is
 $\model_{i}(\{\theta^{\repind} \})$, where we have made it explicit that the observable
@@ -186,7 +191,9 @@ experimental central values, $\vv{\levone}$, are referred to as level 1 data.
 Finally the pseudodata replicas are generated from the $\levone$ data,
 analogously to a fit to experimental data. We refer to the pseudodata replicas,
 $\vv{\levtwo}$, as level 2 data.
+% This needs rewording but emphasise that there are two assumptions which we enforce.
 
+% Get rid of the stuff below.
 Whilst the parameters of the model replicas are determined by minimising
 the loss function given by equation \eqref{eq:replicaloss}, the overall fit
 quality is determined by considering the $\chi^2$ between the experimental
