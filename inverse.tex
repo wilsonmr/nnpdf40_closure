@@ -21,7 +21,7 @@ being a PDF and $r$ a DIS structure function:
   r(x,Q^2) = \int dz\, C(x/z) u(z)\, .
 \end{align}
 Note that in this example the forward map maps one real function into
-another real function. Experiments will not have access at the full
+another real function. Experiments will not have access to the full
 function $r$ but only to a subset of $\ndata$ observations. In order
 to have a formal mathematical expression to take into account the fact
 that we have a finite number of meaasurements, we introduce an {\em
@@ -120,14 +120,128 @@ $\pi^y(u)$:
   -\frac12 \left|(u-m_0)\right|_{\Sigma_0}^2
   \right)\, .
 \end{align}
-For every instance of the data $y$, the MAP estimator can computed by
-minimising a regulated $\chi^2$. Note that in the Bayesian approach,
-the regulator is provided by specifying carefully all the assumptions
-that enter in the prior. 
+For every instance of the data $y$, the MAP estimator is computed by
+minimising a regulated $\chi^2$, we will refer to this procedure as
+the {\em classical fit} of experimental data to a model. Note that in
+the Bayesian approach, the regulator is provided by specifying
+carefully all the assumptions that enter in the prior. The MAP
+estimator provides the explicit connection between the Bayesian
+approach and the classical fit.
 
-Eq.~(\ref{eq:BayesThmInversePosterior}) shows that $\rho$ is
-the Radon-Nikodym derivative of the probability measures $\mu^y$
-with respect to $\mu_0$, \viz 
+\subsection{Comparison with classical fitting}
+\label{sec:comp-class-fit}
+
+There are a number of results that make the connection between the two
+approaches more quantitative, and therefore more transparent. We are
+going to summarise these results here without proofs, referring the
+reader to the mathematical literature for the missing details. Working
+in the finite-dimensional case, we assume 
+\begin{align*}
+  u &\in \mathbb{R}^n \, ,\\
+  y &\in \mathbb{R}^{\ndata}\, ,
+\end{align*}
+and we are going to consider in detail two examples from Ref.~\cite{StuartCore}.
+
+\paragraph{Underdetermined system}
+The first case that we are going to analyse is the case of a linear system that
+is underdetermined by the data. The linear model is completely specified by a
+vector of coefficients $g\in \mathbb{R}^n$, while we are going to assume that we
+only have one datapoint, \ie\ $\ndata=1$, and hence:
+\begin{equation}
+  \label{eq:LinearModelEx}
+  y = (g^T u) + \eta\, ,
+\end{equation}
+where $\eta \sim \mathcal{N}(0,\gamma^2)$ is one Gaussian number, whose
+probability density is centred at $0$ and has variance $\gamma^2$. For
+simplicity we are going to assume that the prior on $u$ is also a
+multi-dimensional Gaussian, centred at $0$ with covariance matrix $\Sigma_0$. 
+
+In this case the posterior distribution can be written as
+\begin{equation}
+  \label{eq:GaussPostExplicit}
+    \pi^y(u) \propto \exp \left[
+    \frac{1}{2\gamma^2} \left|y - g \cdot u \right|^2 - \frac12 \left|
+      u
+    \right|_{\Sigma_0}^2 
+    \right]\, ,
+\end{equation}
+which is still a Gaussian distribution for $u$. The mean and covariance are
+respectively
+\begin{align}
+  m &= \frac{(\Sigma_0 g) y}{\gamma^2 + (g^T \Sigma_0 g)}\, , \\
+  \Sigma &= \Sigma_0 - 
+  \frac{(\Sigma_0 g) (\Sigma_0 g)^T}{\gamma^2 + (g^T \Sigma_0 g)}\, .
+\end{align}
+It is instructive to look at these quantities in the limit of infinitely precise data, \ie\ in the limit $\gamma\to 0$:
+\begin{align}
+  m_\star &= 
+  \lim_{\gamma\to 0} m
+  = \frac{(\Sigma_0 g) y}{(g^T \Sigma_0 g)}\, , \\
+  \Sigma_\star &= 
+  \lim_{\gamma\to 0} \Sigma 
+  = \Sigma_0 - 
+  \frac{(\Sigma_0 g) (\Sigma_0 g)^T}{(g^T \Sigma_0 g)}\, .
+\end{align}
+These values satisfy
+\begin{align}
+  (g^T m_\star) = y \, , \\
+  (\Sigma_\star g) = 0 \, ,
+\end{align}
+which shows that the mean of the distribution is such that the data point is
+exactly reporduced by the model, and that the uncertainty in the direction
+defined by $g$ vanishes. It should be noted that the uncertainty in directions
+perpendicular to $g$ does not vanish and is determined by a combination of the
+prior and the model, \viz\ $\Sigma_0$ and $g$ in our example. This is a
+particular example of a more general feature: for underdetermined systems the
+information from the prior still shapes the probability distribution of the
+solution even in the small noise limit.  
+
+\paragraph{Overdetermined system}
+We are now going to consider an example of an overdetermined system and discuss
+again the case of small observational noise. We consider $\ndata\geq 2$ and
+$n=1$, with a forward map such that
+\begin{equation}
+ \label{eq:OverDetForwMap}
+ y = g(u + \beta u^3) + \eta\, ,
+\end{equation} 
+where $\eta$ is an $\ndata$-dimensional Gaussian variable with a diagonal
+covariance $\gamma^2 I$, where $I$ denotes the identity matrix. For simplicity
+we are going to assume a Gaussian prior with unit variance for $u$, which yields
+for the posterior distribution:
+\begin{equation}
+  \label{eq:OverDetPost}
+  \pi^y(u) \propto 
+    \exp\left(
+      -\frac{1}{2\gamma^2} \left| y - g(u + \beta u^3)\right|^2
+      -\frac12 u^2
+    \right)\, .
+\end{equation} 
+If $\beta=0$ the posterior is Gaussian and we can easily compute its mean and variance: 
+\begin{align}
+  m &= \frac{(g^T y)}{\gamma^2 + |g|^2} \, , \\
+  \sigma^2 &=
+    \frac{\gamma^2}{\gamma^2 + |g|^2}\, .
+\end{align}
+In this case, in the limit of vanishing observational noise, we obtain
+\begin{align}
+  m_\star &= \frac{(g^T y)}{|g|^2} \, ,\\
+  \sigma_\star^2 &= 0\, .
+\end{align}
+The mean is given by the weighted average of the datapoints, which is also the solution of the $\chi^2$ minimization
+\begin{equation}
+  m_\star = \arg\min_{u\in\mathbb{R}} \left|y - g u\right|^2\, .
+\end{equation}
+Note that in this case the variance $\sigma_\star$ vanishes independently of the prior. In the limit of small noise, the distribution tends to a Dirac delta around the value of the MAP estimator.  
+
+
+\subsection{The infinite-dimensional case}
+\label{sec:infin-dimens-case}
+
+In the finite-dimensional case, where the probability measures are
+specified by their densities with respect to the Lebesgue measure,
+Eq.~(\ref{eq:BayesThmInversePosterior}) encodes the fact that $\rho$
+is the Radon-Nikodym derivative of the probability measure $\mu^y$
+with respect to $\mu_0$, \viz
 \begin{align}
   \label{eq:RadonNikodym}
   \frac{d\mu^y}{d\mu_0} (u) \propto \rho(y-\mathcal G(u)) \pi_0(u)\, .
