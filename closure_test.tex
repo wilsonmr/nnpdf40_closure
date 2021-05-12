@@ -1,68 +1,31 @@
-\section{Monte Carlo approach to fitting data}
-% Generally propagating uncertainty such that the result of the fit contains
-% Information on possible outcomes of a fit.
-Something I think we should highlight:
-\begin{itemize}
-    \item We assume that our parameterisation is sufficiently flexible that
-    the bias really does tend to 0 in infinite data limit. This is whether
-    or not our likelihood is actually valid. Does the true PDF live inside
-    our parameter space, or at least a good enough approximation.
-    \item This is *not* the case i.e with linear model fitting quadratic law
-    (we break the likelihood then bias / variance doesn't equal 1)
-    \item E in and E out converge with enough data. I think we can show this
-    in the polynomial model
-    \item Closure test bakes in this assumption in 4.0 because we take underlying
-    law from the space of functions we explore in a fit. Obviously we could use
-    other underlying law but we are somewhat limited by the fact that we have the
-    most flexible parameterisation.
-    \item we also bake in that the shift is consistent with the uncertainty
-    *and* the input function (no MHOU). Again the likelihood function is correct.
-    \item In that case do we get faithful uncertainties in space of data?
-    Evidence of posterior distribution of model parameters.
-    \item One weakness is it's hard to get good statistics even with improved
-    fitting performance, so we relax slightly this requirement
-    \item Finally can check performance. If you think that the first requirement
-    is satisfied (bias equals variance) then since variance $\equiv {\rm phi}^2$ and can be
-    calculated for real fit then you can actually choose fit with smallest phi.
-    One could wonder if we should perform hyperopt on closure data - I don't think
-    so because from poly model we see that we would probably find the smallest
-    architecture which fulfills assumption 1 in this list if we were to minimise
-    bias (with fixed Ndata) however we *can* hyperopt with like 5-10 rep fits
-    and minimise Erep[chi2](out of sample) (because noise cross term goes to zero
-    and shift cross term goes down with Ndata so we really minimise bias and variance)
-\end{itemize}
-The next section I think should be assumptions of the data, which is consistent
-throughout. Then we can talk about what is minimised in the fit. Possibly
-introduce the vector notation.
+\section{NNPDF Monte Carlo approach to inverse problems}
 
-\section{Fitted data}
-If we consider experimental data which we assume
+In this section we will discuss the NNPDF approach to inverse problems, as laid
+out in Sec.~\ref{sec:inverse-problems}. In particular,
+Eq.~\eqref{eq:PosteriorModel} gives a formal description of propagating our
+prior understanding of the data into model space. In practice, sampling from
+the posterior distribution is highly non-trivial.
+
+The approach for generating
+a sample in model space employed by NNPDF can broadly be described fitting model
+replicas to pseudo-data replicas. As discussed in
+Eq.~\eqref{eq:NoisyInverseProblem} the experimental values are subject to
+observational noise. If we assume this observational noise
 to be multigaussian then the experimental central values,
-$\vv{\levone}$, are given by
+$\vv{\levone}$, are given explicitly by
 \begin{equation}\label{eq:levelonedata}
     \vv{\levone} = \vv{\law} + \vv{\shift},
 \end{equation}
-where the vector of experimental values have been shifted away from
-the true values given by nature, $\vv{\law}$, by a vector of shifts,
-$\vv{\shift}$. The vector of shifts
-is drawn from
-the multigaussian, $\vv{\shift} \sim \mathcal{N}(0, \cov)$ where $\cov$ is the
-experimental covariance matrix. Equation \eqref{eq:levelonedata} does not specify
-a basis, but it is typical to consider $\vv{\levone}$ in the basis we call the
-data basis, where basis vector corresponds to a data point, and the vector of
+with, $\vv{\shift} \sim \mathcal{N}(0, \cov)$ where $\cov$ is the
+experimental covariance matrix. In Eq.~\eqref{eq:levelonedata},
+each basis vector corresponds to a separate data point, and the vector of
 shifts $\vv{\shift}$ permits correlations between data points.
-Equation \eqref{eq:levelonedata} is our interpretation of the
-experimental data, can often be provided in different formats, such as central
-values and a breakdown of systematic uncertainties. Our assumptions about the data
-{\em and} the true underlying values, $\vv{\law}$,
-are reflected in the posterior distribution, Eq.~(\ref{eq:PosteriorModel}).
+% Equation \eqref{eq:levelonedata} is our interpretation of the
+% experimental data, can often be provided in different formats, such as central
+% values and a breakdown of systematic uncertainties.
 % we never talk about normalisation uncertainties - should we? Maybe later..
 
-Instead of simply providing the most likely model given the data, which is
-the result of performing a MAP fit described in \ref{sec:inverse-problems},
-we take a Monte Carlo (MC) approach to solving the inverse problem. Instead
-of fitting the data, $\levone$, directly model replicas are fitted to
-pseudo-data replicas. The fitted pseudo-data is generated according by
+The fitted pseudo-data is generated according by
 augmenting the data with some noise, $\noise^{\repind}$,
 \begin{equation}\label{eq:leveltwodata1}
     \vv{\levtwo}(\vv{\law},\,\vv{\shift},\,\vv{\noise}^{\repind})
@@ -71,112 +34,69 @@ augmenting the data with some noise, $\noise^{\repind}$,
 where the replica index $k$ refers to each replica having a noise vector drawn
 independently from $\vv{\noise} \sim \mathcal{N}(0, \cov)$.
 
-The parameters for each model replica are the result of maximising the
-likelihood function of the corresponding pseudo-data replicas. Qualitatively,
-we often refer to propagating the data uncertainty into the space of functions.
-More precisely we propagate the data uncertainty into the space of model
-parameters. In more formal language, we claim that the objective of this
-approach is to obtain a sample of model parameters from the posterior distribution
-of the parameters given the data. Whilst it's not immediately obvious that our
+The parameters for each model replica maximise the
+likelihood of getting the corresponding pseudo-data replicas from the
+model. This is a special
+case of MAP estimation, described in Eq.~\eqref{eq:MAP}, where the model prior
+is uniform - in other words there
+is no prior information in model space. In this framework, the parameterisation
+of the model is fixed, so the model space, is the space of parameters
+$u \in R^{\nmodel}$. Furthermore, we actually find the parameters which
+minimise the $\chi^2$ between the
+predictions from the model and
+the correpsonding pseudo-data $\levtwo^{\repind}$
+\begin{equation}
+    \begin{split}
+        u^{\repind *} &= \arg\min_{u^{\repind}} \repchis \\
+        &= \arg\min_{u^{\repind}} \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j,
+    \end{split}
+    % \exp \left( - \frac{1}{2} \sum_{ij} \diffreptwo_i {(2\cov)}^{-1}_{ij} \diffreptwo_j \right)
+\end{equation}
+which is equivalent to maximising the likelihood, $\likelihood$, since
+$\chi^2 \equiv -\log{\likelihood}$.
+
+It's not immediately obvious that our
 MC methodology, maximising the likelihood on an ensemble of pseudo-data replicas,
 should guarantee that the model replicas are indeed sampled from the posterior
-distribution of parameters given data we will show that our methodology is valid
-in the case that the predictions are linear in the model parameters. Then
-we will provide some practical estimators in the space of data which
-provide evidence, even for non-linear models, that the model uncertainties
-are faithful. We present these estimators in the context of the NNPDF closure
-test and will conclude with some discussions of the limitations of these estimators
-and some potential directions for future work.
-
-\section{Fitting the model parameters}
-
-% need consistent notation with inverse section.
-Each model replica has a set of parameters $\{\theta^{\repind} \}$, the theoretical
-prediction from model replica $k$ for datapoint $i$ is
-$\model_{i}(\{\theta^{\repind} \})$, where we have made it explicit that the observable
-values calculated from the model depend on the parameters, and the values of the
-parameters are distinct for each model replica. In order to determine the values
-which $\theta^{\repind}$ should take, we maximise the likelihood of the parameters
-given the data. The data which model replica $k$ "sees" is the corresponding
-pseudodata $\vv{\levtwo}^{\repind}$ and so the likelihood of the parameters given
-that data is
+distribution of parameters given data. We will again consider a model, whose
+predictions are linear in the model parameters,
+where the posterior distribution of model parameters can be written explicitly.
+The forward map is given by
 \begin{equation}
-    \likelihood(\theta^{\repind} \vert \levtwo^{\repind}) = p(\levtwo^{\repind} | \theta^{\repind})
+    G(u) = X u
 \end{equation}
-where $\likelihood$ is the likelihood function, which is equal to the probability
-density function, $p$, at fixed value $\levtwo^{\repind}$ given
-$\theta^{\repind}$. Given our assumption of how $\levtwo^{\repind}$ was obtained
-with two independent shifts drawn from the same multivariate gaussian
-$\mathcal{N}(0, \cov)$, the probability density function at
-$\levtwo^{\repind}$ is, up to normalisation,
+where $X$ is some matrix. If the model is a polynomial, then $\vv{u}$ is
+a vector of polynomial coefficients and $X$ is the Vandermonde matrix. If
+the prior distribution of model parameters is uniform then the posterior
+distribution of model parameters given the data is
 \begin{equation}
-    p(\levtwo^{\repind} | \theta^{\repind}) \sim
-    \exp \left( - \frac{1}{2} \sum_{ij} \diffreptwo_i {(2\cov)}^{-1}_{ij} \diffreptwo_j \right)
+    \begin{split}
+        p(u | z) &\propto
+        \exp \left( -\frac{1}{2} (Xu - z)^T \invcov{} (Xu - z)\right) \\
+        &= \exp \left( -\frac{1}{2} (u - X^+z)^T X^T\invcov{}X (u - X^+z)\right),
+    \end{split}
 \end{equation}
-which is the standard expression for a multigaussian with vector of means
-$\model(\theta^{\repind})$ and covariance $2C$, the covariance is $2C$ because
-when summing two independent multivariate variables of the same dimension, the
-sum is still normal with means and covariances summed. In other words we could
-rewrite \eqref{eq:leveltwodata1} as
+where in the second line we expose that the posterior distribution of the model
+parameters is multigaussian, with mean $\bar{u} = X^+z$ and covariance
+$(X^T\invcov{}X)^+ = X^+ \cov (X^T)^+$. If instead we deploy the NNPDF Monte Carlo method to fitting
+model replicas, then $\arg\min_{u^{\repind}} \repchis$ is found analytically
+when the derivative of $chi^2$ with respect to the model parameters is zero, i.e.
 \begin{equation}
-    \vv{\levtwo}(\vv{\law},\,\vv{\shift},\,\vv{\noise}^{\repind}\vv{\shift},\,\vv{\noise}^{\repind})
+    \begin{split}
+        u^{\repind *} &= (X^T\invcov{}X)^{+}
+        \left( X^T \invcov{} \vv{\levone} + X^T \invcov{} \vv{\noise} \right), \\
+        &= X^+ (\vv{\levone} + \vv{\noise}).
+    \end{split}
 \end{equation}
-where $\vv{\delta}$ is drawn from the multigaussian $\mathcal{N}(0, 2\cov)$.
-It's clear that the mean and covariance
-across replicas of $\levtwo^{\repind}$, with fixed $\shift$ are
-$\levone$ and $\cov$ respectively. This seems slightly counter intuitive because
-$\vv{\shift}$ is fixed and unknown to us and when performing a fit we effectively
-bootstrap over $\vv{\noise}^{\repind}$ however,
-when fitting a single replica we should imagine that
-we do not know the exact value of $\noise^{\repind}$ and disregard the fact
-that we are fitting other replicas and simply try to find the set of parameters
-$\model(\theta^{\repind})$ which maximises the likelihood of giving that data
-when $\delta ~ \mathcal{N}(0, 2\cov)$ is applied. In a fit to real experimental
-data we are unable to
-bootstrap over $\vv{\shift}$ because the experimental central values are fixed
-to the value which are published, however in the closure tests we present later
-we will use a pre-existing PDF to produce observable values for the underlying
-law $\vv{\law}$ and generate $\vv{\shift}$ self consistent with our assumptions
-about the distribution it is drawn from, in which case we can perform tests on
-our methodology that take into account that $\vv{\shift}$ is a stochastic
-variable.
-
-In practice we actually maximise the log-likelihood,
-\begin{equation}
-    \logll(\theta^{\repind} \vert \levtwo^{\repind}) = \ln \left[
-        \likelihood(\theta^{\repind} \vert \levtwo^{\repind}) \right],
-\end{equation}
-because $\ln$ is a monotonic function, so $\logll$ has a maximum at the same value
-of $\theta^{\repind}$. Furthermore, maximising the log-likelihood is the same
-as minimising the $\chi^2$ between $\levtwo(\noise^{\repind}, \shift, \law)$
-and $\model(\theta^{\repind})$ defined as
-\begin{equation}
-    \chi^2(\model(\theta^{\repind}) \vert \levtwo(\noise^{\repind}, \shift, \law))
-    = \sum_{ij} \diffreptwo_i {(2\cov)}^{-1}_{ij} \diffreptwo_j.
-\end{equation}
-To be very precise, since
-we are interested in finding the minimimum with respespected to the parameters,
-or the point at which
-$\frac{\partial}{\partial \theta^{\repind}}
-\chi^2(\model(\theta^{\repind})\vert \levtwo(\noise^{\repind}, \shift, \law)) = 0$
-it doesn't matter in reality whether we minimise
-$\chi^2(\model(\theta^{\repind})\vert \levtwo(\noise^{\repind}, \shift, \law))$ or
-any scalar multiple of that. Also, since ${(2\cov)}^{-1} = \frac{1}{2}\invcov{}$
-then we actually minimise
-\begin{equation}\label{eq:replicalossindex}
-    \repchis = \frac{1}{\ndata} \sum_{ij} \diffreptwo_i \invcov{ij} \diffreptwo_j.
-\end{equation}
-The parameters obtained from minimising this function are the parameters which
-maximise the likelihood of
-$\likelihood(\theta^{\repind} \vert \levtwo^{\repind})$. Finally, as a matter
-of convenience we can rewrite equation \eqref{eq:replicalossindex} as a matrix
-product
-\begin{equation}\label{eq:replicaloss}
-    \repchis = \frac{1}{\ndata} {\vecdiffreptwo}^{T} \invcov{} \vecdiffreptwo
-\end{equation}
-where $\vecdiffreptwo$, is a column vector.
+Then it's easy to convince ourselves that
+$u^{*} ~ \mathcal{N}( X^+z, X^+ \cov (X^T)^+)$. In other words, when the
+model predictions are linear in the model parameters, the NNPDF MC method is
+shown to produce a sample of models from the posterior distribution of
+model parameters given the data. %TODO: move here the narrow prior?
 
 \subsection{Closure test}
+
+TODO!!!!
 
 In a closure test, instead of assuming that the experimental central values are
 statistically consistent with an underlying law, as in \eqref{eq:levelonedata},
