@@ -1,11 +1,20 @@
 \section{Data space estimators}
 
-We start with the expectation of $\repchis$ across replicas
+The model error in the space of data can be defined as the expectation of the
+likelihood function across replicas
 \begin{equation}
     \label{eq:chi2kerep}
     \erep{\repchis} = \frac{1}{\ndata} 
     \erep{ {\vecdiffreptwo}^{T} \invcov{} \vecdiffreptwo}.
 \end{equation}
+The data upon which this is evaluated can either be the fitted data, which 
+
+% We start with the expectation of $\repchis$ across replicas
+% \begin{equation}
+%     \label{eq:chi2kerep}
+%     \erep{\repchis} = \frac{1}{\ndata} 
+%     \erep{ {\vecdiffreptwo}^{T} \invcov{} \vecdiffreptwo}.
+% \end{equation}
 It is useful perform a decomposition of this expression, as in \cite{mlforphysics}.
 The differences between the cost function in the reference and that in
 \eqref{eq:chi2kerep} are that our pseudodata has an additional shift, $\shift$,
