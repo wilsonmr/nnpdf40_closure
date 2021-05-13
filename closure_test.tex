@@ -1,11 +1,12 @@
 \section{NNPDF Monte Carlo approach to inverse problems}
 \label{sec:closure-test}
 
-In this section we will discuss the NNPDF approach to inverse problems, as laid
-out in Sec.~\ref{sec:inverse-problems}. In particular,
-Eq.~\eqref{eq:PosteriorModel} gives a formal description of propagating our
-prior understanding of the data into model space. In practice, sampling from the
-posterior distribution is highly non-trivial.
+In this section we will discuss the NNPDF approach to inverse problems, trying
+to make contact explicitly with the formalism laid out in
+Sec.~\ref{sec:inverse-problems}. In particular, Eq.~\eqref{eq:PosteriorModel}
+gives a formal description of propagating our prior understanding of the data
+into model space. In practice, sampling from the posterior distribution is
+highly non-trivial.
 
 The approach for generating a sample in model space employed by NNPDF can
 broadly be described as fitting model replicas to pseudo-data replicas. As
@@ -61,9 +62,9 @@ explicitly. The forward map is given by
 \begin{equation}\label{eq:LinForwardMap}
     \mathcal G(u) = X u
 \end{equation}
-where $X$ is some matrix. A practical example, which can elucidate the following
-arguments would be a polynomial model. Then $u$ is a
-vector of polynomial coefficients and $X$ is the Vandermonde matrix
+where $X$ is some $\ndata\times\nmodel$ matrix. A practical example, which can
+elucidate the following arguments would be a polynomial model. Then $u$ is a
+vector of $\nmodel+1$ polynomial coefficients and $X$ is the Vandermonde matrix
 \begin{equation}
     X =
     \begin{bmatrix}
@@ -73,12 +74,16 @@ vector of polynomial coefficients and $X$ is the Vandermonde matrix
         1  & x_{\ndata} & \ldots & x_{\ndata}^{\nmodel} 
     \end{bmatrix}.
 \end{equation}
-The arguments here are not restricted to polynomials, however, and apply to
-any model whose forward map can be expressed as Eq.~\eqref{eq:LinForwardMap},
-for example linear shallow approximation of neural networks
-\cite{ADVANI2020428}.
-If the prior distribution of model parameters is uniform then the posterior
-distribution of model parameters given the data is
+In this case the forward map yields
+\begin{equation}
+    \label{eq:PolyMod}
+    y_I = \sum_{k=0}^{\nmodel} u_k x_I^k\, , 
+\end{equation}
+where $I=1,\ldots,\ndata$. The arguments here are not restricted to polynomials,
+however, and apply to any model whose forward map can be expressed as
+Eq.~\eqref{eq:LinForwardMap}, for example linear shallow approximation of neural
+networks \cite{ADVANI2020428}. If the prior distribution of model parameters is
+uniform then the posterior distribution of model parameters given the data is
 \begin{equation}
     \label{eq:PosteriorMultiGaussModel}
     \begin{split}
@@ -88,7 +93,8 @@ distribution of model parameters given the data is
     \end{split}
 \end{equation}
 where in the second line we are assuming that $X$ has linearly independent rows,
-and therefore $X X^\dagger$ is invertible, and $X^+$ can be computed as
+and therefore $X X^\dagger$ is invertible. Under these hypotheses $X^+$ is a
+right inverse and can be computed as
 % can we restrict X to be real and just take transpose here?
 \begin{equation}
     \label{eq:RightInverse}
@@ -99,13 +105,13 @@ the model parameters is multigaussian, with mean $\bar{u} = X^+z$ and covariance
 $(X^T\invcov{}X)^+ = X^+ \cov (X^T)^+$. If instead we deploy the NNPDF Monte
 Carlo method to fitting model replicas, then in the case under study
 $\arg\min_{u^{\repind}} \repchis$ is found analytically when the derivative of
-$\chi^2$ with respect to the model parameters is zero, i.e.
+$\repchis$ with respect to the model parameters is zero, i.e.
 \begin{equation}
     \label{eq:MAPEstLinModel}
     \begin{split}
         u^{\repind *} &= (X^T\invcov{}X)^{+}
-        \left( X^T \invcov{} \vv{\levone} + X^T \invcov{} \vv{\noise} \right), \\
-        &= X^+ (\vv{\levone} + \vv{\noise}).
+        \left( X^T \invcov{} \vv{\levone} + X^T \invcov{} \vv{\noise}^{\repind} \right), \\
+        &= X^+ (\vv{\levone} + \vv{\noise}^{\repind}).
     \end{split}
 \end{equation}
 Eq.~\ref{eq:MAPEstLinModel} shows that $u^*$ is a linear combination of the
@@ -122,24 +128,23 @@ distribution of model parameters given the data.
 \subsection{Closure test}
 
 The concept of the closure test, which was first introduced in \cite{nnpdf30},
-is to satisfy the prior of the data by construction by using a pre-existing
-function to generate the true observable values, $\vv{\law}$. This is achieved
-by choosing $\lawmodel$ such that $\vv{\law} = \mathcal{G}(\lawmodel)$. Then
-the experimental central values are artificially generated according to
-Eq.~\ref{eq:levelonedata} and our assumption
-$\vv{\shift} \sim \mathcal{N}(0, \cov)$. In \cite{nnpdf30}, $\vv{\law}$ is
-referred to as level 0 (L0) data and $\vv{\levone}$ is referred to as
-level 1 (L1) data. Finally, if we use the NNPDF MC method to fit artifically
-generated closure data, the pseudo-data replicas which are fitted by the model
-replicas, $\levtwo$, are referred to as level 2 (L2) data.
+is to construct artificial data by using a known pre-existing function to
+generate the {\em true} observable values, $\vv{\law}$. This is achieved by
+choosing $\lawmodel$ such that $\vv{\law} = \mathcal{G}(\lawmodel)$. Then the
+experimental central values are artificially generated according to
+Eq.~\ref{eq:levelonedata} and our assumption $\vv{\shift} \sim \mathcal{N}(0,
+\cov)$. In \cite{nnpdf30}, $\vv{\law}$ is referred to as level 0 (L0) data and
+$\vv{\levone}$ is referred to as level 1 (L1) data. Finally, if we use the NNPDF
+MC method to fit artificially generated closure data, we denote by $\levtwo$ the
+pseudo-data replicas that are fitted by the model replicas. These pseudo-data
+replicas are referred to as level 2 (L2) data.
 
-In a closure test,
-our assumption of the prior distribution of the data is enforced. In the original
-closure test in NNDPF3.0 there was also no modelisation uncertainty, the true
-observable values were assumed to be obtained by applying the forward map
-$\mathcal G$ to a vector in model space $\lawmodel$.
+In a closure test, our assumption of the prior distribution of the data is
+enforced. In the original closure test in NNDPF3.0 there was also no
+modelisation uncertainty, the true observable values were assumed to be obtained
+by applying the forward map $\mathcal G$ to a vector in model space $\lawmodel$.
 
-It's worth noting that the assumption of zero modelisation uncertainties is
+It is worth noting that the assumption of zero modelisation uncertainties is
 quite strong and likely unjustified in many areas of physics. In the context of
 fitting parton distribution functions there are potentially missing higher
 order uncertainties (MHOUs) from

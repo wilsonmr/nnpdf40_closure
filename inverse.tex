@@ -154,13 +154,12 @@ only have one datapoint, \ie\ $\ndata=1$, and hence:
 where $\eta \sim \mathcal{N}(0,\gamma^2)$ is one Gaussian number, whose
 probability density is centred at $0$ and has variance $\gamma^2$. For
 simplicity we are going to assume that the prior on $u$ is also a
-multi-dimensional Gaussian, centred at $0$ with covariance matrix $\Sigma_0$. 
-
-In this case the posterior distribution can be written as
+multi-dimensional Gaussian, centred at $0$ with covariance matrix $\Sigma_0$. In
+this case the posterior distribution can be written as
 \begin{equation}
   \label{eq:GaussPostExplicit}
     \pi^y(u) \propto \exp \left[
-    \frac{1}{2\gamma^2} \left|y - g \cdot u \right|^2 - \frac12 \left|
+    \frac{1}{2\gamma^2} \left|y - (g^T u) \right|^2 - \frac12 \left|
       u
     \right|_{\Sigma_0}^2 
     \right]\, ,
@@ -188,7 +187,7 @@ These values satisfy
   (\Sigma_\star g) = 0 \, ,
 \end{align}
 which shows that the mean of the distribution is such that the data point is
-exactly reporduced by the model, and that the uncertainty in the direction
+exactly reproduced by the model, and that the uncertainty in the direction
 defined by $g$ vanishes. It should be noted that the uncertainty in directions
 perpendicular to $g$ does not vanish and is determined by a combination of the
 prior and the model, \viz\ $\Sigma_0$ and $g$ in our example. This is a
