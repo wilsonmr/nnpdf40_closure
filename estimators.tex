@@ -12,26 +12,24 @@ $\levone^\prime$, normalised by the number of data points
 \end{equation}
 where we purposely denoted the data which the model error is evaluated on as
 $\levone^\prime$, as opposed to the data which is used to determine the model
-parameters $\levone$. We could of course set $\levone^\prime = \levone$
-and evaluate the model performance on the fitted data however, as is common in
+parameters $\levone$. We could of course set $\levone^\prime = \levone$ and
+evaluate the model performance on the fitted data however, as is common in
 machine learning literature, we intend to use a separate set of test data.
-Ideally we would choose $\levone^\prime$ such that
-$p(\levone^\prime, \levone) = p(\levone^\prime)p(\levone)$, in other words
-the training and test set are statistically independent. To make things
-unambiguous we will denote the model error, when evaluated on the ideal case of
-$\levone^\prime$, as $\eout$. In the context of a closure test, $\eout$ is
-a stochastic quantity which depends both on the training data, through the model
-predictions and the test data.
+Ideally we would choose $\levone^\prime$ such that $p(\levone^\prime, \levone) =
+p(\levone^\prime)p(\levone)$, in other words the training and test set are
+statistically independent. To make things unambiguous we will denote the model
+error, when evaluated on the ideal case of $\levone^\prime$, as $\eout$. In the
+context of a closure test, $\eout$ is a stochastic quantity which depends both
+on the training data, through the model predictions and the test data.
 
-It is useful perform a decomposition of this expression, a similar exercise
-is performed for the likelihood function associate with least-squares
-regression in \cite{mlforphysics}. Least-squares
-regression is a special case of minimum likelihood estimation, where the
-uncertainty on each data point is equal in magnitude and uncorrelated. Here
-we review the decomposition in the more general framework of data whose
-uncertainty is multigaussian. Starting with Eq.~\ref{eq:chi2kerep}
-(evaluated on the ideal test data), we can
-complete the square
+It is useful perform a decomposition of this expression, a similar exercise is
+performed for the likelihood function associate with least-squares regression in
+\cite{mlforphysics}. Least-squares regression is a special case of minimum
+likelihood estimation, where the uncertainty on each data point is equal in
+magnitude and uncorrelated. Here we review the decomposition in the more general
+framework of data whose uncertainty is multigaussian. Starting with
+Eq.~\ref{eq:chi2kerep} (evaluated on the ideal test data), we can complete the
+square
 \begin{equation}
     \begin{split}
         &\eout = \frac{1}{\ndata} \erep{
@@ -51,9 +49,9 @@ complete the square
         }.
     \end{split}
 \end{equation}
-The second term is the shift associated with evaluating the model error on noisey
-data and the final term is a cross term which we will deal with later. We can
-decompose the first term further,
+The second term is the shift associated with evaluating the model error on
+noisey data and the final term is a cross term which we will deal with later. We
+can decompose the first term further,
 % TODO: add the same thing but for fully in sample data to an appendix.
 \begin{equation}
     \begin{split}
@@ -72,8 +70,8 @@ decompose the first term further,
         \left( \erep{\model(u^{* \repind})} - f^\prime \right),
     \end{split}
 \end{equation}
-where we've used the fact that the second term is constant across replicas
-and the cross term that arises in this decomposition is zero when the expectation
+where we have used the fact that the second term is constant across replicas and
+the cross term that arises in this decomposition is zero when the expectation
 value across replicas is taken. The first term in this expression we call the
 variance and the second term is the bias.
 
