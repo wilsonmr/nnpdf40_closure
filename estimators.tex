@@ -85,12 +85,28 @@ final result of that would be
     \mathbf{E}_{\levone, \levone^\prime}[\eout] =
     1 + \mathbf{E}_{\levone}[{\rm bias}] + \mathbf{E}_{\levone}[{\rm variance}].
 \end{equation}
+We are not interested in the observational noise term, since it is
+independent of the model. The two estimators of interest are independent of
+the test data, and therefore we only need to take the expectation value on
+the training data.
+\paragraph{Multiple closure fits}
+In practical terms, taking the expectation value across the training data can
+be achieved by running multiple closure fits, each with a different
+observational noise vector $\shift$, and taking the average i.e.
+\begin{equation}
+    \mathbf{E}_{\levone}[ \cdot ] = \frac{1}{\nfits} \sum_{j=1}^{\nfits} \cdot.
+\end{equation}
+Clearly this is resource intensive, and requires us to perform many fits. In
+NNPDF3.0 \cite{nnpdf30}, single replica proxy fits were used to perform a study
+of the uncertainties. Here we have expanded the estimators used in the closure
+fits and also will be using multiple full replica fits to calculate various
+expectation values - made possible by our next generation fitting code.
 
 \subsection{Geometric Interpretation}
 
 It's possible to interpret the relevant data space estimators geometrically,
 by considering a coordinate system where each basis vector corresponds to
-an eigenvector of the experimental covaraince matrix normalised by the
+an eigenvector of the experimental covariance matrix normalised by the
 square root of the corresponding eigenvalue. The origin of the coordinate system
 is the true value of the observable. The model predictions are then a set of
 points, where the mean squared radius of those points is what we call the variance.
@@ -147,8 +163,6 @@ test data. It is instructive to rephrase Eq.~\ref{eq:VarDef} as
 \end{equation}
 where $\covrep$ is the covariance matrix of the predictions
 from the PDF replicas.
-% It is worth noting that both variance and bias can be determined
-% purely from the ensemble of PDF replicas and the underlying law.
 
 \paragraph{Bias}
 
@@ -197,7 +211,7 @@ that $\biasvarratio$ is not completely general: it is not a measure defined in
 model space, and therefore only gives local information on the model
 uncertainties. If the distribution of the expectation value of model predictions
 is gaussian centered on the true observable values, with covariance $\covcent$
-and the distribution of the model replicas is also gaussian, with covaraince
+and the distribution of the model replicas is also gaussian, with covariance
 $\covrep$ then model uncertainties are faithful if
 \begin{equation}\label{eq:IdealRatioDef}
     \covcent {\covrep}^{-1} = 1.
@@ -213,9 +227,8 @@ eigenvalues of $\covrep$, but these shouldn't lead to instabilities in
 $\biasvarratio$ unless they correspond to directions with very low experimental
 uncertainty. As an extra precaution, we shall estimate an uncertainty on
 $\biasvarratio$ by performing a bootstrap sample on fits and replicas.
-% TODO: talk about practically how to do that - multiple closure fits!
 % TODO: summaries that bias and variance are performance estimators but must
-% remain balanced
+% remain balanced?
 
 \paragraph{Quantile statistics}
 
