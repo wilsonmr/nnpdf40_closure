@@ -1,174 +1,100 @@
-\section{Polynomial model}
-
-The parameterisation considered is a polynomial model. The underlying law
-predictions are generated from a fixed order polynomial
-\begin{equation}
-    \begin{split}
-        \law_i & = c_{0} + c_{1} x_i + \ldots + c_{\nlaw} x_i^{\nlaw} \\
-        &= \sum_{\alpha}^{\nlaw} c_{\alpha} x_i^{\alpha}
-    \end{split}
-\end{equation}
-where $\nlaw$ is the order of the underlying law polynomial. The data is
-generated as a multigaussian, as outlined in the previous section. The model
-replicas are also polynomials, of order $\nmodel$ so
-\begin{equation}
-    g_i = \sum_{\alpha}^{\nmodel} \gamma_{\alpha} x_i^{\alpha}.
-\end{equation}
-Each replica is fitted by minimising $\repchis$ with respect to $\{ \gamma \}$,
-which can be performed analytically with a polynomial model by solving
-\begin{equation}
-    \frac{\partial}{\partial \gamma_\beta} \frac{1}{\ndata} (\vv{\model} - \vv{\levtwo})^T \invcov{} (\vv{\model} - \vv{\levtwo}) = 0
-\end{equation}
-for $\beta = 0, \ldots, \nmodel$. This leads to a set of simultaneous equations
-\begin{equation}
-    \begin{bmatrix}
-        \vv{1}^T \invcov{} \vv{1}  & \vv{1}^T \invcov{} \vv{x} & \ldots& \vv{1}^T \invcov{} \vv{x}^{\nmodel} \\ 
-        \vv{x}^T \invcov{} \vv{1}  & \vv{x}^T \invcov{} \vv{x} & \ldots& \vv{x}^T \invcov{} \vv{x}^{\nmodel} \\ 
-        \vdots  & \vdots & \vdots& \vdots \\ 
-        {\vv{x}^{\nmodel}}^T \invcov{} \vv{1}  & {\vv{x}^{\nmodel}}^T \invcov{} \vv{x} & \ldots& {\vv{x}^{\nmodel}}^T \invcov{} \vv{x}^{\nmodel} 
-    \end{bmatrix}
-    \begin{bmatrix}
-        \gamma_0 \\
-        \gamma_1 \\
-        \vdots \\
-        \gamma_{\nmodel}
-    \end{bmatrix}
-    =
-    \begin{bmatrix}
-        \vv{1}^T \invcov{} \vv{y} \\
-        \vv{x}^T \invcov{} \vv{y} \\
-        \vdots \\
-        {\vv{x}^{\nmodel}}^T \invcov{} \vv{y}
-    \end{bmatrix}.
-\end{equation}
-If we define
-\begin{equation}
-    X =
-    \begin{bmatrix}
-        1  & x_1 & \ldots& x_1^{\nmodel} \\ 
-        1  & x_2 & \ldots& x_2^{\nmodel} \\ 
-        \vdots  & \vdots & \vdots& \vdots \\ 
-        1  & x_{\ndata} & \ldots & x_{\ndata}^{\nmodel} 
-    \end{bmatrix},
-\end{equation}
-Then we can write the simultaneous equations as
-\begin{equation}
-    X^T \invcov{} X \vv{\gamma} = X^T \invcov{} \vv{y},
-\end{equation}
-and the task of finding the parameters which minimise the likelihood function is
-achieved by inverting $X^T \invcov{} X$. From now on we will define
-$A = X^T \invcov{} X$, the matrix which is to be inverted to find the parameters
-of the polynomial model.
-% X rank is limited by distinct number of points and number of points exceeding
-% number of parameters. A = B^T B where B = L^T X so as long as covmat is
-% pos definite, number of parameters is less than number of data then A is
-% invertible because it will be full rank. -> use rank of X
-Since $\vv{y} = X \vv{c} + \vv{\shift} + \vv{\noise}$, we have
-\begin{equation}\label{eq:polymodelparam}
-    \vv{\gamma} = \vv{c} + A^{-1} X^T \invcov{} \vv{\shift} + A^{-1} X^T \invcov{} \vv{\noise},
-\end{equation}
-% what is correct way of saying this?
-where $\vv{c}$ is the vector of underlying law parameters. We have to be a bit
-careful here, because the vector space of parameters has number of dimensions
-$\nmodel$. If $\nlaw > \nmodel$ then $\vv{c}$ is the subset of the first
-$\nmodel$ parameters of the underlying law. Alternatively if $\nlaw < \nmodel$
-then $\vv{c}$ contains all the parameters of the underlying law and then zeros
-for the dimensions corresponding to redundant parameters in the model. From
-now on we will always consider $\nlaw \leq \nmodel$, where the model has
-redundant parameters.
-
-\subsection{Posterior distribution of model parameters}
-
-We remind ourselves that the goal when approaching inverse problems from a
-MC perspective is to generate a sample from the posterior
-distribution of model parameters given the data. If there is no prior information
-on the model parameters, this is often represented by a "flat" distribution
-on the model parameters. In theory one still needs to choose limits on the flat
-model prior, however this presents itself as a volume factor in the expression
-for the posterior distribution of model parameters and so in practice is ommited.
-If the likelihood of the data given the model is assumed to be gaussian, and
-the model is linear in its parameters, such is the case with a polynomial model,
-then the posterior distribution of the model parameters is a gaussian
-\begin{equation}
-    \begin{split}
-        p(\gamma \vert z) &\propto \exp \left( - \frac{1}{2} (X \gamma - z)^T \invcov{} (X \gamma - z)\right) \\
-        &=\exp \left( - \frac{1}{2} (\gamma - X^+ z)^T X^T \invcov{} X (\gamma - X^+ z)\right)
-    \end{split}
-\end{equation}
-where $X^+$ is the pseudo-inverse of $X$. Written in this way we seem that
-$p(\gamma \vert z)$ is a gaussian with mean $X^+ z$ and covariance
-$(X^T \invcov{} X)^-1 = X^+ \cov (X^T)^+$. If we take the expression for our
-model parameters, equation \eqref{eq:polymodelparam}, then indeed we see that
-the model parameters obtained from maximising the likelihood on pseudo-data are
-gaussian with mean and covariance $X^+ z$ and $X^+ \cov (X^T)^+$ respectively.
+\section{Linear Forward Map}
 
 \subsection{Closure estimators}
 
-Since the model replica predictions are given by
+In Sec.~\ref{sec:closure-test} a model whose predictions are linear in the
+model parameters was introduced - which we will refer to as a linear forward map.
+We can perform an analytical closure test in this framework, and check that our
+understanding of the closure estimators is correct. Consider the true observable
+values being generated from an input vector of parameters $c$, such that
+\begin{equation}\label{eq:LinearLawMap}
+    f^\prime = X^\prime c
+\end{equation}
+where $c$ belongs to the model space, in this case that means the number of parameters
+in the underlying law is less than or equal to the number of parameters in the
+model, $\nlaw \leq \nmodel$. Combining Eqs.~\ref{eq:LinearLawMap},
+\ref{eq:LinForwardMap} and \ref{eq:MAPEstLinModel}, we can write down the
+difference between the true observales and the expectation of the model
+predictions
 \begin{equation}
     \begin{split}
-        \vv{\model} &= X \vv{\gamma} \\
-        &= X \left( \vv{c} + A^{-1} X^T \invcov{} \vv{\shift} + A^{-1} X^T \invcov{} \vv{\noise} \right),
+        \erep{\model(u^{* \repind})} - f^\prime &= X^\prime (c - X^+ \levone ) \\
+        &= X^\prime X^+ \shift
     \end{split}
 \end{equation}
-we can explicitly calculate the asymptotic limits of the closure test estimators.
-First the difference between replica and central prediction
+where $X$ is the forward map to the training predictions and $\levone$ are
+the corresponding training central values. Calculating the covariance across
+training data of $\erep{\model(u^{* \repind})} - f^\prime$ gives
 \begin{equation}
-    \erep{\vv{\model}} - \vv{\model} = - X A^{-1} X^T \invcov{} \vv{\noise},
+    \covcent = X^\prime X^+ \cov^\prime (X^\prime X^+)^T,
 \end{equation}
-since the terms which depend on the shift and underlying law parameters cancel
-and the expectation across replicas of the term linear in the noise is zero
-in the asymptotic limit. The difference between the central prediction and the
-underlying law is
+so the full expression for $mathbf{E}_{\levone}[{\rm bias}]$ is given by
 \begin{equation}
-    \erep{\vv{\model}} - \vv{\law} = X A^{-1} X^T \invcov{} \vv{\shift}.
+    mathbf{E}_{\levone}[{\rm bias}] = \frac{1}{\ndata}
+    {\rm Tr} \left[ X^\prime X^+ \cov^\prime (X^\prime X^+)^T \invcov{} \right].
 \end{equation}
-The variance is then
-\begin{equation}\label{eq:polymodelvar}
-    \begin{split}
-        \var &= \frac{1}{\ndata}\erep{(X A^{-1} X^T \invcov{} \vv{\noise})^T \invcov{} X A^{-1} X^T \invcov{} \vv{\noise}} \\
-        & = \frac{1}{\ndata}\erep{\sum_{ijklmn} \noise_i \invcov{ij} X_{jk} A^{-1}_{kl} X^T_{lm} \invcov{mn} \noise_{n}} \\
-        & = \frac{1}{\ndata}\sum_{lk} A_{lk} A^{-1}_{kl} \\
-        & = \frac{\nmodel}{\ndata}
-    \end{split}
-\end{equation}
-where we used $\erep{\noise_i \noise_{n}} = \cov_{in}$ and then the expression
-reduced to the trace of $A A^{-1}$, where $A$ is symmetric with dimensions
-$\nmodel \times \nmodel$. A similar expression can be found for $\eshift{\bias}$
-in an analagous way, except substituting $\shift$ for $\noise$. In this case
-we see that in the toy model the condition of $\eshift{\bias} / \var$ is
-automatically fulfilled.
+We note that if the test data is identical the data the model was fitted on,
+we recover an intuitive result $mathbf{E}_{\levone}[{\rm bias}] = \frac{\nmodel}{\ndata}$.
+Consider the example of the polynomial, the maximum value which $\nmodel$ can
+take whilst $X$ still has linearly independent rows is $\ndata$ and in this case
+the $mathbf{E}_{\levone}[{\rm bias}]$ takes it's maximum value of 1. The central
+predictions from the model exactly pass through each data point.
 
-Interestingly enough we note that the polynomial model
-essentially maximally overfits the data, the maximum number of parameters the
-model can have whilst $A$ is still invertible is $\ndata$, in this case the
-polynomial passes through every single pseudodata replica point and the
-variance and bias reach the maximum of 1 each. If we calculate the cross terms
-then we can also find expressions for $\Delta_{\chi^2}$ and $\Delta_\epsilon$.
-The expectation across replicas of the noise cross term is
+We can perform a similar exercise on the model replica predictions. The difference
+between the predictions from model replica $\repind$ and the expectation value
+of the model predictions is
 \begin{equation}
     \begin{split}
-        \erep{\noisecross} &= \frac{2}{\ndata}\erep{(X A^{-1} X^T \invcov{} \vv{\noise})^T \invcov{} \noise} \\
-        &= \frac{2}{\ndata} \erep{\sum_{ijklmn} \noise_i \invcov{ij} X_{jk} A^{-1}_{kl} X^T_{lm} \invcov{mn} \noise_n } \\
-        &= \frac{2 \nmodel}{\ndata},
+        \model(u^{* \repind}) - \erep{\model(u^{* \repind})} &= X^\prime (X^+ \levtwo^{\repind} - X^+ \levone) \\
+        &= X^\prime X^+ \noise^{\repind}.
     \end{split}
 \end{equation}
-which, in analogy to \eqref{eq:polymodelvar}, used the fact that
-$\erep{\noise_i \noise_{n}} = \cov_{in}$ to simplify the whole expression into
-a trace. It's clear that the shift cross term will follow the same schematic,
-once we take the expectation across shifts, and so we can write down the
-expression of $\eshift{\erep{\Delta_{\repchis}}}$ as
+Since $\noise$ and $\shift$ follow the same distribution, it's clear that
 \begin{equation}
-    \eshift{\erep{\Delta_{\repchis}}} = - \frac{2 \nmodel}{\ndata}.
+    \covrep = \covcent,
 \end{equation}
-Since the polynomial replica predictions are fitted analytically, the bias
-and variance are driven solely by the shift and noise terms respectively. The
-directions in which the central predictions vary from the underlying law and
-the replicas fluctuate from the central predictions are completely correlated
-with the shift and noise, and so the only way to reduce overfitting is to
-increase the number of data points.
+which, as a result means that
+\begin{equation}
+    \var = mathbf{E}_{\levone}[{\rm bias}].
+\end{equation}
+We recall that when the map is linear, the NNPDF MC methodology generates replicas
+which are sampled from the posterior distribution of the model given the data.
+We have shown here that provided the underlying law belongs to the model
+space, the posterior distribution of the model predictions satisfy the
+requirement that $\biasvarratio = 1$. Note that if we were to choose the
+number of model parameters such that $\nlaw > \nmodel$, then the variance
+would be unaffected, since the underlying law parameters cancel. However, the
+bias would now contain an extra term from the extra parameters in the
+underlying law, schematically:
+\begin{equation}
+    \begin{split}
+        \erep{\model(u^{* \repind})} - f^\prime =
+        X^\prime X^+ \shift + X^\prime_{|c| > \nmodel} c_{|c| > \nmodel},
+    \end{split}
+\end{equation}
+which would mean that $\biasvarratio \neq 1$. We now see that requiring
+$\biasvarratio = 1$ demands that the model space is suitably flexible. In the
+underparameterised regime the model replicas are still drawn from the posterior
+distribution, however because $\vert c \vert > \vert u \vert$
+%TODO: call model space something different so we just say c not in model space
+we've somehow invalidated our fitting procedure, which is reflected in the
+data space estimator.
 
-\section{Neural Network Parton distribution functions}
+Although $\biasvarratio$ was largely chosen on practical
+grounds, we see that it is still a stringent test that our assumptions are
+correct and that the distribution our model replicas are drawn from is meaningful,
+this is what we mean when we say {\em faithful uncertainties}.
+
+An unfortunate
+trade-off when using $\biasvarratio$ is it can't be used as a diagnostic
+tool, and is instead used simply for validation. For example, if
+$\biasvarratio > 1$, then we
+can't know whether there was a problem with the distribution of the replicas
+or a deeper issue that the model is underparameterised.
+
+\section{Neural network parton distribution functions}
+% TODO: here we should properly define the PDFs, forward map and which experimental
+% data we fitted and which was used in the test set.
 
 When fitting experimental data we vary the parameters of a set of PDF replicas
 at the initial scale such that the $\chi^2$ is minimised between the
@@ -194,22 +120,3 @@ central values.
 After fitting many sets of PDF replicas (usually of order 100 sets),
 each set to an independently generated pseudodata replica, we have an ensemble of
 PDF replicas.
-The aim of this methodology, is to propagate the various sources of
-uncertainty involved with fitting PDFs into the functional PDF space in a faithful
-manner. This means that the distribution from which the PDF replicas are drawn
-from should be representative of the probability distribution of the true
-underlying PDF.
-
-The closure test was introduced alongside NNPDF3.0 and will be described below.
-At this stage it's important to note that the closure test may serve 3 purposes:
-We can test whether or not the ensemble of PDF replicas does reflect the
-probability distribution of the true underlying PDF; we can compare two different
-fitting methodologies and use estimators to determine which one performs better;
-we can try to understand different elements of our own methodology, such as
-the different contributions to the PDF uncertainty. The PDF uncertainty will
-be used as short-hand for referring to the distribution of replicas for a given
-fit, we consider this the PDF uncertainty because if the distribution
-of the true underlying PDF is reflected by the distribution of replicas for
-a given fit, then the standard deviation of the replicas in PDF space or the
-theory predictions obtained from those replicas in data space represents
-the uncertainty of the prediction having performed a fit.
