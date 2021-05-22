@@ -139,8 +139,8 @@ Taking the correlation into account, the joint distribution of $y$ and $u$ is
 We can now marginalize with respect to y, neglecting theory errors, 
 \begin{align}
   \label{eq:MarginOne}
-  \pi(u|y_0,u_0,\mathcal{G}) 
-  &\propto \int dy\, \pi_{D}^0(y|y_0) \pi_{M}^-0(u|u_0) 
+  \pi_M(u|y_0,u_0,\mathcal{G}) 
+  &\propto \int dy\, \pi_{D}^0(y|y_0) \pi_{M}^0(u|u_0) 
     \theta(y,u|\mathcal{G}) \\
   & \propto \pi_{M}^0(u|u_0)  \int dy\, \pi_{D}^0(y|y_0) 
     \theta(y,u|\mathcal{G}) \\
@@ -160,7 +160,7 @@ In the notation of Eq.~\ref{eq:BayesThmInversePosterior}
 \begin{equation}
   \label{eq:IdentifyRho}
   \pi_D^0(\mathcal{G}(u)|y_0) = \rho\left(
-    \mathcal{G} - y_0
+    \mathcal{G}(u) - y_0
   \right)\, ,
 \end{equation}
 where in this case 
@@ -170,9 +170,10 @@ where in this case
                -\frac12 \left|\eta\right|_C^2
                \right)\, .
 \end{align}
-The probability density $\pi(u|y_0,u_0,\mathcal{G})$ is what was called
-$\pi^y(u)$ in Eq.~\ref{eq:BayesThmInversePosterior}. Hence, foe the Gaussian
-case, Bayes' theorem yields
+The probability density $\pi_M(u|y_0,u_0,\mathcal{G})$ was called $\pi^y(u)$ in
+Eq.~\ref{eq:BayesThmInversePosterior}, where the suffix $y$ is a short-hand to
+denote the posterior probability in model space, taking into account all the
+conditional variables. Hence, for the Gaussian case, Bayes' theorem yields
 \begin{align}
   \label{eq:PosteriorModel}
   \pi^y(u) \propto 
@@ -196,11 +197,12 @@ X$ that maximises $\pi^y(u)$:
   \right)\, .
 \end{align}
 For every instance of the data $y_0$, the MAP estimator is computed by
-minimising a regulated $\chi^2$, we will refer to this procedure as
-the {\em classical fit} of experimental data to a model. Note that in
-the Bayesian approach, the regulator is provided by specifying
-carefully all the assumptions that enter in the prior. The MAP
-estimator provides the explicit connection between the Bayesian
+minimising a regulated $\chi^2$, we will refer to this procedure as the {\em
+classical fit} of experimental data to a model. Note that in the Bayesian
+approach, the regulator is provided by specifying carefully all the assumptions
+that enter in the prior. In this specific example the regulator is a determined
+by assuming that the model input $u$ is normally ditributed around a solution
+$u_0$. The MAP estimator provides the explicit connection between the Bayesian
 approach and the classical fit.
 
 \subsection{Comparison with classical fitting}
