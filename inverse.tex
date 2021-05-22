@@ -2,20 +2,21 @@
 \section{Inverse Problems}
 \label{sec:inverse-problems}
 
-The problem of determining PDFs from a set of experimental data falls
-under the general category of {\em inverse problems}, \ie\ the problem
-of finding the input to a given model knowing a (finite) set of
-observations. The model is specified by a {\em forward map}
+The problem of determining PDFs from a set of experimental data falls under the
+general category of {\em inverse problems}, \ie\ the problem of finding the
+input to a given model knowing a set of observations, which are often finite and
+noisy. The space of inputs is denoted by $X$, while $R$ denotes the space of responses. The model is specified by a {\em
+forward map}
 \begin{align}
   \label{eq:ForwardMap}
   G : ~& X \to R \nonumber \\
       & u \mapsto r=G(u) \, ,
 \end{align}
-which associates a response $r \in R$ to the input $u \in X$, where we
-assume that $X$ and $R$ are Banach spaces.~\footnote{Banach spaces are
-  complete normed vector spaces. We do not need to get into a more
-  detailed discussion here.} As an example we can think of $u$ as
-being a PDF and $r$ a DIS structure function:
+which associates a response $r \in R$ to the input $u \in X$, where we assume
+that $X$ and $R$ are Banach spaces.~\footnote{Banach spaces are complete normed
+vector spaces. We do not need to get into a more detailed discussion here.} As
+an example we can think of $u$ as being a Parton Distribution Function, \ie\ a
+function defined on the interval $[0,1]$, and $r$ a DIS structure function:
 \begin{align}
   \label{eq:DISExample}
   r(x,Q^2) = \int dz\, C(x/z) u(z)\, .
@@ -27,13 +28,14 @@ to have a formal mathematical expression to take into account the fact
 that we have a finite number of meaasurements, we introduce an {\em
   observation operator}
 \begin{align}
-  O : ~& R \to \mathbb{R}^{\ndata} \nonumber \\
+  O : ~& R \to Y \nonumber \\
        & r \mapsto y \, ,
 \end{align}
-where $y \in \mathbb{R}^{\ndata}$ is a vector that contains all the
-experimental results, \eg\ the value of the structure function for
-different values of the kinematics. The quantity of interest is the
-composed operator
+where $y \in Y$ is a vector in a finite-dimensional space $Y$ that contains all
+the experimental results, \eg\ the value of the structure function for different
+values of the kinematics. In general we will assume that $y \in
+\mathbb{R}^{\ndata}$, \ie\ we have a finite number $\ndata$ of real experimental
+values. The quantity of interest is the composed operator
 \begin{align}
   \mathcal{G} : ~& X \to \mathbb{R}^{\ndata} \nonumber \\
                  & \mathcal{G} = O \circ G\, ,
@@ -54,73 +56,146 @@ may be unstable under small variations of the problem.
 
 In this context we are going to adopt a Bayesian point of view; our
 prior knowledge about $u$ is encoded in a prior probability measure
-$\mu_0$, and we use Bayes' theorem to compute the posterior
+$\mu^0$, and we use Bayes' theorem to compute the posterior
 probability measure of $u$ given the data $y$, which we denote as
-$\mu^y$. We denote the probability densities associated to $\mu_0$ and
-$\mu^y$ by $\pi_0$ and $\pi^y$ respectively. Then, using
+$\mu^y$. We denote the probability densities associated to $\mu^0$ and
+$\mu^y$ by $\pi^0$ and $\pi^y$ respectively. Then, using
 Eq.~(\ref{eq:NoisyInverseProblem}), we can write the data likelihood,
 \ie\ the probability density of $y$ given $u$,
 \begin{align}
   \label{eq:YGivenUProbDensity}
-  \rho(y|u) = \rho(y-\mathcal G(u))\, ,
+  p(y|u) = \rho(y-\mathcal G(u))\, ,
 \end{align}
 and Bayes' theorem yields
 \begin{align}
   \label{eq:BayesThmInversePosterior}
-  \pi^y(u) \propto \rho(y-\mathcal G(u)) \pi_0(u)\, .
+  \pi^y(u) \propto \rho(y-\mathcal G(u)) \pi^0(u)\, .
 \end{align}
 
-The concepts that we have introduced are very familiar are best exemplified
-by considering the case where both the observational noise and the
-prior are Gaussian:
+\paragraph{Example}
+
+The concepts that we have introduced so far should sound familiar, and are best
+exemplified by considering the case where both the observational noise and the
+model prior are Gaussian. We assume that we are given a set of central values
+$y_0 \in \mathbb{R}^{\ndata}$ and their covariance matrix $C$. Then the {\em
+prior} probability density of the observable $y$ is 
+\begin{equation}
+  \label{eq:PriorData}
+  \pi_{D}^0(y|y_0) \propto \exp\left(
+    -\frac12 \left| y - y_0 \right|_C^2
+    \right)\, ,
+\end{equation}
+where the suffix $D$ emphasises the fact that this is a probability density in
+data space, and the notation explicitly reminds us that this is the probability
+density given the central values $y_0$ (and the covariance matrix). Similarly we
+can choose a Gaussian distribution for the input model, characterized by a
+central value $u_0$ and a covariance $\Sigma_0$:
+\begin{align}
+  \label{eq:PiZeroGauss}
+  \pi_{M}^0(u|u_0)  &\propto \exp\left(
+              -\frac12 \left| u - u_0 \right|_{\Sigma_0}^2
+              \right)\, .
+\end{align}
+Following the convention above, we use a suffix $M$ here to remind the reader
+that we are looking at a probability density in the space of models. Note that
+in the expressions above we used the norms in $X$ and $\mathbb{R}^{\ndata}$
+respectively, and introduced the short-hand notation
+\begin{align}
+  \left|a\right|_M^2 = \left| M^{-1/2} a\right|^2\, ,
+\end{align}
+where $a$ denotes a generic element of $X$, $R$ or $\mathbb{R}^{\ndata}$. For
+the case where $a \in \mathbb{R}^{\ndata}$, we can use the usual Euclidean norm
+and
+\begin{align}
+  \left| a \right|_M^2 = \sum_{i,j} a_i M_{ij} a_j\, ,
+\end{align}
+where the indices $i,j$ run from 1 to $\ndata$.  
+Up to this point data and models are completely independent, and the joint
+distribution is simply the product of $\pi_{D}^0$ and $\pi_{M}^0$. 
+
+The correlation between the input model and the observables is induced by the
+forward map, 
+\begin{equation}
+  \label{eq:ThetaCorr}
+  \theta(y,u|\mathcal{G}) = \delta\left(y - \mathcal{G}(u)\right)\, ,
+\end{equation}
+where the Dirac delta corresponds to the case where there are no theoretical
+uncertainities. Theoretical uncertainties can be introduced by broadening the
+distribution of $y$ away from the exact prediction of the forward map, \eg\
+using a Gaussian with covariance $C_T$,
+\begin{equation}
+  \label{eq:TheoryErrors}
+  \theta(y,u|\mathcal{G}) = \exp\left(
+    -\frac12 
+    \left| y - \mathcal{G}(u)
+    \right|_{C_T}^2\right)\, .
+\end{equation}
+Taking the correlation into account, the joint distribution of $y$ and $u$ is
+\begin{align}
+  \label{eq:JointYAndU}
+  \pi(y,u|y_0,u_0,\mathcal{G}) \propto 
+  \pi_{D}^0(y|y_0) \pi_{M}^0(u|u_0) \theta(y,u|\mathcal{G})\, .
+\end{align}
+We can now marginalize with respect to y, neglecting theory errors, 
+\begin{align}
+  \label{eq:MarginOne}
+  \pi(u|y_0,u_0,\mathcal{G}) 
+  &\propto \int dy\, \pi_{D}^0(y|y_0) \pi_{M}^-0(u|u_0) 
+    \theta(y,u|\mathcal{G}) \\
+  & \propto \pi_{M}^0(u|u_0)  \int dy\, \pi_{D}^0(y|y_0) 
+    \theta(y,u|\mathcal{G}) \\
+  & \propto \pi_{M}^0(u|u_0) \pi_{D}^0(\mathcal{G}(u)|y_0)\, .
+\end{align}
+The log-likelihood in the Gaussian case is simply the $\chi^2$ of the data to
+the theory prediction:
+\begin{equation}
+  \label{eq:LikelyChiSq}
+  -\log\pi_D^0(\mathcal{G}(u)|y_0) =  
+      \frac12 \left|
+      \mathcal{G}(u) - y_0
+      \right|_C^2
+    \, .
+\end{equation}
+In the notation of Eq.~\ref{eq:BayesThmInversePosterior}
+\begin{equation}
+  \label{eq:IdentifyRho}
+  \pi_D^0(\mathcal{G}(u)|y_0) = \rho\left(
+    \mathcal{G} - y_0
+  \right)\, ,
+\end{equation}
+where in this case 
 \begin{align}
   \label{eq:RhoGauss}
   \rho(\eta) &\propto \exp\left(
                -\frac12 \left|\eta\right|_C^2
-               \right)\, , \\
-  \label{eq:PiZeroGauss}
-  \pi_0(u)  &\propto \exp\left(
-              -\frac12 \left|(u-m_0)\right|_{\Sigma_0}^2
-              \right)\, .
+               \right)\, .
 \end{align}
-Note that in the above expressions we used the norms in $X$ and
-$\mathbb{R}^{\ndata}$ respectively, and introduced the short-hand
-notation
-\begin{align}
-  \left|v\right|_M^2 = \left| M^{-1/2} v\right|^2\, .
-\end{align}
-For the case where $v \in \mathbb{R}^{\ndata}$, we can use the usual
-Euclidean norm  and
-\begin{align}
-  \left|v\right|_M^2 = \sum_{i,j} v_i M_{ij} v_j\, ,
-\end{align}
-and the indices $i,j$ run from 1 to $\ndata$.  The matrix $C$ is the
-covariance of the experimental data, while $\Sigma_0$ is the
-covariance of the Gaussian prior for $u$. Using Bayes' theorem we
-obtain
+The probability density $\pi(u|y_0,u_0,\mathcal{G})$ is what was called
+$\pi^y(u)$ in Eq.~\ref{eq:BayesThmInversePosterior}. Hence, foe the Gaussian
+case, Bayes' theorem yields
 \begin{align}
   \label{eq:PosteriorModel}
   \pi^y(u) \propto 
   \exp\left(
-  -\frac12 \left|y - \mathcal G(u)\right|_C^2
-  -\frac12 \left|(u-m_0)\right|_{\Sigma_0}^2
+  -\frac12 \left| y_0 - \mathcal G(u) \right|_C^2
+  -\frac12 \left| u - u_0 \right|_{\Sigma_0}^2
   \right)\, .
 \end{align}
-Eq.~(\ref{eq:PosteriorModel}) is the Bayesian answer to the inverse
-problem, our knowledge of the model $u$ is encoded in the probability
-measure $\mu^y$, which is fully specified by the density
-$\pi^y$. There are several ways to characterise a probability
-distribution. Here we will focus on the {\em Maximum A Posteriori
-  (MAP)} estimator, \ie\ the element $u \in X$ that maximises
-$\pi^y(u)$:
+Note that in the argument of the likelihood function we have the central values
+of the data points $y_0$. Eq.~(\ref{eq:PosteriorModel}) is the Bayesian answer
+to the inverse problem, our knowledge of the model $u$ is encoded in the
+probability measure $\mu^y$, which is fully specified by the density $\pi^y$.
+There are several ways to characterise a probability distribution. Here we will
+focus on the {\em Maximum A Posteriori (MAP)} estimator, \ie\ the element $u \in
+X$ that maximises $\pi^y(u)$:
 \begin{align}\label{eq:MAP}
   u^* = \arg\min_{u \in X} 
   \left(
-  -\frac12 \left|y - \mathcal G(u)\right|_C^2
-  -\frac12 \left|(u-m_0)\right|_{\Sigma_0}^2
+  -\frac12 \left| y_0 - \mathcal G(u) \right|_C^2
+  -\frac12 \left| u - u_0 \right|_{\Sigma_0}^2
   \right)\, .
 \end{align}
-For every instance of the data $y$, the MAP estimator is computed by
+For every instance of the data $y_0$, the MAP estimator is computed by
 minimising a regulated $\chi^2$, we will refer to this procedure as
 the {\em classical fit} of experimental data to a model. Note that in
 the Bayesian approach, the regulator is provided by specifying
@@ -254,7 +329,7 @@ function, we can rewrite
 and therefore
 \begin{align}
   \label{eq:RadonNikodymTwo}
-  \frac{d\mu^y}{d\mu_0} (u) \propto \exp\left(-\Phi(u;y)\right)\, .
+  \frac{d\mu^y}{d\mu^0} (u) \propto \exp\left(-\Phi(u;y)\right)\, .
 \end{align}
 In finite-dimensional spaces, the three equations above are just
 definitions that do not add much content. Their interest resides in
