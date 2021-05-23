@@ -397,6 +397,27 @@ where
 
 {\bf we should be able to use this to understand better the distribution of the estimator in data space} 
 
+\paragraph{Non-linear Models}
+
+These linear models may look at first sight like too much of a simplification.
+In practice, it turns out that non-linear models can be linearised around the
+central value of the prior distribution, 
+\begin{equation}
+  \label{eq:LinU0}
+  \mathcal{G}(u) = \mathcal{G}(u_0) + G \left(u - u_0\right) + \ldots\, ,
+\end{equation}
+where 
+\begin{equation}
+  \label{eq:FirstDerU0}
+  G^i_\alpha = \left. \frac{\partial \mathcal{G}^i}{\partial u_\alpha} \right|_{u_0}\, ,
+\end{equation}
+and we have neglected higher-order terms in the expansion of $\mathcal{G}(u)$.
+
+If these terms are not negligible, another option is to find the MAP estimator,
+and then expand the the forward map around it, which yields equations very
+similar to the previous ones, with $u_0$ replaced by $u_\mathrm{MAP}$. If the
+posterior distribution of $u_\mathrm{MAP}$ is sufficiently peaked around the
+central value, then the linear approximation can be sufficiently accurate. 
 
 \subsection{The infinite-dimensional case}
 \label{sec:infin-dimens-case}
