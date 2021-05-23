@@ -5,8 +5,15 @@
 The problem of determining PDFs from a set of experimental data falls under the
 general category of {\em inverse problems}, \ie\ the problem of finding the
 input to a given model knowing a set of observations, which are often finite and
-noisy. The space of inputs is denoted by $X$, while $R$ denotes the space of responses. The model is specified by a {\em
-forward map}
+noisy. In this Section we are going to review the Bayesian formulation of
+inverse problems, trying to emphasise the aspects that are relevant for
+quantifying uncertainties on PDF determinations. 
+
+\subsection{Statement of the problem}
+\label{sec:BayesianInverse}
+
+The space of inputs is denoted by $X$, while $R$ denotes the space of responses.
+The model is specified by a {\em forward map}
 \begin{align}
   \label{eq:ForwardMap}
   G : ~& X \to R \nonumber \\
@@ -77,23 +84,23 @@ and Bayes' theorem yields
 The concepts that we have introduced so far should sound familiar, and are best
 exemplified by considering the case where both the observational noise and the
 model prior are Gaussian. We assume that we are given a set of central values
-$y_0 \in \mathbb{R}^{\ndata}$ and their covariance matrix $C$. Then the {\em
+$y_0 \in \mathbb{R}^{\ndata}$ and their covariance matrix $C_D$. Then the {\em
 prior} probability density of the observable $y$ is 
 \begin{equation}
   \label{eq:PriorData}
   \pi_{D}^0(y|y_0) \propto \exp\left(
-    -\frac12 \left| y - y_0 \right|_C^2
+    -\frac12 \left| y - y_0 \right|_{C_D}^2
     \right)\, ,
 \end{equation}
 where the suffix $D$ emphasises the fact that this is a probability density in
 data space, and the notation explicitly reminds us that this is the probability
 density given the central values $y_0$ (and the covariance matrix). Similarly we
 can choose a Gaussian distribution for the input model, characterized by a
-central value $u_0$ and a covariance $\Sigma_0$:
+central value $u_0$ and a covariance $C_M$:
 \begin{align}
   \label{eq:PiZeroGauss}
   \pi_{M}^0(u|u_0)  &\propto \exp\left(
-              -\frac12 \left| u - u_0 \right|_{\Sigma_0}^2
+              -\frac12 \left| u - u_0 \right|_{C_M}^2
               \right)\, .
 \end{align}
 Following the convention above, we use a suffix $M$ here to remind the reader
@@ -153,7 +160,7 @@ the theory prediction:
   -\log\pi_D^0(\mathcal{G}(u)|y_0) =  
       \frac12 \left|
       \mathcal{G}(u) - y_0
-      \right|_C^2
+      \right|_{C_D}^2
     \, .
 \end{equation}
 In the notation of Eq.~\ref{eq:BayesThmInversePosterior}
@@ -167,7 +174,7 @@ where in this case
 \begin{align}
   \label{eq:RhoGauss}
   \rho(\eta) &\propto \exp\left(
-               -\frac12 \left|\eta\right|_C^2
+               -\frac12 \left|\eta\right|_{C_D}^2
                \right)\, .
 \end{align}
 The probability density $\pi_M(u|y_0,u_0,\mathcal{G})$ was called $\pi^y(u)$ in
@@ -176,11 +183,14 @@ denote the posterior probability in model space, taking into account all the
 conditional variables. Hence, for the Gaussian case, Bayes' theorem yields
 \begin{align}
   \label{eq:PosteriorModel}
-  \pi^y(u) \propto 
+  \pi^y(u) &\propto 
   \exp\left(
-  -\frac12 \left| y_0 - \mathcal G(u) \right|_C^2
-  -\frac12 \left| u - u_0 \right|_{\Sigma_0}^2
-  \right)\, .
+  -\frac12 \left| y_0 - \mathcal G(u) \right|_{C_D}^2
+  -\frac12 \left| u - u_0 \right|_{C_M}^2
+  \right)\\ 
+  &= \exp\left[
+    - S(u)
+  \right]\, .
 \end{align}
 Note that in the argument of the likelihood function we have the central values
 of the data points $y_0$. Eq.~(\ref{eq:PosteriorModel}) is the Bayesian answer
@@ -192,8 +202,8 @@ X$ that maximises $\pi^y(u)$:
 \begin{align}\label{eq:MAP}
   u^* = \arg\min_{u \in X} 
   \left(
-  -\frac12 \left| y_0 - \mathcal G(u) \right|_C^2
-  -\frac12 \left| u - u_0 \right|_{\Sigma_0}^2
+  -\frac12 \left| y_0 - \mathcal G(u) \right|_{C_D}^2
+  -\frac12 \left| u - u_0 \right|_{C_M}^2
   \right)\, .
 \end{align}
 For every instance of the data $y_0$, the MAP estimator is computed by
@@ -231,32 +241,32 @@ only have one datapoint, \ie\ $\ndata=1$, and hence:
 where $\eta \sim \mathcal{N}(0,\gamma^2)$ is one Gaussian number, whose
 probability density is centred at $0$ and has variance $\gamma^2$. For
 simplicity we are going to assume that the prior on $u$ is also a
-multi-dimensional Gaussian, centred at $0$ with covariance matrix $\Sigma_0$. In
+multi-dimensional Gaussian, centred at $0$ with covariance matrix $C_M$. In
 this case the posterior distribution can be written as
 \begin{equation}
   \label{eq:GaussPostExplicit}
     \pi^y(u) \propto \exp \left[
     \frac{1}{2\gamma^2} \left|y - (g^T u) \right|^2 - \frac12 \left|
       u
-    \right|_{\Sigma_0}^2 
+    \right|_{C_M}^2 
     \right]\, ,
 \end{equation}
 which is still a Gaussian distribution for $u$. The mean and covariance are
 respectively
 \begin{align}
-  m &= \frac{(\Sigma_0 g) y}{\gamma^2 + (g^T \Sigma_0 g)}\, , \\
-  \Sigma &= \Sigma_0 - 
-  \frac{(\Sigma_0 g) (\Sigma_0 g)^T}{\gamma^2 + (g^T \Sigma_0 g)}\, .
+  m &= \frac{(C_M g) y}{\gamma^2 + (g^T C_M g)}\, , \\
+  \Sigma &= C_M - 
+  \frac{(C_M g) (C_M g)^T}{\gamma^2 + (g^T C_M g)}\, .
 \end{align}
 It is instructive to look at these quantities in the limit of infinitely precise data, \ie\ in the limit $\gamma\to 0$:
 \begin{align}
   m_\star &= 
   \lim_{\gamma\to 0} m
-  = \frac{(\Sigma_0 g) y}{(g^T \Sigma_0 g)}\, , \\
+  = \frac{(C_M g) y}{(g^T C_M g)}\, , \\
   \Sigma_\star &= 
   \lim_{\gamma\to 0} \Sigma 
-  = \Sigma_0 - 
-  \frac{(\Sigma_0 g) (\Sigma_0 g)^T}{(g^T \Sigma_0 g)}\, .
+  = C_M - 
+  \frac{(C_M g) (C_M g)^T}{(g^T C_M g)}\, .
 \end{align}
 These values satisfy
 \begin{align}
@@ -267,7 +277,7 @@ which shows that the mean of the distribution is such that the data point is
 exactly reproduced by the model, and that the uncertainty in the direction
 defined by $g$ vanishes. It should be noted that the uncertainty in directions
 perpendicular to $g$ does not vanish and is determined by a combination of the
-prior and the model, \viz\ $\Sigma_0$ and $g$ in our example. This is a
+prior and the model, \viz\ $C_M$ and $g$ in our example. This is a
 particular example of a more general feature: for underdetermined systems the
 information from the prior still shapes the probability distribution of the
 solution even in the small noise limit.  
@@ -307,7 +317,85 @@ The mean is given by the weighted average of the datapoints, which is also the s
 \begin{equation}
   m_\star = \arg\min_{u\in\mathbb{R}} \left|y - g u\right|^2\, .
 \end{equation}
-Note that in this case the variance $\sigma_\star$ vanishes independently of the prior. In the limit of small noise, the distribution tends to a Dirac delta around the value of the MAP estimator.  
+Note that in this case the variance $\sigma_\star$ vanishes independently of the
+prior. In the limit of small noise, the distribution tends to a Dirac delta
+around the value of the MAP estimator.  
+
+\subsection{Linear Problems}
+\label{eq:LinProbs}
+
+Linear problems in finite-dimensional spaces are characterized by a simple forward law, 
+\begin{equation}
+  \label{eq:MatrixG}
+  y = \mathcal{G} u\, ,
+\end{equation}
+where $\mathcal{G}$ is a matrix. In this framework one can readily  derive
+analytical solutions that are useful to understand the main features of the
+Bayesian approach. Assuming that the priors are Gaussian again, the cost
+function $S(u)$ is a quadratic function of $u$,
+\begin{align}
+  \label{eq:CostLinGauss}
+  S(u) &= 
+  \left(\mathcal{G} u - y_0 \right)^T C_D^{-1} 
+  \left(\mathcal{G} u - y_0 \right) + 
+  \left( u - u_0 \right)^T C_M^{-1} \left(u - u_0 \right) \\
+  &= 
+  \left(u - \tilde{u}\right) \tilde{C}_M^{-1}
+  \left(u - u_0\right) + \mathrm{const}\, ,
+\end{align} 
+where
+\begin{align}
+  \label{eq:PostParams}
+  \tilde{C}_M^{-1} &= 
+  \left(
+    \mathcal{G}^T C_D^{-1} G + C_M^{-1}
+  \right)\, , \\
+  \tilde{u} &=
+  \tilde{C}_M  \left(
+    \mathcal{G}^T C_D^{-1} y_0 + C_M^{-1} u_0
+  \right)\, .
+\end{align}
+The case where we have no prior information on the model is recovered by taking
+the limit $C_M^{-1} \to 0$, which yields
+\begin{align}
+  \label{eq:NoPriorLinModel}
+  \tilde{C}_M^{-1} &= 
+  \left(
+    \mathcal{G}^T C_D^{-1} G
+  \right)\, , \\
+  \tilde{u} &=
+  \tilde{C}_M  \left(
+    \mathcal{G}^T C_D^{-1} y_0 
+  \right)\, .
+\end{align}
+The action of $C_D^{-1}$ on the vector of obseved data $y_0$ is best visualised using a spectral decomposition
+\begin{equation}
+  \label{eq:CDSpecDec}
+  C_D^{-1} = \sum_n \frac{1}{\sigma_n^2} P_n\, ,
+\end{equation}
+where $P_n$ denotes the projector on the $n$-th eigenvector of $C_D$, and
+$\sigma_n^2$ is the corresponding eigenvalue. The action of $C_D^{-1}$ is to
+perform a weighted average of the components of $y_0$ in the directions of the
+eigenvectors of $C_D$.
+
+An explcit expression can also be obtained for the posterior distribution of
+data, which can be obtained from the joint distribution by marginalising over
+the model input u:
+\begin{align}
+  \pi_D(y|y_0,u_0,\mathcal{G})
+  &= \int du\, \pi(y,u|y_0,u_0,\mathcal{G}) \\
+  &\propto \exp\left(
+    -\frac12 \left(y - \tilde{y}\right)^T \tilde{C}_D^{-1}
+    \left(y - \tilde{y}\right)
+  \right)\, ,
+\end{align}
+where
+\begin{align}
+  \tilde{y} &= \mathcal{G} \tilde{u}\, , \\
+  \tilde{C}_D &= \mathcal{G} \tilde{C}_M \mathcal{G}^T\, .
+\end{align}
+
+{\bf we should be able to use this to understand better the distribution of the estimator in data space} 
 
 
 \subsection{The infinite-dimensional case}
