@@ -6,8 +6,9 @@ The problem of determining PDFs from a set of experimental data falls under the
 general category of {\em inverse problems}, \ie\ the problem of finding the
 input to a given model knowing a set of observations, which are often finite and
 noisy. In this Section we are going to review the Bayesian formulation of
-inverse problems, trying to emphasise the aspects that are relevant for
-quantifying uncertainties on PDF determinations. 
+inverse problems. It is impossible to do justice to vast subject here. Instead
+we try to emphasise the aspects that are relevant for quantifying uncertainties
+on PDF determinations. 
 
 \subsection{Statement of the problem}
 \label{sec:BayesianInverse}
@@ -21,19 +22,20 @@ The model is specified by a {\em forward map}
 \end{align}
 which associates a response $r \in R$ to the input $u \in X$, where we assume
 that $X$ and $R$ are Banach spaces.~\footnote{Banach spaces are complete normed
-vector spaces. We do not need to get into a more detailed discussion here.} As
-an example we can think of $u$ as being a Parton Distribution Function, \ie\ a
-function defined on the interval $[0,1]$, and $r$ a DIS structure function:
+vector spaces. We do not need to get into a more detailed discussion here, but
+it is important to note that working in Banach spaces allows us to generalise
+the results to infinite-dimensional spaces of functions.} As an example we can
+think of $u$ as being a Parton Distribution Function, \ie\ a function defined on
+the interval $[0,1]$, and $r$ a DIS structure function,
 \begin{align}
   \label{eq:DISExample}
-  r(x,Q^2) = \int dz\, C(x/z) u(z)\, .
+  r(x,Q^2) = \int_x^1 \frac{dz}{z}\, C(z,Q^2) u(x/z,Q^2)\, .
 \end{align}
-Note that in this example the forward map maps one real function into
-another real function. Experiments will not have access to the full
-function $r$ but only to a subset of $\ndata$ observations. In order
-to have a formal mathematical expression to take into account the fact
-that we have a finite number of meaasurements, we introduce an {\em
-  observation operator}
+Note that in this example the forward map maps one real function into another
+real function. Experiments will not have access to the full function $r$ but
+only to a subset of $\ndata$ observations. In order to have a formal
+mathematical expression that takes into account the fact that we have a finite
+number of measurements, we introduce an {\em observation operator}
 \begin{align}
   O : ~& R \to Y \nonumber \\
        & r \mapsto y \, ,
@@ -47,9 +49,8 @@ values. The quantity of interest is the composed operator
   \mathcal{G} : ~& X \to \mathbb{R}^{\ndata} \nonumber \\
                  & \mathcal{G} = O \circ G\, ,
 \end{align}
-which maps the input to the forward map to the set of data. Taking
-into account the fact that experimental data are subject to noise, we
-can write
+which maps the input $u$ to the set of data. Taking into account the fact that
+experimental data are subject to noise, we can write
 \begin{align}
   \label{eq:NoisyInverseProblem}
   y = \mathcal{G}(u) + \eta\, ,
@@ -61,7 +62,7 @@ given $y$. It is often the case that inverse problems are ill-defined
 in the sense that the solution may not exist, may not be unique, or
 may be unstable under small variations of the problem. 
 
-In this context we are going to adopt a Bayesian point of view; our
+In solving this problems we are going to adopt a Bayesian point of view; our
 prior knowledge about $u$ is encoded in a prior probability measure
 $\mu^0$, and we use Bayes' theorem to compute the posterior
 probability measure of $u$ given the data $y$, which we denote as
@@ -71,12 +72,12 @@ Eq.~(\ref{eq:NoisyInverseProblem}), we can write the data likelihood,
 \ie\ the probability density of $y$ given $u$,
 \begin{align}
   \label{eq:YGivenUProbDensity}
-  p(y|u) = \rho(y-\mathcal G(u))\, ,
+  \pi(y|u) = \rho(y-\mathcal G(u))\, ,
 \end{align}
 and Bayes' theorem yields
 \begin{align}
   \label{eq:BayesThmInversePosterior}
-  \pi^y(u) \propto \rho(y-\mathcal G(u)) \pi^0(u)\, .
+  \pi^y(u) = \pi(u|y) \propto \rho(y-\mathcal G(u)) \pi^0(u)\, .
 \end{align}
 
 \paragraph{Example}
@@ -92,6 +93,12 @@ prior} probability density of the observable $y$ is
     -\frac12 \left| y - y_0 \right|_{C_D}^2
     \right)\, ,
 \end{equation}
+% \begin{equation}
+%   \label{eq:PriorData}
+%   \pi_{D}^0(y|y_0) \propto \exp\left(
+%     -\frac12 \left| y - \mathcal{G}u_\mathrm{true}-\eta \right|_{C_D}^2
+%     \right)\, ,
+% \end{equation}
 where the suffix $D$ emphasises the fact that this is a probability density in
 data space, and the notation explicitly reminds us that this is the probability
 density given the central values $y_0$ (and the covariance matrix). Similarly we
@@ -120,8 +127,8 @@ where the indices $i,j$ run from 1 to $\ndata$.
 Up to this point data and models are completely independent, and the joint
 distribution is simply the product of $\pi_{D}^0$ and $\pi_{M}^0$. 
 
-The correlation between the input model and the observables is induced by the
-forward map, 
+The forward map induces a correlation between the input model and the
+observables, 
 \begin{equation}
   \label{eq:ThetaCorr}
   \theta(y,u|\mathcal{G}) = \delta\left(y - \mathcal{G}(u)\right)\, ,
@@ -137,7 +144,9 @@ using a Gaussian with covariance $C_T$,
     \left| y - \mathcal{G}(u)
     \right|_{C_T}^2\right)\, .
 \end{equation}
-Taking the correlation into account, the joint distribution of $y$ and $u$ is
+Note however that it is not cleat that theoretical errors are normally
+distributed. Taking the correlation $\theta(y,u)$ into account, the joint
+distribution of $y$ and $u$ is
 \begin{align}
   \label{eq:JointYAndU}
   \pi(y,u|y_0,u_0,\mathcal{G}) \propto 
@@ -196,11 +205,11 @@ Note that in the argument of the likelihood function we have the central values
 of the data points $y_0$. Eq.~(\ref{eq:PosteriorModel}) is the Bayesian answer
 to the inverse problem, our knowledge of the model $u$ is encoded in the
 probability measure $\mu^y$, which is fully specified by the density $\pi^y$.
-There are several ways to characterise a probability distribution. Here we will
-focus on the {\em Maximum A Posteriori (MAP)} estimator, \ie\ the element $u \in
-X$ that maximises $\pi^y(u)$:
+There are several ways to characterise a probability distribution. The NNPDF
+approach is focused on the determination of the {\em Maximum A Posteriori (MAP)}
+estimator, \ie\ the element $u_* \in X$ that maximises $\pi^y(u)$:
 \begin{align}\label{eq:MAP}
-  u^* = \arg\min_{u \in X} 
+  u_* = \arg\min_{u \in X} 
   \left(
   -\frac12 \left| y_0 - \mathcal G(u) \right|_{C_D}^2
   -\frac12 \left| u - u_0 \right|_{C_M}^2
@@ -209,11 +218,11 @@ X$ that maximises $\pi^y(u)$:
 For every instance of the data $y_0$, the MAP estimator is computed by
 minimising a regulated $\chi^2$, we will refer to this procedure as the {\em
 classical fit} of experimental data to a model. Note that in the Bayesian
-approach, the regulator is provided by specifying carefully all the assumptions
-that enter in the prior. In this specific example the regulator is a determined
-by assuming that the model input $u$ is normally ditributed around a solution
-$u_0$. The MAP estimator provides the explicit connection between the Bayesian
-approach and the classical fit.
+approach, the regulator appears naturally after having specified carefully all
+the assumptions that enter in the prior. In this specific example the regulator
+arises from the Gaussian prior for the model input $u$, which is normally
+ditributed around a solution $u_0$. The MAP estimator provides the explicit
+connection between the Bayesian approach and the classical fit.
 
 \subsection{Comparison with classical fitting}
 \label{sec:comp-class-fit}
@@ -224,7 +233,7 @@ going to summarise these results here without proofs, referring the
 reader to the mathematical literature for the missing details. Working
 in the finite-dimensional case, we assume 
 \begin{align*}
-  u &\in \mathbb{R}^n \, ,\\
+  u &\in \mathbb{R}^{\nmodel} \, ,\\
   y &\in \mathbb{R}^{\ndata}\, ,
 \end{align*}
 and we are going to consider in detail two examples from Ref.~\cite{StuartCore}.
@@ -232,8 +241,8 @@ and we are going to consider in detail two examples from Ref.~\cite{StuartCore}.
 \paragraph{Underdetermined system}
 The first case that we are going to analyse is the case of a linear system that
 is underdetermined by the data. The linear model is completely specified by a
-vector of coefficients $g\in \mathbb{R}^n$, while we are going to assume that we
-only have one datapoint, \ie\ $\ndata=1$, and hence:
+vector of coefficients $g\in \mathbb{R}^{\nmodel}$, while we are going to assume
+that we only have one datapoint, \ie\ $\ndata=1$, and hence:
 \begin{equation}
   \label{eq:LinearModelEx}
   y = (g^T u) + \eta\, ,
@@ -246,7 +255,7 @@ this case the posterior distribution can be written as
 \begin{equation}
   \label{eq:GaussPostExplicit}
     \pi^y(u) \propto \exp \left[
-    \frac{1}{2\gamma^2} \left|y - (g^T u) \right|^2 - \frac12 \left|
+    -\frac{1}{2\gamma^2} \left|y - (g^T u) \right|^2 - \frac12 \left|
       u
     \right|_{C_M}^2 
     \right]\, ,
@@ -258,7 +267,10 @@ respectively
   \Sigma &= C_M - 
   \frac{(C_M g) (C_M g)^T}{\gamma^2 + (g^T C_M g)}\, .
 \end{align}
-It is instructive to look at these quantities in the limit of infinitely precise data, \ie\ in the limit $\gamma\to 0$:
+Because the argument of the exponential is a quadratic form, the mean of the
+distribution coincides with the MAP estimator. It is instructive to look at
+these quantities in the limit of infinitely precise data, \ie\ in the limit
+$\gamma\to 0$:
 \begin{align}
   m_\star &= 
   \lim_{\gamma\to 0} m
@@ -285,10 +297,10 @@ solution even in the small noise limit.
 \paragraph{Overdetermined system}
 We are now going to consider an example of an overdetermined system and discuss
 again the case of small observational noise. We consider $\ndata\geq 2$ and
-$n=1$, with a forward map such that
+$n=1$, with a linear forward map such that
 \begin{equation}
  \label{eq:OverDetForwMap}
- y = g(u + \beta u^3) + \eta\, ,
+ y = g u  + \eta\, ,
 \end{equation} 
 where $\eta$ is an $\ndata$-dimensional Gaussian variable with a diagonal
 covariance $\gamma^2 I$, where $I$ denotes the identity matrix. For simplicity
@@ -361,7 +373,7 @@ the limit $C_M^{-1} \to 0$, which yields
   \label{eq:NoPriorLinModel}
   \tilde{C}_M^{-1} &= 
   \left(
-    \mathcal{G}^T C_D^{-1} G
+    \mathcal{G}^T C_D^{-1} \mathcal{G}
   \right)\, , \\
   \tilde{u} &=
   \tilde{C}_M  \left(
@@ -378,7 +390,7 @@ $\sigma_n^2$ is the corresponding eigenvalue. The action of $C_D^{-1}$ is to
 perform a weighted average of the components of $y_0$ in the directions of the
 eigenvectors of $C_D$.
 
-An explcit expression can also be obtained for the posterior distribution of
+An explicit expression can also be obtained for the posterior distribution of
 data, which can be obtained from the joint distribution by marginalising over
 the model input u:
 \begin{align}
@@ -399,9 +411,9 @@ where
 
 \paragraph{Non-linear Models}
 
-These linear models may look at first sight like too much of a simplification.
-In practice, it turns out that non-linear models can be linearised around the
-central value of the prior distribution, 
+These linear models may look over-simplified at first sight. In practice, it
+turns out that non-linear models can often be linearised around the central
+value of the prior distribution, 
 \begin{equation}
   \label{eq:LinU0}
   \mathcal{G}(u) = \mathcal{G}(u_0) + G \left(u - u_0\right) + \ldots\, ,
@@ -411,13 +423,14 @@ where
   \label{eq:FirstDerU0}
   G^i_\alpha = \left. \frac{\partial \mathcal{G}^i}{\partial u_\alpha} \right|_{u_0}\, ,
 \end{equation}
-and we have neglected higher-order terms in the expansion of $\mathcal{G}(u)$.
+where we have neglected higher-order terms in the expansion of $\mathcal{G}(u)$.
 
 If these terms are not negligible, another option is to find the MAP estimator,
 and then expand the the forward map around it, which yields equations very
 similar to the previous ones, with $u_0$ replaced by $u_\mathrm{MAP}$. If the
 posterior distribution of $u_\mathrm{MAP}$ is sufficiently peaked around the
 central value, then the linear approximation can be sufficiently accurate. 
+
 
 \subsection{The infinite-dimensional case}
 \label{sec:infin-dimens-case}
