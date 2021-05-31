@@ -35,10 +35,11 @@ Eq.~\ref{eq:chi2kerep} (evaluated on the ideal test data), we can complete the
 square
 \begin{equation}
     \begin{split}
+    \label{eq:EoutDecomposition}
         &\eout = \frac{1}{\ndata} \erep{
-            \left( \model(u^{* \repind}) - f^\prime \right)^T
+            \left( \model\left(u_*^{\repind}\right) - f^\prime \right)^T
             \invcovprime
-            \left( \model(u^{* \repind}) - f^\prime \right)
+            \left( \model\left(u_*^{\repind}\right) - f^\prime \right)
         } + \\
         &+ \erep{
             \left( f^\prime - \levone^\prime \right)^T
@@ -46,7 +47,7 @@ square
             \left( f^\prime - \levone^\prime \right)
         }+ \\
         &+ 2 \erep{
-            \left( \model(u^{* \repind}) - f^\prime \right)^T
+            \left( \model\left(u_*^{\repind}\right) - f^\prime \right)^T
             \invcovprime
             \left(f^\prime - \levone^\prime \right)
         }\, .
@@ -59,18 +60,20 @@ can decompose the first term further,
 \begin{equation}
     \begin{split}
         &\erep{
-            \left( \model(u^{* \repind}) - f^\prime \right)^T
+            \left( \model\left(u_*^{\repind}\right) - f^\prime \right)^T
             \invcovprime
-            \left( \model(u^{* \repind}) - f^\prime \right)
+            \left( \model\left(u_*^{\repind}\right) - f^\prime \right)
         } = \\
         &= \erep{
-            \left( \model(u^{* \repind}) - \erep{\model(u^{* \repind})} \right)^T
+            \left( \model\left(u_*^{\repind}\right) - 
+            \erep{\model\left(u_*^{\repind}\right)} \right)^T
             \invcovprime
-            \left( \model(u^{* \repind}) - \erep{\model(u^{* \repind})} \right)
+            \left( \model\left(u_*^{\repind}\right) - 
+            \erep{\model\left(u_*^{\repind}\right)} \right)
         } + \\
-        &+ \left( \erep{\model(u^{* \repind})} - f^\prime \right)^T
+        &+ \left( \erep{\model\left(u_*^{\repind}\right)} - f^\prime \right)^T
         \invcovprime
-        \left( \erep{\model(u^{* \repind})} - f^\prime \right),
+        \left( \erep{\model\left(u_*^{\repind}\right)} - f^\prime \right)\, ,
     \end{split}
 \end{equation}
 where we have used the fact that the second term is constant across replicas and
@@ -80,11 +83,12 @@ variance and the second term is the bias.
 
 As previously mentioned $\eout$ should be considered a stochastic estimator, in
 theory we could take the expectation value across training data $\levone$ and
-test data $\levone^{\prime}$, the latter of which cancels the cross term. The
-final result of that would be
+test data $\levone^{\prime}$, the latter of which cancels the cross term in
+Eq.~\ref{eq:EoutDecomposition}. The final result of that would be
 \begin{equation}\label{eq:ExpectedBiasVariance}
     \mathbf{E}_{\levone, \levone^\prime}[\eout] =
-    1 + \mathbf{E}_{\levone}[{\rm bias}] + \mathbf{E}_{\levone}[{\rm variance}].
+    \mathbf{E}_{\levone}[{\rm bias}] + 
+    \mathbf{E}_{\levone}[{\rm variance}] + 1\, .
 \end{equation}
 We are not interested in the observational noise term, since it is
 independent of the model. The two estimators of interest are independent of
@@ -105,16 +109,16 @@ expectation values - made possible by our next generation fitting code.
 
 \subsection{Geometric Interpretation}
 
-It's possible to interpret the relevant data space estimators geometrically,
-by considering a coordinate system where each basis vector corresponds to
-an eigenvector of the experimental covariance matrix normalised by the
-square root of the corresponding eigenvalue. The origin of the coordinate system
-is the true value of the observable. The model predictions are then a set of
-points, where the mean squared radius of those points is what we call the variance.
-The bias is the l2-norm of the vector between the origin and the mean of the
-model predictions. An example of this is given in Fig.~\ref{fig:diagram2destimators},
-where for simplicity we have considered a system with just two data points,
-with a diagonal covariance.
+It is possible to interpret the relevant data space estimators geometrically, by
+considering a coordinate system where each basis vector corresponds to an
+eigenvector of the experimental covariance matrix normalised by the square root
+of the corresponding eigenvalue. The origin of the coordinate system is the true
+value of the observable. The model predictions are then a set of points, where
+the mean squared radius of those points is what we call the variance. The bias
+is the l2-norm of the vector between the origin and the mean of the model
+predictions. An example of this is given in Fig.~\ref{fig:diagram2destimators},
+where for simplicity we have considered a system with just two data points, \ie\
+a two-dimensional data space, with a diagonal covariance.
 %
 \begin{figure}
     \centering
@@ -140,8 +144,8 @@ with a diagonal covariance.
 
 The two closure estimators of interest, bias and variance, can be used to
 understand faithful uncertainties in a practical sense. If we return to
-Eq.~\ref{eq:ExpectedBiasVariance} we can examine both estimators in a bit
-more detail.
+Eq.~\ref{eq:ExpectedBiasVariance} we can examine both estimators in a bit more
+detail.
 
 \paragraph{Variance}
 
@@ -151,83 +155,135 @@ model predictions in units of the covariance
     \label{eq:VarDef}
     \var = \frac{1}{\ndata}
     \erep{
-            \left( \model(u^{* \repind}) - \erep{\model(u^{* \repind})} \right)^T
+            \left( \model\left(u_*^{\repind}\right) - 
+            \erep{\model\left(u_*^{\repind}\right)} \right)^T
             \invcovprime
-            \left( \model(u^{* \repind}) - \erep{\model(u^{* \repind})} \right)
-        },
+            \left( \model\left(u_*^{\repind}\right) - 
+            \erep{\model\left(u_*^{\repind}\right)} \right)
+        }\, ,
 \end{equation}
-which can be interpreted as the model uncertainty in the space of the
-test data. It is instructive to rephrase Eq.~\ref{eq:VarDef} as
+which can be interpreted as the model uncertainty in the space of the test data.
+It is instructive to rephrase Eq.~\ref{eq:VarDef} as
 \begin{equation}
     \label{eq:VarDefalternative}
-    \var = \frac{1}{\ndata} {\rm Tr} \left[ \covrep \invcov{} \right],
+    \var = \frac{1}{\ndata} {\rm Tr} \left[ \covrep \invcovprime \right],
 \end{equation}
-where $\covrep$ is the covariance matrix of the predictions
-from the PDF replicas.
+where 
+\begin{equation}
+    \label{eq:CovRep}
+    \covrep = 
+    \erep{
+            \left( \model\left(u_*^{\repind}\right) - 
+            \erep{\model\left(u_*^{\repind}\right)} \right)
+            \left( \model\left(u_*^{\repind}\right) - 
+            \erep{\model\left(u_*^{\repind}\right)} \right)^T
+        }
+\end{equation}
+is the covariance matrix of the predictions from the PDF replicas. Going to a
+basis where $\invcovprime$ is diagonal,
+\begin{equation}
+    \label{eq:InvCovPrimeDiag}
+    \left(\invcovprime \right)_{ij} = \frac{1}{\left(\sigma'_i\right)^2} 
+    \delta_{ij}\, ,
+\end{equation}
+we can rewrite Eq.~\ref{eq:VarDefalternative} as 
+\begin{equation}
+    \label{eq:VarianceInterpretation}
+    \var = \frac{1}{\ndata}\, \sum_i \frac{\covrep_{ii}}{\left(\sigma'_i\right)^2}\, .
+\end{equation}
+The numerator in the right-hand side of the equation above is the variance of
+the theoretical prediction obtained from the fitted replicas, while the
+denominator is the experimental variance. Hence the right-hand side of the
+equation is the average reduction in the variance of the observables between the
+prior distribution, dictated by the experimental covariance, and the posterior
+distribution. The average is computed over the space of test data, \ie\ data points that are not seen by the fit. 
 
 \paragraph{Bias}
 
 Similarly, the {\em bias}\ is defined as the difference between the expectation
-value of the model predictions and the true observable values in
-units of the covariance, \ie 
+value of the model predictions and the true observable values in units of the
+covariance, \ie 
 \begin{equation}
     \label{eq:BiasDef}
     \bias = \frac{1}{\ndata}
-    \left( \erep{\model(u^{* \repind})} - f^\prime \right)^T
+    \left( \erep{\model(u_*^{\repind})} - f^\prime \right)^T
         \invcovprime
-    \left( \erep{\model(u^{* \repind})} - f^\prime \right).
+    \left( \erep{\model(u_*^{\repind})} - f^\prime \right)\, .
 \end{equation}
-The smaller the bias, the closer the central value of the predictions is to
-the underlying law. In Eq.~\ref{eq:ExpectedBiasVariance}, the expectation
-value is taken across the prior distribution of the training data. Once this
-expectation value is taken, the expectation value of the bias, $\mathbf{E}_{\levone}[{\rm bias}]$,
-can be written as
+The smaller the bias, the closer the central value of the predictions is to the
+underlying law. In Eq.~\ref{eq:ExpectedBiasVariance}, the expectation value is
+taken across the prior distribution of the training data, which yields
 \begin{equation}
-    mathbf{E}_{\levone}[{\rm bias}] = \frac{1}{\ndata}
-    {\rm Tr} \left[ \covcent \invcov{} \right],
+    \mathbf{E}_{\levone}[{\rm bias}] = \frac{1}{\ndata}
+    {\rm Tr} \left[ \covcent \invcovprime{} \right]\, ,
 \end{equation}
 where we have introduced $\covcent$ as the covariance of the expectation value
-of the model predictions. The point is that the bias on the test data is still
-a stochastic variable which depends on the training data. If we take the
-expectation across training data, then we get a distribution of expectation
-values of model predictions. The true observable values are static, and not
-drawn from a distribution, however the difference between the expected value of
-our model and the truth is probabilistic and in practical terms the uncertainties
-of our model predictions should be consistent with the observed distance
-from the truth.
+of the model predictions,
+\begin{equation}
+    \label{eq:CovCentDef}
+    \covcent = 
+    \mathbf{E}_{\levone}\left[
+        \left( \erep{\model(u_*^{\repind})} - f^\prime \right)
+        \left( \erep{\model(u_*^{\repind})} - f^\prime \right)^T   
+    \right]\, .
+\end{equation}
+The point is that the bias on the test data is a stochastic variable which
+depends on the central value of the training data through $u_*^{\repind}$. The
+matrix $\covcent$ describes the fluctuations of the central value of the model
+prediction around the true observable values as we scan different realisations
+of the training data. 
+
+It is important to stress the difference between variance and bias. In the case
+of the variance, we are looking at the fluctuations of the replicas around their
+central value for fixed $\vv{\levone}$. This is what is done in a fit to real
+data, where we have one instance of $\vv{\levone}$, provided by the experiments.
+In the case of the bias we consider the flucutations of the central value over
+replicas around the true theoretical prediction as the values of $\vv{\levone}$
+fluctuate around $\vv{\law}$. This latter procedure is only possible in a
+closure test, where the underlying true theoretical prediction is known. The
+bias as defined here yields an estimate of the fluctuations of the MAP estimator
+if we could do multiple independent experiments. 
+
+% If we take the expectation across training data, then we get a distribution of
+% expectation values of model predictions. The true observable values are
+% static, and not drawn from a distribution, however the difference between the
+% expected value of our model and the truth is probabilistic and in practical
+% terms the uncertainties of our model predictions should be consistent with the
+% observed distance from the truth.
 
 \paragraph{Bias-variance ratio}
 
-This leads us to measuring
-\begin{equation}\label{eq:RatioDef}
-    \biasvarratio \equiv \sqrt{\frac{\eshift{\bias}}{\eshift{\var}}},
+Finally, the {\em bias-variance ratio} is defined as
+\begin{equation}
+    \label{eq:RatioDef}
+    \biasvarratio \equiv \sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}\, ,
 \end{equation}
 where we have taken the square root, since bias and variance are both mean
-squared quantities. The value of $\biasvarratio$, is that in a single
-number we get an idea of how much uncertainties are over or under estimated.
-If the uncertainties are completely faithful, then $\biasvarratio = 1$. We
-note that the relationship doesn't work both ways and $\biasvarratio = 1$ does
-not necessarily guarantee that the uncertainty is faithful. We also note
-that $\biasvarratio$ is not completely general: it is not a measure defined in
-model space, and therefore only gives local information on the model
-uncertainties. If the distribution of the expectation value of model predictions
-is gaussian centered on the true observable values, with covariance $\covcent$
-and the distribution of the model replicas is also gaussian, with covariance
-$\covrep$ then model uncertainties are faithful if
+squared quantities. The value of $\biasvarratio$ yields a measurement of how
+much uncertainties are over or under estimated. If the uncertainties are
+completely faithful, then $\biasvarratio = 1$. We note that the relationship
+does not work both ways and $\biasvarratio = 1$ does not necessarily guarantee
+that the uncertainty is faithful. We also note that $\biasvarratio$ is not
+completely general: it is not a measure defined in model space and depends on
+the choice of test data. Therefore it only gives 'local' information on the
+model uncertainties. If the distribution of the expectation value of model
+predictions is gaussian centered on the true observable values, with covariance
+$\covcent$ and the distribution of the model replicas is also gaussian, with
+covariance $\covrep$ then model uncertainties are faithful if
 \begin{equation}\label{eq:IdealRatioDef}
     \covcent {\covrep}^{-1} = 1.
 \end{equation}
-The difficulty with calculating Eq.~\ref{eq:IdealRatioDef} is $\covrep$ is likely
-to have large correlations which would lead it to be singular or ill-conditioned.
-As a result, any
-error estimating $\covrep$ from finite number of replicas could lead to
-unstable results. $\biasvarratio$ overcomes this instability by taking the ratio
-of the average across test data of these matrices, in units of the experimental
-covariance matrix. There may still be large relative errors for smaller
-eigenvalues of $\covrep$, but these shouldn't lead to instabilities in
-$\biasvarratio$ unless they correspond to directions with very low experimental
-uncertainty. As an extra precaution, we shall estimate an uncertainty on
-$\biasvarratio$ by performing a bootstrap sample on fits and replicas.
+The difficulty with calculating Eq.~\ref{eq:IdealRatioDef} is $\covrep$ is
+likely to have large correlations which would lead it to be singular or
+ill-conditioned. As a result, any error estimating $\covrep$ from finite number
+of replicas could lead to unstable results. $\biasvarratio$ overcomes this
+instability by taking the ratio of the average across test data of these
+matrices, in units of the experimental covariance matrix. There may still be
+large relative errors for smaller eigenvalues of $\covrep$, but these should not
+lead to instabilities in $\biasvarratio$ unless they correspond to directions
+with very low experimental uncertainty. As an extra precaution, we shall
+estimate an uncertainty on $\biasvarratio$ by performing a bootstrap sample on
+fits and replicas.
 % TODO: summaries that bias and variance are performance estimators but must
 % remain balanced?
 

@@ -104,8 +104,8 @@ uniform then the posterior distribution of model parameters given the data is
     \label{eq:PosteriorMultiGaussModel}
     \begin{split}
         p(u | z) &\propto
-        \exp \left( -\frac{1}{2} (Xu - z)^T \invcov{} (Xu - z)\right) \\
-        &= \exp \left( -\frac{1}{2} (u - X^+z)^T X^T\invcov{}X (u - X^+z)\right)\, ,
+        \exp \left( -\frac{1}{2} (Xu - z)^T \invcov{D} (Xu - z)\right) \\
+        &= \exp \left( -\frac{1}{2} (u - X^+z)^T X^T\invcov{D}X (u - X^+z)\right)\, ,
     \end{split}
 \end{equation}
 where in the second line we are assuming that $X$ has linearly independent rows,
@@ -118,15 +118,16 @@ right inverse and can be computed as
 \end{equation}
 Eq.~\ref{eq:PosteriorMultiGaussModel} exposes that the posterior distribution of
 the model parameters is multigaussian, with mean $\bar{u} = X^+z$ and covariance
-$(X^T\invcov{}X)^+ = X^+ \cov (X^+)^T$. If instead we deploy the NNPDF Monte
+$(X^T\invcov{D}X)^+ = X^+ \cov (X^+)^T$. If instead we deploy the NNPDF Monte
 Carlo method to fitting model replicas, then in the case under study
 $\arg\min_{u^{\repind}} \repchis$ is found analytically when the derivative of
 $\repchis$ with respect to the model parameters is zero, i.e.
 \begin{equation}
     \begin{split}
         \label{eq:MAPEstLinModel}
-        u^{\repind}_* &= (X^T\invcov{}X)^{+}
-        \left( X^T \invcov{} \vv{\levone} + X^T \invcov{} \vv{\noise}^{\repind} \right), \\
+        u^{\repind}_* &= (X^T\invcov{D}X)^{+}
+        \left( X^T \invcov{D} \vv{\levone} + X^T \invcov{D} 
+        \vv{\noise}^{\repind} \right), \\
         &= X^+ (\vv{\levone} + \vv{\noise}^{\repind}).
     \end{split}
 \end{equation}
@@ -142,7 +143,7 @@ distribution of model parameters given the data.
 %TODO: move here the narrow prior?
 
 \subsection{Closure test}
-\label{sec:closure-test}
+\label{sec:closure-test-intro}
 
 The concept of the closure test, which was first introduced in
 Ref.~\cite{nnpdf30}, is to construct artificial data by using a known
