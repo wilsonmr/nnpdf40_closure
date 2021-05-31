@@ -5,12 +5,13 @@
 We start by defining the model error as the expectation across models of the
 $\chi^2$ between the model predictions and some data central values
 $\levone^\prime$, normalised by the number of data points
-\begin{equation}\label{eq:chi2kerep}
-    \mathcal{E} = \frac{1}{\ndata} \erep{
-        \left( \model(u^{* \repind}) - \levone^\prime \right)^T
+\begin{equation}
+    \label{eq:chi2kerep}
+    \eout = \frac{1}{\ndata} \erep{
+        \left( \model\left(u_*^{\repind}\right) - \levone^\prime \right)^T
         \invcovprime
-        \left( \model(u^{* \repind}) - \levone^\prime \right)
-    },
+        \left( \model\left(u_*^{\repind}\right) - \levone^\prime \right)
+    }\, ,
 \end{equation}
 where we purposely denoted the data which the model error is evaluated on as
 $\levone^\prime$, as opposed to the data which is used to determine the model
@@ -40,15 +41,15 @@ square
             \left( \model(u^{* \repind}) - f^\prime \right)
         } + \\
         &+ \erep{
-            \left( \model(f^\prime - \levone^\prime \right)^T
+            \left( f^\prime - \levone^\prime \right)^T
             \invcovprime
-            \left( \model(f^\prime - \levone^\prime \right)
+            \left( f^\prime - \levone^\prime \right)
         }+ \\
         &+ 2 \erep{
             \left( \model(u^{* \repind}) - f^\prime \right)^T
             \invcovprime
-            \left( \model(f^\prime - \levone^\prime \right)
-        }.
+            \left(f^\prime - \levone^\prime \right)
+        }\, .
     \end{split}
 \end{equation}
 The second term is the shift associated with evaluating the model error on
