@@ -273,17 +273,17 @@ covariance $\covrep$ then model uncertainties are faithful if
 \begin{equation}\label{eq:IdealRatioDef}
     \covcent {\covrep}^{-1} = 1.
 \end{equation}
-The difficulty with calculating Eq.~\ref{eq:IdealRatioDef} is $\covrep$ is
-likely to have large correlations which would lead it to be singular or
-ill-conditioned. As a result, any error estimating $\covrep$ from finite number
-of replicas could lead to unstable results. $\biasvarratio$ overcomes this
-instability by taking the ratio of the average across test data of these
-matrices, in units of the experimental covariance matrix. There may still be
-large relative errors for smaller eigenvalues of $\covrep$, but these should not
-lead to instabilities in $\biasvarratio$ unless they correspond to directions
-with very low experimental uncertainty. As an extra precaution, we shall
-estimate an uncertainty on $\biasvarratio$ by performing a bootstrap sample on
-fits and replicas.
+The difficulty with calculating Eq.~\ref{eq:IdealRatioDef} comes from the fact
+that $\covrep$ is likely to have large correlations which would lead it to be
+singular or ill-conditioned. As a result, any error estimating $\covrep$ from
+finite number of replicas could lead to unstable results. $\biasvarratio$
+overcomes this instability by taking the ratio of the average across test data
+of these matrices, in units of the experimental covariance matrix. There may
+still be large relative errors for smaller eigenvalues of $\covrep$, but these
+should not lead to instabilities in $\biasvarratio$ unless they correspond to
+directions with very low experimental uncertainty. As an extra precaution, we
+shall estimate an uncertainty on $\biasvarratio$ by performing a bootstrap
+sample on fits and replicas.
 % TODO: summaries that bias and variance are performance estimators but must
 % remain balanced?
 
