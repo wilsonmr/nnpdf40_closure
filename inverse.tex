@@ -236,13 +236,20 @@ in the finite-dimensional case, we assume
   u &\in \mathbb{R}^{\nmodel} \, ,\\
   y &\in \mathbb{R}^{\ndata}\, ,
 \end{align*}
-and we are going to consider in detail two examples from Ref.~\cite{StuartCore}.
+and we are going to consider in detail two examples from Ref.~\cite{StuartCore},
+which illustrate the role of the priors in the Bayesian setting. It is
+particularly useful to distinguish the case of an underdetermined system from
+the case of an overdetermined one. 
 
 \paragraph{Underdetermined system}
 The first case that we are going to analyse is the case of a linear system that
 is underdetermined by the data. The linear model is completely specified by a
-vector of coefficients $g\in \mathbb{R}^{\nmodel}$, while we are going to assume
-that we only have one datapoint, \ie\ $\ndata=1$, and hence:
+vector of coefficients $g\in \mathbb{R}^{\nmodel}$, 
+\begin{equation}
+  \label{eq:LinSyst}
+  \mathcal{G}(u) = \left(g^T u\right)\, .
+\end{equation}
+Assuming that we have only one datapoint, \ie\ $\ndata=1$, 
 \begin{equation}
   \label{eq:LinearModelEx}
   y = (g^T u) + \eta\, ,
@@ -435,11 +442,11 @@ central value, then the linear approximation can be sufficiently accurate.
 \subsection{The infinite-dimensional case}
 \label{sec:infin-dimens-case}
 
-In the finite-dimensional case, where the probability measures are
-specified by their densities with respect to the Lebesgue measure,
-Eq.~(\ref{eq:BayesThmInversePosterior}) encodes the fact that $\rho$
-is the Radon-Nikodym derivative of the probability measure $\mu^y$
-with respect to $\mu_0$, \viz
+In the finite-dimensional case, where the probability measures are specified by
+their densities with respect to the Lebesgue measure,
+Eq.~(\ref{eq:BayesThmInversePosterior}) can be rephrased by saying  that $\rho$
+is the Radon-Nikodym derivative of the probability measure $\mu^y$ with respect
+to $\mu_0$, \viz
 \begin{align}
   \label{eq:RadonNikodym}
   \frac{d\mu^y}{d\mu_0} (u) \propto \rho(y-\mathcal G(u)) \pi_0(u)\, .
@@ -455,8 +462,129 @@ and therefore
   \label{eq:RadonNikodymTwo}
   \frac{d\mu^y}{d\mu^0} (u) \propto \exp\left(-\Phi(u;y)\right)\, .
 \end{align}
-In finite-dimensional spaces, the three equations above are just
-definitions that do not add much content. Their interest resides in
-the fact that the last expression, Eq.~(\ref{eq:RadonNikodymTwo}), can
-be properly defined when $X$ is infinite-dimensional.
+In finite-dimensional spaces, the three equations above are just definitions
+that do not add much content. Their interest resides in the fact that the last
+expression, Eq.~(\ref{eq:RadonNikodymTwo}), can be properly defined when $X$ is
+infinite-dimensional, allowing a rigorous extension of the Bayesian formulation
+of inverse problems to the case of infinite-dimensional spaces. 
 
+Adopting a heuristic approach, we can say that a function $f$ is a random
+function is $f(x)$ is a random variable for all values of $x$. Since the values
+of the function at different values of $x$ can be correlated, a random function
+is fully characterised by specifying the joint probability densities
+\begin{equation}
+  \label{eq:RandomFuncJointProb}
+  \pi\left(
+    f_1, \ldots, f_n; x_1, \ldots x_n
+  \right)\, ,
+\end{equation}
+where $f_i=f(x_i)$, for all values of $n$, and all values of $x_1, \ldots, x_n$.
+These finite-dimensional densities allow the definition of a probability
+measure, under some regularity hypotheses that we will not investigate here.
+Similarly to what happens in the finite-dimensional case, a Gaussian random
+function is completely characterised by the two-dimensional probability
+densities $\pi(x_1,x_2;t_1,t_2)$.
+
+\paragraph{Functional linear problems} This formalism allows us to formulate a Bayesian solution of the inverse problem 
+\begin{equation}
+  \label{eq:BayesLinearInverse}
+  y^i = \int dx\, G^i(x) u(x)\, ,
+\end{equation}
+where $y_i$ is a discrete set of oobservables and $u(x)$ is Gaussian random
+function, with prior mean $u_0(x)$ and covariance $C_M(x,x')$. The vector of
+observed values is denoted $y_0$, and we assume that the prior distribution of
+$y$ is a Gaussian centred at $y_0$ with covariance $C_D$. We introduce the
+matrix
+\begin{equation}
+  \label{eq:Smatrix}
+  S^{ij} =
+  \int dx dx'\, G^i(x) C_M(x,x') G^j(x') + C_D^{ij}\, ,
+\end{equation}
+and its inverse $T_{ij}=\left(S^{-1}\right)^{ij}$. Just like in the finite-dimensional example discussed above, the posterior Gaussian field is centred at
+\begin{align}
+  \label{eq:PostMeanFunc}
+  \tilde{u}(x) = u_0(x) + 
+  \int dx'\, C_M(x,x') G^i(x') T_{ij} \left(
+    y_0^j - \int dx''\, G^j(x'') u_0(x'') 
+  \right)\, .
+\end{align}
+Interestingly, this can be rewritten as
+\begin{equation}
+  \label{eq:TowardsBackus}
+  \tilde{u}(x) = u_0(x) + 
+  \int dx'\, C_M(x,x') \Psi(x')\, ,
+\end{equation}
+where 
+\begin{eqnarray}
+  \label{eq:PsiDef}
+  \Psi(x) = G^i(x) \delta y^i\, ,
+\end{eqnarray}
+and the weighted residuals are given by
+\begin{equation}
+  \label{eq:DeltaYDef}
+  \delta y^i = T_{ij} \left(
+  y_0^j - \int dx'\, G^j(x') u_0(x')
+  \right)\, .
+\end{equation}
+Using the notation introduced above, the posterior covariance can be written as
+\begin{equation}
+  \label{eq:PostCovFunc}
+  \tilde{C}_M(x,x') = 
+  C_M(x,x') - \Psi^i(x) T_{ij} \Psi^j(x')\, .
+\end{equation}
+
+The Bayesian result summarised above can be compared with the method proposed by Backus and Gilbert to solve the same problem. Assuming that there exists an unknown 'true' model $\utrue$, such that the observed data are
+\begin{equation}
+  \label{eq:BackStart}
+  y_0^i = \int dx\, G^i(x) \utrue\, ,
+\end{equation}
+we look for an estimate $\uest$ of the true solution in the form
+\begin{equation}
+  \label{eq:BackAnsatz}
+  \uest(x) = Q^i(x) y^i_0\, .
+\end{equation}
+Using Eq.~\ref{eq:BackStart} we obtain
+\begin{equation}
+  \label{eq:BackFilter}
+  \uest(x) = \int dx' R(x,x') \utrue(x')\, , 
+\end{equation}
+which states that with a finite amount of data we can only resolve a filtered
+version of the true solution. The kernel $R$ is given by
+\begin{equation}
+  \label{eq:BackKernel}
+  R(x,x') = Q^i(x) G^i(x')\, .
+\end{equation}
+The coefficients $Q(x)$ can be chosen so that the kernel is a close as possible
+to a delta function:
+\begin{equation}
+  \label{eq:BackDelta}
+  R(x,x') \simeq \delta(x,x') ~~ \Longrightarrow ~~
+  \uest \simeq \utrue\, .
+\end{equation}
+Approximating the delta function can be achived by minimising 
+\begin{equation}
+  \label{eq:BackDeltaness}
+  \int dx'\, \left(
+    R(x,x') - \delta(x-x')
+  \right)^2\, ,
+\end{equation}
+which yields
+\begin{equation}
+  \label{eq:BackSolution}
+  Q^i(x) = \left(S^{-1}\right)^{ij} G^j(x)\, ,
+\end{equation}
+where 
+\begin{equation}
+  \label{eq:BackSMatrix}
+  S^{ij} = \int dx\, G^i(x) G^j(x)\, .
+\end{equation}
+The intersting observation is that the central value of the Bayesian solution
+presented above reduces to the Backus-Gilbert $\uest$ in the case where there is
+no prior for the model, \ie\ if we assume that $u_0$ is just white noise and
+therefore
+\begin{equation}
+  \label{eq:BackComparison}
+  C_M(x,x') = \delta(x-x')\, .
+\end{equation}
+The Bayesian solution allows a variety of prior to be explicitly declared and
+tested compared to the Backus-Gilbert solution. 
