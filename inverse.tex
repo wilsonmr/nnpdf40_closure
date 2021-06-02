@@ -393,7 +393,7 @@ eigenvectors of $C_D$.
 An explicit expression can also be obtained for the posterior distribution of
 data, which can be obtained from the joint distribution by marginalising over
 the model input u:
-\begin{align}
+\begin{align}\label{eq:PosteriorDataSpace}
   \pi_D(y|y_0,u_0,\mathcal{G})
   &= \int du\, \pi(y,u|y_0,u_0,\mathcal{G}) \\
   &\propto \exp\left(
@@ -402,7 +402,7 @@ the model input u:
   \right)\, ,
 \end{align}
 where
-\begin{align}
+\begin{align}\label{eq:PosteriorDataParams}
   \tilde{y} &= \mathcal{G} \tilde{u}\, , \\
   \tilde{C}_D &= \mathcal{G} \tilde{C}_M \mathcal{G}^T\, .
 \end{align}

@@ -14,7 +14,7 @@ where $c$ belongs to the model space, in this case that means the number of para
 in the underlying law is less than or equal to the number of parameters in the
 model, $\nlaw \leq \nmodel$. Combining Eqs.~\ref{eq:LinearLawMap},
 \ref{eq:LinForwardMap} and \ref{eq:MAPEstLinModel}, we can write down the
-difference between the true observales and the expectation of the model
+difference between the true observables and the expectation of the model
 predictions
 \begin{equation}
     \begin{split}
@@ -26,18 +26,18 @@ where $X$ is the forward map to the training predictions and $\levone$ are
 the corresponding training central values. Calculating the covariance across
 training data of $\erep{\model(u^{* \repind})} - f^\prime$ gives
 \begin{equation}
-    \covcent = X^\prime X^+ \cov^\prime (X^\prime X^+)^T,
+    \covcent = X^\prime X^+ \cov(X^\prime X^+)^T,
 \end{equation}
-so the full expression for $mathbf{E}_{\levone}[{\rm bias}]$ is given by
+so the full expression for $\mathbf{E}_{\levone}[{\rm bias}]$ is given by
 \begin{equation}
-    mathbf{E}_{\levone}[{\rm bias}] = \frac{1}{\ndata}
-    {\rm Tr} \left[ X^\prime X^+ \cov^\prime (X^\prime X^+)^T \invcov{} \right].
+    \mathbf{E}_{\levone}[{\rm bias}] = \frac{1}{\ndata}
+    {\rm Tr} \left[ X^\prime X^+ \cov (X^\prime X^+)^T {\cov^{\prime}}^{-1} \right].
 \end{equation}
 We note that if the test data is identical the data the model was fitted on,
-we recover an intuitive result $mathbf{E}_{\levone}[{\rm bias}] = \frac{\nmodel}{\ndata}$.
+we recover an intuitive result $\mathbf{E}_{\levone}[{\rm bias}] = \frac{\nmodel}{\ndata}$.
 Consider the example of the polynomial, the maximum value which $\nmodel$ can
 take whilst $X$ still has linearly independent rows is $\ndata$ and in this case
-the $mathbf{E}_{\levone}[{\rm bias}]$ takes it's maximum value of 1. The central
+the $\mathbf{E}_{\levone}[{\rm bias}]$ takes it's maximum value of 1. The central
 predictions from the model exactly pass through each data point.
 
 We can perform a similar exercise on the model replica predictions. The difference
@@ -55,13 +55,47 @@ Since $\noise$ and $\shift$ follow the same distribution, it's clear that
 \end{equation}
 which, as a result means that
 \begin{equation}
-    \var = mathbf{E}_{\levone}[{\rm bias}].
+    \var = \mathbf{E}_{\levone}[{\rm bias}].
 \end{equation}
 We recall that when the map is linear, the NNPDF MC methodology generates replicas
 which are sampled from the posterior distribution of the model given the data.
 We have shown here that provided the underlying law belongs to the model
 space, the posterior distribution of the model predictions satisfy the
-requirement that $\biasvarratio = 1$. Note that if we were to choose the
+requirement that $\biasvarratio = 1$.
+
+\subsection{Relating variance to posterior distribution}
+
+When we consider data which was not used to inform the model distribution,
+denoted throughout this section with prime notation, then we can consider the posterior
+distribution from the training data, $\levone$ as a prior for the unseen data.
+The model prior is given by Eq.~\ref{eq:PosteriorMultiGaussModel}, which is fully
+parameterised by mean and covariance: $u_0 = X^+ z$ and
+$C_M^{-1} = X^T\invcov{D}X$ respectively. The posterior data-space distribution
+of the new data is given by Eq.~\ref{eq:PosteriorDataSpace}, which is also a
+Gaussian with mean and covariance given by Eq.~\ref{eq:PosteriorDataParams}.
+Now if we take ${\cov^{\prime}} \to \infty$, which is equivalent to there being
+no data for these predictions yet, the posterior data-space distribution
+is given by
+\begin{equation}
+    \begin{split}
+        \pi_D(\levone^\prime|\levone,u_0,\mathcal{G}) &\propto \exp
+        \left( - \frac{1}{2}
+            (\levone^\prime - X^\prime X^+ \levone)^T
+            {{X^\prime}^T}^+ X^T \invcov X {X^\prime}^+
+            (\levone^\prime - X^\prime X^+ \levone)
+        \right) \, ,
+    \end{split}
+\end{equation}
+a Gaussian with covariance
+$\covrep = \covcent = \left({{X^\prime}^T}^+ X^T \invcov{} X {X^\prime}^+ \right)^{-1}$
+and mean $X^\prime X^+ \levone)$. Comparing $\covrep$ and $\covcent$ can be viewed
+as checking the consistency with the distribution of MAP estimators about the
+true observable values and the covariance of the posterior distribution
+in data-space of unseen data.
+
+\subsection{Underparameterised model}
+
+Note that if we were to choose the
 number of model parameters such that $\nlaw > \nmodel$, then the variance
 would be unaffected, since the underlying law parameters cancel. However, the
 bias would now contain an extra term from the extra parameters in the
