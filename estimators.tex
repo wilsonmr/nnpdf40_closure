@@ -289,98 +289,71 @@ sample on fits and replicas.
 
 \paragraph{Quantile statistics}
 
-A closure test estimator which was previously defined in \cite{nnpdf30}, in
-the space of PDFs was
-$\xi_{1\sigma}$. We define here an analogous estimator in data space
+When the closure test was first presented in \cite{nnpdf30}, there was an estimator
+introduced in the space of PDFs which also aimed to estimate faithfulness of
+PDF uncertainties using the combined assumption of Gaussian PDF uncertainties
+and quantile statistics, called $\xi_{1\sigma}$. Here we can define an
+analagous expression in the space of data,
 \begin{equation}
     \label{eq:XiDataDef}
-    \xi_{1\sigma} = 
+    \xisigdat{n} = 
         \frac{1}{\ndata} \sum_{i}^{\ndata} 
         \frac{1}{\nfits} \sum_{l}^{\nfits}
-            I_{[-\sigma_i^{(l)}, \sigma_i^{(l)}]}
+            I_{[-n\sigma_i^{(l)}, n\sigma_i^{(l)}]}
             \left( \erep{\model_i}^{(l)} - \law_i \right),
 \end{equation}
 where $\sigma^{(l)}$ is the standard deviation of the theory predictions
-estimated from the replicas of fit $l$. $\xi_{1\sigma}$ aims to measure the same
-thing as $\frac{\eshift{\bias}}{\eshift{\var}}$: whether the distribution of
-replicas for a given fit matches the distribution of the central predictions
-around the underlying predictions.
-%TODO: discussion of comparison
-
-\subsection{Discussion of xi, some of which should go in subsection above}
-
-where $\sigma^{(l)}$ is the standard deviation of the theory predictions
-estimated from the replicas of fit $l$. $\xi_{1\sigma}$ aims to measure the same
-thing as $\frac{\eshift{\bias}}{\eshift{\var}}$: whether the distribution of
-replicas for a given fit matches the distribution of the central predictions
-around the underlying predictions. It is useful to define $\xi_{1\sigma}^{i}$ as
-the value of $\xi_{1\sigma}$ for an individual data point such that
-\begin{equation}
-    \label{eq:XiDataIDel}
-    \xi_{1\sigma} = \frac{1}{\ndata} \sum_i \xi_{1\sigma}^{i}.
-\end{equation}
-If we assume that the replica distribution is constant across fits then our
-definition $\xi_{1\sigma}^{i}$ is just a discretised expectation value of the
-indicator function. In the case that we have infinite fits, then
+estimated from the replicas of fit $l$ and $I_{[a, b]}(x)$ is the indicator
+function, which is one when $a \leq x \leq b$ and zero otherwise. In other
+words, $\xisigdat{n}$ is counting how often the difference between the prediction
+from the MAP estimator and the true observable value is within the $n\sigma$
+confidence interval of the replicas, assuming they're Gaussian. Note that
+in the basis where $i$ runs over the individual data points included in the fit,
+$\sigma^2$ corresponds to the diagonal entries of $\covrep$ in
+Eq.~\ref{eq:CovRep}. Since $\covrep$ is primarily driven by the replica
+fluctuations, we assume that it is roughly constant across fits, or independent
+upon the specific instance of observational noise. Also when taking the expectation
+value across fits, we're implicitly taking the expectation value across
+the prior distribution of the fitted data. This allows us to write
+$\xisigdat{n}$ for a specific data point in the limit of infinite fits, each to
+a different instance of the data as
 \begin{equation}
     \label{eq:XiIExpecVel}
-    \xi_{1\sigma}^{i} = 
-    \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}\, 
-    p(\erep{\model_i} - \law_i)\, 
-    {\rm d}(\erep{\model_i} - \law_i).
+    \xisigdati{n} = 
+    \int_{-\infty}^{\infty} I_{[-n \sigma_i, n \sigma_i]}\,
+    \left( \erep{\model_i}^{(l)} - \law_i \right) 
+    p(\levone)\, 
+    {\rm d}(\levone),
 \end{equation}
-If we then assume that $p(\erep{\model_i} - \law_i)$ is a gaussian centered on
-zero with a standard deviation which we will denote as $\modelstd_i$ then the
-integral simplifies to
+where $\erep{\model_i}^{(l)}$ has implicit conditional dependence on $z$. If
+the distribution of $\erep{\model_i}^{(l)} - \law_i$ is gaussian, centered on
+zero, we can defined $\modelstd^2$ as the diagonal entries of $\covcent$. In
+which case
 \begin{equation}
     \label{eq:expectedxi}
-    \xi_{1\sigma}^{i} = 
-    \erf \left( \frac{\sigma_i}{\modelstd_i \sqrt{2}}\right),
+    \xisigdati{n} = 
+    \erf \left( \frac{n \sigma_i}{\modelstd_i \sqrt{2}}\right),
 \end{equation}
-which is the standard result of integrating a gaussian over some finite
-symmetric interval. Clearly if the distribution of central predictions about the
-underlying law matches the distribution of the replica predicitons around the
-central predictions then the expected value of $\xi_{1\sigma}^{i}$ is 0.68. This
-is consistent with the assumptions we made, \viz\ it is  the quantile statistics
-of a gaussian distribution.
+which is simply the standard result of integrating a gaussian over some finite
+symmetric interval.
 
-One can also look at the variance of the indicator function across fits to get
-an idea of the fluctuation of $\xi_{1\sigma}^{i}$, which we will denote as
-$\Delta[\xi_{1\sigma}^{i}]$
-\begin{equation}
-    \label{eq:XiIVar}
-    \begin{split}
-        \Delta[\xi_{1\sigma}^{i}] 
-        =& \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}^2\, 
-            p(\erep{\model_i} - \law_i)\,
-            {\rm d}(\erep{\model_i} - \law_i) - \\
-        &- \left( \int_{-\infty}^{\infty} I_{[-\sigma_i, \sigma_i]}\,
-            p(\erep{\model_i} - \law_i)\,
-            {\rm d}(\erep{\model_i} - \law_i) \right)^2,
-    \end{split}
+The analogy between $\biasvarratio$ and $\xisigdat{n}$ is clear, the ratios of
+uncertainties are both attempts to quantify Eq.~\ref{eq:IdealRatioDef} whilst keeping
+effects due to using finite statistics under control. Whilst with
+$\biasvarratio$ we take the average over
+test data before taking the ratio, $\xisigdat{n}$ instead takes the ratio
+of the diagonal elements - ignoring correlations. Since the predictions
+from the model will be compared with experimental central values, taking into
+account experimental error, we find it more natural to calculate $\xisigdat{n}$
+in the basis which diagonalises the experimental covariance of the test data as
+in Eq.~\ref{eq:InvCovPrimeDiag}. If we assume that in this new basis, that
+both $\frac{\covrep_{ii}}{\left(\sigma'_i\right)^2}$ and
+$\frac{\covcent_{ii}}{\left(\sigma'_i\right)^2}$ are approximately constant
+for all eigenvectors of the experimental covariance matrix, then we recover the
+approximation
+\begin{equation}\label{eq:CompareXiRatio}
+    \xisigdat{n} \sim \erf \left( \frac{ n\biasvarratio}{\sqrt{2}} \right).
 \end{equation}
-which can be simplified to
-\begin{equation}
-    \label{eq:XiIVarSimplified}
-    \Delta[\xi_{1\sigma}^{i}] =
-    \erf \left( \frac{\sigma_i}{\modelstd_i \sqrt{2}}\right) -
-    \erf \left( \frac{\sigma_i}{\modelstd_i \sqrt{2}}\right)^2.
-\end{equation}
-Even in the ideal case that the distributions are the same, we see that the
-$\Delta[\xi_{1\sigma}^{i}] = 0.22$, which is a large spread considering
-$\xi_{1\sigma}^{i}$ is bounded between 0 and 1.
-
-When taking the mean across datapoints to obtain $\xi_{1\sigma}$ we note that
-getting 0.68 relies on each sampled $\xi_{1\sigma}^{i}$ being statistically
-independent. This clearly will not be the case because there can be a big
-correlation between datapoints within the same dataset. We can calculate
-$\xi_{1\sigma}$ in different basis and note that unlike $\chi^2$ and quantities
-of the form $v^T M v$, $\xi_{1\sigma}$ is not basis independent. There is a
-choice of basis, however it will be useful to compare the value $\xi_{1\sigma}$
-and $\frac{\eshift{\bias}}{\eshift{\var}}$. Therefore, a natural basis to
-calculate $\xi_{1\sigma}$ is the basis which diagonalises the experimental
-covariance matrix because bias and variance are both calculated in units of the
-experimental
-% Should I mention this without having tried it?
-covariance. As previously discussed, this makes sense in light of using the PDFs
-to make data-theory comparisons.
+Whilst it's clear Eq.~\ref{eq:CompareXiRatio} is reliant on a fair few
+assumptions which may not hold, we will use the comparison of $\xisigdat{n}$ with
+$\biasvarratio$ to consider how valid these assumptions may be.
