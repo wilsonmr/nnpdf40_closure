@@ -13,23 +13,23 @@ on PDF determinations.
 \subsection{Statement of the problem}
 \label{sec:BayesianInverse}
 
-The space of inputs is denoted by $X$, while $R$ denotes the space of responses.
+The space of inputs is denoted by $\modelspace$, while $R$ denotes the space of responses.
 The model is specified by a {\em forward map}
 \begin{align}
   \label{eq:ForwardMap}
-  G : ~& X \to R \nonumber \\
-      & u \mapsto r=G(u) \, ,
+  \fwdmapop : ~& \modelspace \to R \nonumber \\
+      & \modelvec \mapsto r=\fwdmapop(\modelvec) \, ,
 \end{align}
-which associates a response $r \in R$ to the input $u \in X$, where we assume
-that $X$ and $R$ are Banach spaces.~\footnote{Banach spaces are complete normed
+which associates a response $r \in R$ to the input $\modelvec \in \modelspace$, where we assume
+that $\modelspace$ and $R$ are Banach spaces.~\footnote{Banach spaces are complete normed
 vector spaces. We do not need to get into a more detailed discussion here, but
 it is important to note that working in Banach spaces allows us to generalise
 the results to infinite-dimensional spaces of functions.} As an example we can
-think of $u$ as being a Parton Distribution Function, \ie\ a function defined on
+think of $\modelvec$ as being a Parton Distribution Function, \ie\ a function defined on
 the interval $[0,1]$, and $r$ a DIS structure function,
 \begin{align}
   \label{eq:DISExample}
-  r(x,Q^2) = \int_x^1 \frac{dz}{z}\, C(z,Q^2) u(x/z,Q^2)\, .
+  r(x,Q^2) = \int_x^1 \frac{dz}{z}\, C(z,Q^2) \modelvec(x/z,Q^2)\, .
 \end{align}
 Note that in this example the forward map maps one real function into another
 real function. Experiments will not have access to the full function $r$ but
@@ -38,46 +38,46 @@ mathematical expression that takes into account the fact that we have a finite
 number of measurements, we introduce an {\em observation operator}
 \begin{align}
   O : ~& R \to Y \nonumber \\
-       & r \mapsto y \, ,
+       & r \mapsto \obs \, ,
 \end{align}
-where $y \in Y$ is a vector in a finite-dimensional space $Y$ that contains all
+where $\obs \in Y$ is a vector in a finite-dimensional space $Y$ that contains all
 the experimental results, \eg\ the value of the structure function for different
-values of the kinematics. In general we will assume that $y \in
-\mathbb{R}^{\ndata}$, \ie\ we have a finite number $\ndata$ of real experimental
+values of the kinematics. In general we will assume that $\obs \in
+\real^{\ndata}$, \ie\ we have a finite number $\ndata$ of real experimental
 values. The quantity of interest is the composed operator
 \begin{align}
-  \mathcal{G} : ~& X \to \mathbb{R}^{\ndata} \nonumber \\
-                 & \mathcal{G} = O \circ G\, ,
+  \fwdobsop : ~& \modelspace \to \real^{\ndata} \nonumber \\
+                 & \fwdobsop = O \circ G\, ,
 \end{align}
-which maps the input $u$ to the set of data. Taking into account the fact that
+which maps the input $\modelvec$ to the set of data. Taking into account the fact that
 experimental data are subject to noise, we can write
 \begin{align}
   \label{eq:NoisyInverseProblem}
-  y = \mathcal{G}(u) + \eta\, ,
+  \obs = \fwdobsop(\modelvec) + \obsnoise\, ,
 \end{align}
-where $\eta$ is a random variable defined over $\mathbb{R}^{\ndata}$
-with probability density $\rho(\eta)$. We will refer to $\eta$ as the
-{\em observational noise}. The inverse problem becomes finding $u$
-given $y$. It is often the case that inverse problems are ill-defined
+where $\obsnoise$ is a random variable defined over $\real^{\ndata}$
+with probability density $\rho(\obsnoise)$. We will refer to $\obsnoise$ as the
+{\em observational noise}. The inverse problem becomes finding $\modelvec$
+given $\obs$. It is often the case that inverse problems are ill-defined
 in the sense that the solution may not exist, may not be unique, or
 may be unstable under small variations of the problem. 
 
 In solving this problems we are going to adopt a Bayesian point of view; our
-prior knowledge about $u$ is encoded in a prior probability measure
+prior knowledge about $\modelvec$ is encoded in a prior probability measure
 $\mu^0$, and we use Bayes' theorem to compute the posterior
-probability measure of $u$ given the data $y$, which we denote as
-$\mu^y$. We denote the probability densities associated to $\mu^0$ and
-$\mu^y$ by $\pi^0$ and $\pi^y$ respectively. Then, using
+probability measure of $\modelvec$ given the data $\obs$, which we denote as
+$\mu^\obs$. We denote the probability densities associated to $\mu^0$ and
+$\mu^\obs$ by $\pi^0$ and $\pi^\obs$ respectively. Then, using
 Eq.~(\ref{eq:NoisyInverseProblem}), we can write the data likelihood,
-\ie\ the probability density of $y$ given $u$,
+\ie\ the probability density of $\obs$ given $\modelvec$,
 \begin{align}
   \label{eq:YGivenUProbDensity}
-  \pi(y|u) = \rho(y-\mathcal G(u))\, ,
+  \pi(\obs|\modelvec) = \rho(\obs-\fwdobsop(\modelvec))\, ,
 \end{align}
 and Bayes' theorem yields
 \begin{align}
   \label{eq:BayesThmInversePosterior}
-  \pi^y(u) = \pi(u|y) \propto \rho(y-\mathcal G(u)) \pi^0(u)\, .
+  \pi^\obs(\modelvec) = \pi(\modelvec|\obs) \propto \rho(\obs-\fwdobsop(\modelvec)) \pi^0(\modelvec)\, .
 \end{align}
 
 \paragraph{Example}
@@ -85,40 +85,34 @@ and Bayes' theorem yields
 The concepts that we have introduced so far should sound familiar, and are best
 exemplified by considering the case where both the observational noise and the
 model prior are Gaussian. We assume that we are given a set of central values
-$y_0 \in \mathbb{R}^{\ndata}$ and their covariance matrix $C_D$. Then the {\em
-prior} probability density of the observable $y$ is 
+$\obspriorcent \in \real^{\ndata}$ and their covariance matrix $\obspriorcov$. Then the {\em
+prior} probability density of the observable $\obs$ is 
 \begin{equation}
   \label{eq:PriorData}
-  \pi_{D}^0(y|y_0) \propto \exp\left(
-    -\frac12 \left| y - y_0 \right|_{C_D}^2
+  \pi_{D}^0(\obs|\obspriorcent) \propto \exp\left(
+    -\frac12 \left| \obs - \obspriorcent \right|_{\obspriorcov}^2
     \right)\, ,
 \end{equation}
-% \begin{equation}
-%   \label{eq:PriorData}
-%   \pi_{D}^0(y|y_0) \propto \exp\left(
-%     -\frac12 \left| y - \mathcal{G}u_\mathrm{true}-\eta \right|_{C_D}^2
-%     \right)\, ,
-% \end{equation}
 where the suffix $D$ emphasises the fact that this is a probability density in
 data space, and the notation explicitly reminds us that this is the probability
-density given the central values $y_0$ (and the covariance matrix). Similarly we
+density given the central values $\obspriorcent$ (and the covariance matrix). Similarly we
 can choose a Gaussian distribution for the input model, characterized by a
-central value $u_0$ and a covariance $C_M$:
+central value $\modelpriorcent$ and a covariance $\modelpriorcov$:
 \begin{align}
   \label{eq:PiZeroGauss}
-  \pi_{M}^0(u|u_0)  &\propto \exp\left(
-              -\frac12 \left| u - u_0 \right|_{C_M}^2
+  \pi_{M}^0(\modelvec|\modelpriorcent)  &\propto \exp\left(
+              -\frac12 \left| \modelvec - \modelpriorcent \right|_{\modelpriorcov}^2
               \right)\, .
 \end{align}
 Following the convention above, we use a suffix $M$ here to remind the reader
 that we are looking at a probability density in the space of models. Note that
-in the expressions above we used the norms in $X$ and $\mathbb{R}^{\ndata}$
+in the expressions above we used the norms in $\modelspace$ and $\real^{\ndata}$
 respectively, and introduced the short-hand notation
 \begin{align}
   \left|a\right|_M^2 = \left| M^{-1/2} a\right|^2\, ,
 \end{align}
-where $a$ denotes a generic element of $X$, $R$ or $\mathbb{R}^{\ndata}$. For
-the case where $a \in \mathbb{R}^{\ndata}$, we can use the usual Euclidean norm
+where $a$ denotes a generic element of $\modelspace$, $R$ or $\real^{\ndata}$. For
+the case where $a \in \real^{\ndata}$, we can use the usual Euclidean norm
 and
 \begin{align}
   \left| a \right|_M^2 = \sum_{i,j} a_i M_{ij} a_j\, ,
@@ -131,97 +125,97 @@ The forward map induces a correlation between the input model and the
 observables, 
 \begin{equation}
   \label{eq:ThetaCorr}
-  \theta(y,u|\mathcal{G}) = \delta\left(y - \mathcal{G}(u)\right)\, ,
+  \theta(\obs,\modelvec|\fwdobsop) = \delta\left(\obs - \fwdobsop(\modelvec)\right)\, ,
 \end{equation}
 where the Dirac delta corresponds to the case where there are no theoretical
 uncertainities. Theoretical uncertainties can be introduced by broadening the
-distribution of $y$ away from the exact prediction of the forward map, \eg\
+distribution of $\obs$ away from the exact prediction of the forward map, \eg\
 using a Gaussian with covariance $C_T$,
 \begin{equation}
   \label{eq:TheoryErrors}
-  \theta(y,u|\mathcal{G}) = \exp\left(
+  \theta(\obs,\modelvec|\fwdobsop) = \exp\left(
     -\frac12 
-    \left| y - \mathcal{G}(u)
+    \left| \obs - \fwdobsop(\modelvec)
     \right|_{C_T}^2\right)\, .
 \end{equation}
 Note however that it is not cleat that theoretical errors are normally
-distributed. Taking the correlation $\theta(y,u)$ into account, the joint
-distribution of $y$ and $u$ is
+distributed. Taking the correlation $\theta(\obs,\modelvec)$ into account, the joint
+distribution of $\obs$ and $\modelvec$ is
 \begin{align}
   \label{eq:JointYAndU}
-  \pi(y,u|y_0,u_0,\mathcal{G}) \propto 
-  \pi_{D}^0(y|y_0) \pi_{M}^0(u|u_0) \theta(y,u|\mathcal{G})\, .
+  \pi(\obs,\modelvec|\obspriorcent,\modelpriorcent,\fwdobsop) \propto 
+  \pi_{D}^0(\obs|\obspriorcent) \pi_{M}^0(\modelvec|\modelpriorcent) \theta(\obs,\modelvec|\fwdobsop)\, .
 \end{align}
-We can now marginalize with respect to y, neglecting theory errors, 
+We can now marginalize with respect to \obs, neglecting theory errors, 
 \begin{align}
   \label{eq:MarginOne}
-  \pi_M(u|y_0,u_0,\mathcal{G}) 
-  &\propto \int dy\, \pi_{D}^0(y|y_0) \pi_{M}^0(u|u_0) 
-    \theta(y,u|\mathcal{G}) \\
-  & \propto \pi_{M}^0(u|u_0)  \int dy\, \pi_{D}^0(y|y_0) 
-    \theta(y,u|\mathcal{G}) \\
-  & \propto \pi_{M}^0(u|u_0) \pi_{D}^0(\mathcal{G}(u)|y_0)\, .
+  \pi_M(\modelvec|\obspriorcent,\modelpriorcent,\fwdobsop) 
+  &\propto \int dy\, \pi_{D}^0(\obs|\obspriorcent) \pi_{M}^0(\modelvec|\modelpriorcent) 
+    \theta(\obs,\modelvec|\fwdobsop) \\
+  & \propto \pi_{M}^0(\modelvec|\modelpriorcent)  \int dy\, \pi_{D}^0(\obs|\obspriorcent) 
+    \theta(\obs,\modelvec|\fwdobsop) \\
+  & \propto \pi_{M}^0(\modelvec|\modelpriorcent) \pi_{D}^0(\fwdobsop(\modelvec)|\obspriorcent)\, .
 \end{align}
 The log-likelihood in the Gaussian case is simply the $\chi^2$ of the data to
 the theory prediction:
 \begin{equation}
   \label{eq:LikelyChiSq}
-  -\log\pi_D^0(\mathcal{G}(u)|y_0) =  
+  -\log\pi_D^0(\fwdobsop(\modelvec)|\obspriorcent) =  
       \frac12 \left|
-      \mathcal{G}(u) - y_0
-      \right|_{C_D}^2
+      \fwdobsop(\modelvec) - \obspriorcent
+      \right|_{\obspriorcov}^2
     \, .
 \end{equation}
 In the notation of Eq.~\ref{eq:BayesThmInversePosterior}
 \begin{equation}
   \label{eq:IdentifyRho}
-  \pi_D^0(\mathcal{G}(u)|y_0) = \rho\left(
-    \mathcal{G}(u) - y_0
+  \pi_D^0(\fwdobsop(\modelvec)|\obspriorcent) = \rho\left(
+    \fwdobsop(\modelvec) - \obspriorcent
   \right)\, ,
 \end{equation}
 where in this case 
 \begin{align}
   \label{eq:RhoGauss}
-  \rho(\eta) &\propto \exp\left(
-               -\frac12 \left|\eta\right|_{C_D}^2
+  \rho(\obsnoise) &\propto \exp\left(
+               -\frac12 \left|\obsnoise\right|_{\obspriorcov}^2
                \right)\, .
 \end{align}
-The probability density $\pi_M(u|y_0,u_0,\mathcal{G})$ was called $\pi^y(u)$ in
-Eq.~\ref{eq:BayesThmInversePosterior}, where the suffix $y$ is a short-hand to
+The probability density $\pi_M(\modelvec|\obspriorcent,\modelpriorcent,\fwdobsop)$ was called $\pi^\obs(\modelvec)$ in
+Eq.~\ref{eq:BayesThmInversePosterior}, where the suffix $\obs$ is a short-hand to
 denote the posterior probability in model space, taking into account all the
 conditional variables. Hence, for the Gaussian case, Bayes' theorem yields
 \begin{align}
   \label{eq:PosteriorModel}
-  \pi^y(u) &\propto 
+  \pi^\obs(\modelvec) &\propto 
   \exp\left(
-  -\frac12 \left| y_0 - \mathcal G(u) \right|_{C_D}^2
-  -\frac12 \left| u - u_0 \right|_{C_M}^2
+  -\frac12 \left| \obspriorcent - \fwdobsop(\modelvec) \right|_{\obspriorcov}^2
+  -\frac12 \left| \modelvec - \modelpriorcent \right|_{\modelpriorcov}^2
   \right)\\ 
   &= \exp\left[
-    - S(u)
+    - S(\modelvec)
   \right]\, .
 \end{align}
 Note that in the argument of the likelihood function we have the central values
-of the data points $y_0$. Eq.~(\ref{eq:PosteriorModel}) is the Bayesian answer
-to the inverse problem, our knowledge of the model $u$ is encoded in the
-probability measure $\mu^y$, which is fully specified by the density $\pi^y$.
+of the data points $\obspriorcent$. Eq.~(\ref{eq:PosteriorModel}) is the Bayesian answer
+to the inverse problem, our knowledge of the model $\modelvec$ is encoded in the
+probability measure $\mu^\obs$, which is fully specified by the density $\pi^\obs$.
 There are several ways to characterise a probability distribution. The NNPDF
 approach is focused on the determination of the {\em Maximum A Posteriori (MAP)}
-estimator, \ie\ the element $u_* \in X$ that maximises $\pi^y(u)$:
+estimator, \ie\ the element $u_* \in \modelspace$ that maximises $\pi^\obs(\modelvec)$:
 \begin{align}\label{eq:MAP}
-  u_* = \arg\min_{u \in X} 
+  u_* = \arg\min_{\modelvec \in \modelspace} 
   \left(
-  -\frac12 \left| y_0 - \mathcal G(u) \right|_{C_D}^2
-  -\frac12 \left| u - u_0 \right|_{C_M}^2
+  -\frac12 \left| \obspriorcent - \fwdobsop(\modelvec) \right|_{\obspriorcov}^2
+  -\frac12 \left| \modelvec - \modelpriorcent \right|_{\modelpriorcov}^2
   \right)\, .
 \end{align}
-For every instance of the data $y_0$, the MAP estimator is computed by
+For every instance of the data $\obspriorcent$, the MAP estimator is computed by
 minimising a regulated $\chi^2$, we will refer to this procedure as the {\em
 classical fit} of experimental data to a model. Note that in the Bayesian
 approach, the regulator appears naturally after having specified carefully all
 the assumptions that enter in the prior. In this specific example the regulator
-arises from the Gaussian prior for the model input $u$, which is normally
-ditributed around a solution $u_0$. The MAP estimator provides the explicit
+arises from the Gaussian prior for the model input $\modelvec$, which is normally
+ditributed around a solution $\modelpriorcent$. The MAP estimator provides the explicit
 connection between the Bayesian approach and the classical fit.
 
 \subsection{Comparison with classical fitting}
@@ -233,39 +227,39 @@ going to summarise these results here without proofs, referring the
 reader to the mathematical literature for the missing details. Working
 in the finite-dimensional case, we assume 
 \begin{align*}
-  u &\in \mathbb{R}^{\nmodel} \, ,\\
-  y &\in \mathbb{R}^{\ndata}\, ,
+  \modelvec &\in \real^{\nmodel} \, ,\\
+  \obs &\in \real^{\ndata}\, ,
 \end{align*}
 and we are going to consider in detail two examples from Ref.~\cite{StuartCore}.
 
 \paragraph{Underdetermined system}
 The first case that we are going to analyse is the case of a linear system that
 is underdetermined by the data. The linear model is completely specified by a
-vector of coefficients $g\in \mathbb{R}^{\nmodel}$, while we are going to assume
+vector of coefficients $g\in \real^{\nmodel}$, while we are going to assume
 that we only have one datapoint, \ie\ $\ndata=1$, and hence:
 \begin{equation}
   \label{eq:LinearModelEx}
-  y = (g^T u) + \eta\, ,
+  \obs = (g^T \modelvec) + \obsnoise\, ,
 \end{equation}
-where $\eta \sim \mathcal{N}(0,\gamma^2)$ is one Gaussian number, whose
+where $\obsnoise \sim \mathcal{N}(0,\gamma^2)$ is one Gaussian number, whose
 probability density is centred at $0$ and has variance $\gamma^2$. For
-simplicity we are going to assume that the prior on $u$ is also a
-multi-dimensional Gaussian, centred at $0$ with covariance matrix $C_M$. In
+simplicity we are going to assume that the prior on $\modelvec$ is also a
+multi-dimensional Gaussian, centred at $0$ with covariance matrix $\modelpriorcov$. In
 this case the posterior distribution can be written as
 \begin{equation}
   \label{eq:GaussPostExplicit}
-    \pi^y(u) \propto \exp \left[
-    -\frac{1}{2\gamma^2} \left|y - (g^T u) \right|^2 - \frac12 \left|
-      u
-    \right|_{C_M}^2 
+    \pi^\obs(\modelvec) \propto \exp \left[
+    -\frac{1}{2\gamma^2} \left|\obs - (g^T \modelvec) \right|^2 - \frac12 \left|
+      \modelvec
+    \right|_{\modelpriorcov}^2 
     \right]\, ,
 \end{equation}
-which is still a Gaussian distribution for $u$. The mean and covariance are
+which is still a Gaussian distribution for $\modelvec$. The mean and covariance are
 respectively
 \begin{align}
-  m &= \frac{(C_M g) y}{\gamma^2 + (g^T C_M g)}\, , \\
-  \Sigma &= C_M - 
-  \frac{(C_M g) (C_M g)^T}{\gamma^2 + (g^T C_M g)}\, .
+  m &= \frac{(\modelpriorcov g) \obs}{\gamma^2 + (g^T \modelpriorcov g)}\, , \\
+  \Sigma &= \modelpriorcov - 
+  \frac{(\modelpriorcov g) (\modelpriorcov g)^T}{\gamma^2 + (g^T \modelpriorcov g)}\, .
 \end{align}
 Because the argument of the exponential is a quadratic form, the mean of the
 distribution coincides with the MAP estimator. It is instructive to look at
@@ -274,22 +268,22 @@ $\gamma\to 0$:
 \begin{align}
   m_\star &= 
   \lim_{\gamma\to 0} m
-  = \frac{(C_M g) y}{(g^T C_M g)}\, , \\
+  = \frac{(\modelpriorcov g) \obs}{(g^T \modelpriorcov g)}\, , \\
   \Sigma_\star &= 
   \lim_{\gamma\to 0} \Sigma 
-  = C_M - 
-  \frac{(C_M g) (C_M g)^T}{(g^T C_M g)}\, .
+  = \modelpriorcov - 
+  \frac{(\modelpriorcov g) (\modelpriorcov g)^T}{(g^T \modelpriorcov g)}\, .
 \end{align}
 These values satisfy
 \begin{align}
-  (g^T m_\star) = y \, , \\
+  (g^T m_\star) = \obs \, , \\
   (\Sigma_\star g) = 0 \, ,
 \end{align}
 which shows that the mean of the distribution is such that the data point is
 exactly reproduced by the model, and that the uncertainty in the direction
 defined by $g$ vanishes. It should be noted that the uncertainty in directions
 perpendicular to $g$ does not vanish and is determined by a combination of the
-prior and the model, \viz\ $C_M$ and $g$ in our example. This is a
+prior and the model, \viz\ $\modelpriorcov$ and $g$ in our example. This is a
 particular example of a more general feature: for underdetermined systems the
 information from the prior still shapes the probability distribution of the
 solution even in the small noise limit.  
@@ -300,111 +294,111 @@ again the case of small observational noise. We consider $\ndata\geq 2$ and
 $n=1$, with a linear forward map such that
 \begin{equation}
  \label{eq:OverDetForwMap}
- y = g u  + \eta\, ,
+ \obs = g \modelvec  + \obsnoise\, ,
 \end{equation} 
-where $\eta$ is an $\ndata$-dimensional Gaussian variable with a diagonal
+where $\obsnoise$ is an $\ndata$-dimensional Gaussian variable with a diagonal
 covariance $\gamma^2 I$, where $I$ denotes the identity matrix. For simplicity
-we are going to assume a Gaussian prior with unit variance for $u$, which yields
+we are going to assume a Gaussian prior with unit variance for $\modelvec$, which yields
 for the posterior distribution:
 \begin{equation}
   \label{eq:OverDetPost}
-  \pi^y(u) \propto 
+  \pi^\obs(\modelvec) \propto 
     \exp\left(
-      -\frac{1}{2\gamma^2} \left| y - g(u + \beta u^3)\right|^2
-      -\frac12 u^2
+      -\frac{1}{2\gamma^2} \left| \obs - g(\modelvec + \beta \modelvec^3)\right|^2
+      -\frac12 \modelvec^2
     \right)\, .
 \end{equation} 
 If $\beta=0$ the posterior is Gaussian and we can easily compute its mean and variance: 
 \begin{align}
-  m &= \frac{(g^T y)}{\gamma^2 + |g|^2} \, , \\
+  m &= \frac{(g^T \obs)}{\gamma^2 + |g|^2} \, , \\
   \sigma^2 &=
     \frac{\gamma^2}{\gamma^2 + |g|^2}\, .
 \end{align}
 In this case, in the limit of vanishing observational noise, we obtain
 \begin{align}
-  m_\star &= \frac{(g^T y)}{|g|^2} \, ,\\
+  m_\star &= \frac{(g^T \obs)}{|g|^2} \, ,\\
   \sigma_\star^2 &= 0\, .
 \end{align}
 The mean is given by the weighted average of the datapoints, which is also the solution of the $\chi^2$ minimization
 \begin{equation}
-  m_\star = \arg\min_{u\in\mathbb{R}} \left|y - g u\right|^2\, .
+  m_\star = \arg\min_{\modelvec\in\real} \left|\obs - g \modelvec\right|^2\, .
 \end{equation}
 Note that in this case the variance $\sigma_\star$ vanishes independently of the
 prior. In the limit of small noise, the distribution tends to a Dirac delta
 around the value of the MAP estimator.  
 
 \subsection{Linear Problems}
-\label{eq:LinProbs}
+\label{sec:LinProbs}
 
 Linear problems in finite-dimensional spaces are characterized by a simple forward law, 
 \begin{equation}
   \label{eq:MatrixG}
-  y = \mathcal{G} u\, ,
+  \obs = \linmap \modelvec\, ,
 \end{equation}
-where $\mathcal{G}$ is a matrix. In this framework one can readily  derive
+where $\linmap$ is a matrix. In this framework one can readily  derive
 analytical solutions that are useful to understand the main features of the
 Bayesian approach. Assuming that the priors are Gaussian again, the cost
-function $S(u)$ is a quadratic function of $u$,
+function $S(\modelvec)$ is a quadratic function of $\modelvec$,
 \begin{align}
   \label{eq:CostLinGauss}
-  S(u) &= 
-  \left(\mathcal{G} u - y_0 \right)^T C_D^{-1} 
-  \left(\mathcal{G} u - y_0 \right) + 
-  \left( u - u_0 \right)^T C_M^{-1} \left(u - u_0 \right) \\
+  S(\modelvec) &= 
+  \left(\linmap \modelvec - \obspriorcent \right)^T \obspriorcov^{-1} 
+  \left(\linmap \modelvec - \obspriorcent \right) + 
+  \left( \modelvec - \modelpriorcent \right)^T \modelpriorcov^{-1} \left(\modelvec - \modelpriorcent \right) \\
   &= 
-  \left(u - \tilde{u}\right) \tilde{C}_M^{-1}
-  \left(u - u_0\right) + \mathrm{const}\, ,
+  \left(\modelvec - \modelpostcent\right) \modelpostcov^{-1}
+  \left(\modelvec - \modelpriorcent\right) + \mathrm{const}\, ,
 \end{align} 
 where
 \begin{align}
   \label{eq:PostParams}
-  \tilde{C}_M^{-1} &= 
+  \modelpostcov^{-1} &= 
   \left(
-    \mathcal{G}^T C_D^{-1} G + C_M^{-1}
+    \linmap^T \obspriorcov^{-1} G + \modelpriorcov^{-1}
   \right)\, , \\
-  \tilde{u} &=
-  \tilde{C}_M  \left(
-    \mathcal{G}^T C_D^{-1} y_0 + C_M^{-1} u_0
+  \modelpostcent &=
+  \modelpostcov  \left(
+    \linmap^T \obspriorcov^{-1} \obspriorcent + \modelpriorcov^{-1} \modelpriorcent
   \right)\, .
 \end{align}
 The case where we have no prior information on the model is recovered by taking
-the limit $C_M^{-1} \to 0$, which yields
+the limit $\modelpriorcov^{-1} \to 0$, which yields
 \begin{align}
   \label{eq:NoPriorLinModel}
-  \tilde{C}_M^{-1} &= 
+  \modelpostcov^{-1} &= 
   \left(
-    \mathcal{G}^T C_D^{-1} \mathcal{G}
+    \linmap^T \obspriorcov^{-1} \linmap
   \right)\, , \\
-  \tilde{u} &=
-  \tilde{C}_M  \left(
-    \mathcal{G}^T C_D^{-1} y_0 
+  \modelpostcent &=
+  \modelpostcov  \left(
+    \linmap^T \obspriorcov^{-1} \obspriorcent 
   \right)\, .
 \end{align}
-The action of $C_D^{-1}$ on the vector of obseved data $y_0$ is best visualised using a spectral decomposition
+The action of $\obspriorcov^{-1}$ on the vector of obseved data $\obspriorcent$ is best visualised using a spectral decomposition
 \begin{equation}
   \label{eq:CDSpecDec}
-  C_D^{-1} = \sum_n \frac{1}{\sigma_n^2} P_n\, ,
+  \obspriorcov^{-1} = \sum_n \frac{1}{\sigma_n^2} P_n\, ,
 \end{equation}
-where $P_n$ denotes the projector on the $n$-th eigenvector of $C_D$, and
-$\sigma_n^2$ is the corresponding eigenvalue. The action of $C_D^{-1}$ is to
-perform a weighted average of the components of $y_0$ in the directions of the
-eigenvectors of $C_D$.
+where $P_n$ denotes the projector on the $n$-th eigenvector of $\obspriorcov$, and
+$\sigma_n^2$ is the corresponding eigenvalue. The action of $\obspriorcov^{-1}$ is to
+perform a weighted average of the components of $\obspriorcent$ in the directions of the
+eigenvectors of $\obspriorcov$.
 
 An explicit expression can also be obtained for the posterior distribution of
 data, which can be obtained from the joint distribution by marginalising over
-the model input u:
+the model input $\modelvec$:
 \begin{align}\label{eq:PosteriorDataSpace}
-  \pi_D(y|y_0,u_0,\mathcal{G})
-  &= \int du\, \pi(y,u|y_0,u_0,\mathcal{G}) \\
+  \pi_D(\obs|\obspriorcent,\modelpriorcent,\linmap)
+  &= \int du\, \pi(\obs,\modelvec|\obspriorcent,\modelpriorcent,\linmap) \\
   &\propto \exp\left(
-    -\frac12 \left(y - \tilde{y}\right)^T \tilde{C}_D^{-1}
-    \left(y - \tilde{y}\right)
+    -\frac12 \left(\obs - \obspostcent\right)^T \obspostcov^{-1}
+    \left(\obs - \obspostcent\right)
   \right)\, ,
 \end{align}
 where
 \begin{align}\label{eq:PosteriorDataParams}
-  \tilde{y} &= \mathcal{G} \tilde{u}\, , \\
-  \tilde{C}_D &= \mathcal{G} \tilde{C}_M \mathcal{G}^T\, .
+  \obspostcent &= \linmap \modelpostcent\, , \\
+  \obspostcov &= \linmap \modelpostcov \linmap^T\, .
 \end{align}
 
 {\bf we should be able to use this to understand better the distribution of the estimator in data space} 
@@ -416,20 +410,20 @@ turns out that non-linear models can often be linearised around the central
 value of the prior distribution, 
 \begin{equation}
   \label{eq:LinU0}
-  \mathcal{G}(u) = \mathcal{G}(u_0) + G \left(u - u_0\right) + \ldots\, ,
+  \fwdobsop(\modelvec) = \fwdobsop(\modelpriorcent) + G \left(\modelvec - \modelpriorcent\right) + \ldots\, ,
 \end{equation}
 where 
 \begin{equation}
   \label{eq:FirstDerU0}
-  G^i_\alpha = \left. \frac{\partial \mathcal{G}^i}{\partial u_\alpha} \right|_{u_0}\, ,
+  G^i_\alpha = \left. \frac{\partial \fwdobsop^i}{\partial u_\alpha} \right|_{\modelpriorcent}\, ,
 \end{equation}
-where we have neglected higher-order terms in the expansion of $\mathcal{G}(u)$.
+where we have neglected higher-order terms in the expansion of $\fwdobsop(\modelvec)$.
 
 If these terms are not negligible, another option is to find the MAP estimator,
 and then expand the the forward map around it, which yields equations very
-similar to the previous ones, with $u_0$ replaced by $u_\mathrm{MAP}$. If the
-posterior distribution of $u_\mathrm{MAP}$ is sufficiently peaked around the
-central value, then the linear approximation can be sufficiently accurate. 
+similar to the previous ones, with $\modelpriorcent$ replaced by $u_*$. If the
+posterior distribution of $u$ is sufficiently peaked around the
+MAP estimator, then the linear approximation can be sufficiently accurate. 
 
 
 \subsection{The infinite-dimensional case}
@@ -438,25 +432,25 @@ central value, then the linear approximation can be sufficiently accurate.
 In the finite-dimensional case, where the probability measures are
 specified by their densities with respect to the Lebesgue measure,
 Eq.~(\ref{eq:BayesThmInversePosterior}) encodes the fact that $\rho$
-is the Radon-Nikodym derivative of the probability measure $\mu^y$
+is the Radon-Nikodym derivative of the probability measure $\mu^\obs$
 with respect to $\mu_0$, \viz
 \begin{align}
   \label{eq:RadonNikodym}
-  \frac{d\mu^y}{d\mu_0} (u) \propto \rho(y-\mathcal G(u)) \pi_0(u)\, .
+  \frac{d\mu^\obs}{d\mu_0} (\modelvec) \propto \rho(\obs-\fwdobsop(\modelvec)) \pi_0(\modelvec)\, .
 \end{align}
 Finally, using the fact that the density $\rho$ is a positive
 function, we can rewrite 
 \begin{align}
   \label{eq:PotentialDef}
-  \rho(y-\mathcal G(u)) = \exp\left(-\Phi(u;y)\right)\, ,
+  \rho(\obs-\fwdobsop(\modelvec)) = \exp\left(-\Phi(\modelvec;\obs)\right)\, ,
 \end{align}
 and therefore
 \begin{align}
   \label{eq:RadonNikodymTwo}
-  \frac{d\mu^y}{d\mu^0} (u) \propto \exp\left(-\Phi(u;y)\right)\, .
+  \frac{d\mu^\obs}{d\mu^0} (\modelvec) \propto \exp\left(-\Phi(\modelvec;\obs)\right)\, .
 \end{align}
 In finite-dimensional spaces, the three equations above are just
 definitions that do not add much content. Their interest resides in
 the fact that the last expression, Eq.~(\ref{eq:RadonNikodymTwo}), can
-be properly defined when $X$ is infinite-dimensional.
+be properly defined when $\modelspace$ is infinite-dimensional.
 

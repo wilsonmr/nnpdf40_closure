@@ -4,26 +4,42 @@
 
 We start by defining the model error as the expectation across models of the
 $\chi^2$ between the model predictions and some data central values
-$\levone^\prime$, normalised by the number of data points
+$\testset{\obspriorcent}$, normalised by the number of data points
 \begin{equation}
     \label{eq:chi2kerep}
-    \eout = \frac{1}{\ndata} \erep{
-        \left( \model\left(u_*^{\repind}\right) - \levone^\prime \right)^T
-        \invcovprime
-        \left( \model\left(u_*^{\repind}\right) - \levone^\prime \right)
+    \eout = \frac{1}{\ndata} \emodel{
+        \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\obspriorcent} \right)^T
+        \testset{\obspriorcov}^{-1}
+        \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\obspriorcent} \right)
     }\, ,
 \end{equation}
-where we purposely denoted the data which the model error is evaluated on as
-$\levone^\prime$, as opposed to the data which is used to determine the model
-parameters $\levone$. We could of course set $\levone^\prime = \levone$ and
+where we defined the expectation value over the ensemble of model replicas as
+\begin{equation}
+    \emodel{\cdot} \equiv \frac{1}{\nreps} \sum_{k=1}^{\nreps} \cdot \, ,
+\end{equation}
+and we purposely denoted the data which the model error is evaluated on as
+$\testset{\obspriorcent}$, as opposed to the data which is used to determine the model
+parameters $\obspriorcent$. We could of course set
+$\testset{\obspriorcent} = \obspriorcent$ and
 evaluate the model performance on the fitted data however, as is common in
 machine learning literature, we intend to use a separate set of test data.
-Ideally we would choose $\levone^\prime$ such that $p(\levone^\prime, \levone) =
-p(\levone^\prime)p(\levone)$, in other words the training and test set are
-statistically independent. To make things unambiguous we will denote the model
-error, when evaluated on the ideal case of $\levone^\prime$, as $\eout$. In the
+Ideally we would choose $\testset{\obspriorcent}$ such that the joint prior
+distribution of training and test set can be written as
+$\pi_{D}^0(\testset{\obspriorcent}, \obspriorcent) =
+\pi_{D}^0(\testset{\obspriorcent})\pi_{D}^0(\obspriorcent)$, in other words the
+training and test set are statistically independent. If the prior distribution
+in data-space is Gaussian, then the total covariance of the prior would be
+block diagonal in the training and test covariance:
+\begin{equation}
+    \modelpriorcov^{\rm Total} =
+    \begin{bmatrix}
+        \modelpriorcov  & 0  \\ 
+        0  & \testset{\modelpriorcov}  \\ 
+    \end{bmatrix}
+\end{equation}
+In the
 context of a closure test, $\eout$ is a stochastic quantity which depends both
-on the training data, through the model predictions and the test data.
+on the training data, through the ensemble of MAP estimators, and the test data.
 
 It is useful perform a decomposition of this expression, a similar exercise is
 performed for the likelihood function associate with least-squares regression in
@@ -36,76 +52,81 @@ square
 \begin{equation}
     \begin{split}
     \label{eq:EoutDecomposition}
-        &\eout = \frac{1}{\ndata} \erep{
-            \left( \model\left(u_*^{\repind}\right) - f^\prime \right)^T
-            \invcovprime
-            \left( \model\left(u_*^{\repind}\right) - f^\prime \right)
+        &\eout = \frac{1}{\ndata} \emodel{
+            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\law} \right)^T
+            \testset{\obspriorcov}^{-1}
+            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\law} \right)
         } + \\
-        &+ \erep{
-            \left( f^\prime - \levone^\prime \right)^T
-            \invcovprime
-            \left( f^\prime - \levone^\prime \right)
+        &+ \emodel{
+            \left( \testset{\law} - \testset{\obspriorcent} \right)^T
+            \testset{\obspriorcov}^{-1}
+            \left( \testset{\law} - \testset{\obspriorcent} \right)
         }+ \\
-        &+ 2 \erep{
-            \left( \model\left(u_*^{\repind}\right) - f^\prime \right)^T
-            \invcovprime
-            \left(f^\prime - \levone^\prime \right)
+        &+ 2 \emodel{
+            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\law} \right)^T
+            \testset{\obspriorcov}^{-1}
+            \left(\testset{\law} - \testset{\obspriorcent} \right)
         }\, .
     \end{split}
 \end{equation}
 The second term is the shift associated with evaluating the model error on
-noisey data and the final term is a cross term which we will deal with later. We
-can decompose the first term further,
+noisey test data and the final term is a cross term which we will deal with
+later. We can decompose the first term further,
 % TODO: add the same thing but for fully in sample data to an appendix.
 \begin{equation}
     \begin{split}
-        &\erep{
-            \left( \model\left(u_*^{\repind}\right) - f^\prime \right)^T
-            \invcovprime
-            \left( \model\left(u_*^{\repind}\right) - f^\prime \right)
+        &\emodel{
+            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\law} \right)^T
+            \testset{\obspriorcov}^{-1}
+            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\law} \right)
         } = \\
-        &= \erep{
-            \left( \model\left(u_*^{\repind}\right) - 
-            \erep{\model\left(u_*^{\repind}\right)} \right)^T
-            \invcovprime
-            \left( \model\left(u_*^{\repind}\right) - 
-            \erep{\model\left(u_*^{\repind}\right)} \right)
+        &= \emodel{
+            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - 
+            \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} \right)^T
+            \testset{\obspriorcov}^{-1}
+            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - 
+            \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} \right)
         } + \\
-        &+ \left( \erep{\model\left(u_*^{\repind}\right)} - f^\prime \right)^T
-        \invcovprime
-        \left( \erep{\model\left(u_*^{\repind}\right)} - f^\prime \right)\, ,
+        &+ \left( \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law} \right)^T
+        \testset{\obspriorcov}^{-1}
+        \left( \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law} \right)\, ,
     \end{split}
 \end{equation}
 where we have used the fact that the second term is constant across replicas and
 the cross term that arises in this decomposition is zero when the expectation
 value across replicas is taken. The first term in this expression we call the
-variance and the second term is the bias.
+{\em variance} and the second term is the {\em bias}.
 
 As previously mentioned $\eout$ should be considered a stochastic estimator, in
-theory we could take the expectation value across training data $\levone$ and
-test data $\levone^{\prime}$, the latter of which cancels the cross term in
+theory we could take the expectation value across training data $\modelpriorcent$ and
+test data $\testset{\obspriorcent}$, the latter of which cancels the cross term in
 Eq.~\ref{eq:EoutDecomposition}. The final result of that would be
 \begin{equation}\label{eq:ExpectedBiasVariance}
-    \mathbf{E}_{\levone, \levone^\prime}[\eout] =
-    \mathbf{E}_{\levone}[{\rm bias}] + 
-    \mathbf{E}_{\levone}[{\rm variance}] + 1\, .
+    \mathbf{E}_{\modelpriorcent, \testset{\obspriorcent}}[\eout] =
+    \mathbf{E}_{\modelpriorcent}[{\rm bias}] + 
+    \mathbf{E}_{\modelpriorcent}[{\rm variance}] +
+    \mathbf{E}_{\modelpriorcent, \testset{\obspriorcent}}[{\rm noise}]\, .
 \end{equation}
 We are not interested in the observational noise term, since it is
-independent of the model. The two estimators of interest are independent of
+independent of the model and in the limit of infinite data, replicas and data
+$\mathbf{E}_{\modelpriorcent, \testset{\obspriorcent}}[{\rm noise}] \to 1$.
+The two estimators of interest are independent of
 the test data, and therefore we only need to take the expectation value on
 the training data.
+
 \paragraph{Multiple closure fits}
 In practical terms, taking the expectation value across the training data can
 be achieved by running multiple closure fits, each with a different
-observational noise vector $\shift$, and taking the average i.e.
+observational noise vector $\obsnoise$, and taking the average i.e.
 \begin{equation}
-    \mathbf{E}_{\levone}[ \cdot ] = \frac{1}{\nfits} \sum_{j=1}^{\nfits} \cdot.
+    \mathbf{E}_{\modelpriorcent}[ \cdot ] = \frac{1}{\nfits} \sum_{j=1}^{\nfits} \cdot.
 \end{equation}
 Clearly this is resource intensive, and requires us to perform many fits. In
 NNPDF3.0 \cite{nnpdf30}, single replica proxy fits were used to perform a study
-of the uncertainties. Here we have expanded the estimators used in the closure
-fits and also will be using multiple full replica fits to calculate various
-expectation values - made possible by our next generation fitting code.
+of the uncertainties. Here we have expanded the data-space estimators used in
+the closure fits and also will be using multiple full replica fits to
+calculate various expectation values - made possible by our next generation
+fitting code.
 
 \subsection{Geometric Interpretation}
 
@@ -154,36 +175,36 @@ model predictions in units of the covariance
 \begin{equation}
     \label{eq:VarDef}
     \var = \frac{1}{\ndata}
-    \erep{
-            \left( \model\left(u_*^{\repind}\right) - 
-            \erep{\model\left(u_*^{\repind}\right)} \right)^T
-            \invcovprime
-            \left( \model\left(u_*^{\repind}\right) - 
-            \erep{\model\left(u_*^{\repind}\right)} \right)
+    \emodel{
+            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - 
+            \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} \right)^T
+            \testset{\obspriorcov}^{-1}
+            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - 
+            \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} \right)
         }\, ,
 \end{equation}
 which can be interpreted as the model uncertainty in the space of the test data.
 It is instructive to rephrase Eq.~\ref{eq:VarDef} as
 \begin{equation}
     \label{eq:VarDefalternative}
-    \var = \frac{1}{\ndata} {\rm Tr} \left[ \covrep \invcovprime \right],
+    \var = \frac{1}{\ndata} {\rm Tr} \left[ \covrep \testset{\obspriorcov}^{-1} \right],
 \end{equation}
 where 
 \begin{equation}
     \label{eq:CovRep}
     \covrep = 
-    \erep{
-            \left( \model\left(u_*^{\repind}\right) - 
-            \erep{\model\left(u_*^{\repind}\right)} \right)
-            \left( \model\left(u_*^{\repind}\right) - 
-            \erep{\model\left(u_*^{\repind}\right)} \right)^T
+    \emodel{
+            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - 
+            \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} \right)
+            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - 
+            \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} \right)^T
         }
 \end{equation}
-is the covariance matrix of the predictions from the PDF replicas. Going to a
-basis where $\invcovprime$ is diagonal,
+is the covariance matrix of the predictions from the model replicas. Going to a
+basis where $\testset{\obspriorcov}^{-1}$ is diagonal,
 \begin{equation}
     \label{eq:InvCovPrimeDiag}
-    \left(\invcovprime \right)_{ij} = \frac{1}{\left(\sigma'_i\right)^2} 
+    \left(\testset{\obspriorcov}^{-1} \right)_{ij} = \frac{1}{\left(\testset{\sigma}_i\right)^2} 
     \delta_{ij}\, ,
 \end{equation}
 we can rewrite Eq.~\ref{eq:VarDefalternative} as 

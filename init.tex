@@ -26,41 +26,70 @@
 \usepackage[font=small,labelfont=bf]{caption}
 %\tikzfeynmanset{compat=1.0.0}
 
-% data levels
-\newcommand{\levone}{z}
-\newcommand{\levtwo}{y}
-\newcommand{\law}{f}
-\newcommand{\model}{\mathcal{G}}
-\newcommand{\shift}{\eta}
+% General global commands
+\newcommand{\cov}{C}
+\newcommand{\posterior}[1]{\tilde{#1}}
+\newcommand{\real}{\mathbb{R}}
+
+% General inverse Problems
+% map operators
+\newcommand{\fwdmapop}{G}
+\newcommand{\obsop}{O}
+\newcommand{\fwdobsop}{\mathcal{\fwdmapop}}
+% model space
+\newcommand{\nmodel}{N_{\rm model}}
+\newcommand{\modelspace}{X}
+\newcommand{\modelvec}{u}
+\newcommand{\modelpriorcent}{\modelvec_0}
+\newcommand{\modelpriorcov}{\cov_M}
+\newcommand{\modelpostcent}{\posterior{\modelvec}}
+\newcommand{\modelpostcov}{\posterior{\cov}_M}
+% observable space
+\newcommand{\ndata}{N_{\rm data}}
+\newcommand{\obs}{y}
+\newcommand{\obspriorcent}{\obs_0}
+\newcommand{\obspriorcov}{\cov_{D}}
+\newcommand{\obsnoise}{\eta}
+\newcommand{\obspostcent}{\posterior{\obs}}
+\newcommand{\obspostcov}{\posterior{\cov}_D}
+
+% linear map
+\newcommand{\linmap}{\fwdobsop}
+\newcommand{\vander}{\mathcal{X}}
+
+% NNPDF data/model
+\newcommand{\pseudodat}{\mu}
 \newcommand{\noise}{\epsilon}
+\newcommand{\modelvecrep}{\modelvec_*^{\repind}}
+
+% closure fitting
 \newcommand{\lawmodel}{w}
 
+% closure estimators
+\newcommand{\testset}[1]{ {{#1}^{\prime}} }
+\newcommand{\emodel}[1]{ \mathbf{E}_{\{ \modelvec_* \}} \left[ #1 \right] }
 \newcommand{\eout}{\mathcal{E}^{\rm out}}
-\newcommand{\invcovprime}{C_D^{\prime -1}}
+
+\newcommand{\bias}{{\rm bias}}
+\newcommand{\var}{{\rm variance}}
+\newcommand{\covrep}{\testset{\cov}^{(\rm replica)}}
+\newcommand{\covcent}{\testset{\cov}^{(\rm central)}}
 \newcommand{\biasvarratio}{\mathcal{R}_{bv}}
 
 % quantile estimators
 \newcommand{\xisigdat}[1]{\xi^{(\rm data)}_{#1 \sigma}}
 \newcommand{\xisigdati}[1]{\xi^{(\rm data)}_{#1 {\sigma^i}}}
+\newcommand{\modelstd}{\hat{\sigma}}
 
 % define vector
 \newcommand{\vv}[1]{\mathbf{#1}}
 % should we add a fit index?
-\newcommand{\vecdiffreptwo}{\left( \vv{\model}^{\repind} - \vv{\levtwo}^{\repind}  \right)}
-\newcommand{\vecdiffcentone}{\left( \erep{\vv{\model}} - \vv{\levone} \right)}
-
-% diagonal
-\newcommand{\diag}[1]{\hat{#1}}
-\newcommand{\coveig}{\sigma^{2}}
 
 % quality of life
-\newcommand{\ndata}{N_{\rm data}}
 \newcommand{\nfits}{N_{\rm fits}}
 \newcommand{\nreps}{N_{\rm replicas}}
-\newcommand{\modelstd}{\hat{\sigma}}
 \newcommand{\erf}{{\rm erf}}
 \newcommand{\repind}{(k)}
-\newcommand{\cov}{C}
 \newcommand{\invcov}[1]{\cov^{-1}_{#1}}
 \newcommand{\erep}[1]{\mathbf{E}_{\noise}\left[ #1 \right]}
 \newcommand{\eshift}[1]{\mathbf{E}_{\shift}\left[ #1 \right]}
@@ -73,30 +102,41 @@
 \newcommand{\likelihood}{\mathcal{L}}
 \newcommand{\logll}{l}
 
-% Difference vectors - might want to change these
-\newcommand{\diffreptwo}{\left( \model^{\repind} - \levtwo^{\repind} \right)}
-\newcommand{\diffcentone}{\left( \erep{\model} - \levone \right)}
-\newcommand{\diffcentunder}{\left( \erep{\model} - \law \right)}
-\newcommand{\diffcentrep}{\left( \erep{\model} - \model^{\repind}\right)}
-% discard below?
+%polynomial model
+\newcommand{\nlaw}{N_{\rm law}}
+%PDF space
+\newcommand{\npoints}{N_{\rm points}}
+
+% TODO: deprecate these!!
+\newcommand{\levone}{z}
+\newcommand{\levtwo}{y}
+\newcommand{\law}{f}
+% aliasing model but aim to replace..
+\newcommand{\model}{\fwdobsop}
+\newcommand{\shift}{\obsnoise}
+\newcommand{\invcovprime}{C_D^{\prime -1}}
+
+% -------------------%
+% deprecated commands
+% -------------------%
+\newcommand{\vecdiffreptwo}{\left( \vv{\model}^{\repind} - \vv{\levtwo}^{\repind}  \right)}
+\newcommand{\vecdiffcentone}{\left( \erep{\vv{\model}} - \vv{\levone} \right)}
+
+\newcommand{\coveig}{\sigma^{2}}
+\newcommand{\diag}[1]{\hat{#1}}
+
 \newcommand{\levelonediff}{\Delta}
 \newcommand{\underlyingdiff}{u}
 \newcommand{\repdiff}{v}
 
-% estimators
-\newcommand{\bias}{{\rm bias}}
-\newcommand{\var}{{\rm variance}}
-\newcommand{\covrep}{C^{(\rm replica)}}
-\newcommand{\covcent}{C^{(\rm central)}}
 \newcommand{\shiftcross}{{\rm shift \, cross \, term}}
 \newcommand{\noisecross}{{\rm noise \, cross \, term}}
 \newcommand{\deltaeps}{\Delta_{\epsilon}}
 \newcommand{\kldiv}{D_{KL}}
-%polynomial model
-\newcommand{\nlaw}{N_{\rm law}}
-\newcommand{\nmodel}{N_{\rm model}}
-%PDF space
-\newcommand{\npoints}{N_{\rm points}}
 
+\newcommand{\diffreptwo}{\left( \model^{\repind} - \levtwo^{\repind} \right)}
+\newcommand{\diffcentone}{\left( \erep{\model} - \levone \right)}
+\newcommand{\diffcentunder}{\left( \erep{\model} - \law \right)}
+\newcommand{\diffcentrep}{\left( \erep{\model} - \model^{\repind}\right)}
 
 \graphicspath{{./figures/}}
