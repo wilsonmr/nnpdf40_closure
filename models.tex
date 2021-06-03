@@ -1,43 +1,51 @@
 \section{Linear Forward Map}
 
-\subsection{Closure estimators}
+\subsection{Closure estimators - Linear forward map}
 
-In Sec.~\ref{sec:closure-test} a model whose predictions are linear in the
-model parameters was introduced - which we will refer to as a linear forward map.
-We can perform an analytical closure test in this framework, and check that our
-understanding of the closure estimators is correct. Consider the true observable
-values being generated from an input vector of parameters $c$, such that
+Once again we return to the linear model framework set out in
+Sec.~\ref{sec:fluct-fit-values}. We can perform an analytical closure
+test in this framework, and check our
+understanding of the closure estimators. Consider the true observable
+values for the test data is given by
 \begin{equation}\label{eq:LinearLawMap}
-    f^\prime = X^\prime c
+    \testset{\law} = \testset{\fwdobsop} \lawmodel
 \end{equation}
-where $c$ belongs to the model space, in this case that means the number of parameters
+where $\lawmodel \in \modelspace$, which means the number of parameters
 in the underlying law is less than or equal to the number of parameters in the
-model, $\nlaw \leq \nmodel$. Combining Eqs.~\ref{eq:LinearLawMap},
-\ref{eq:LinForwardMap} and \ref{eq:MAPEstLinModel}, we can write down the
-difference between the true observables and the expectation of the model
-predictions
+model, $\nlaw \leq \nmodel$. Using the previous results from
+Sec.~\ref{sec:fluct-fit-values}, we can write down the
+difference between the true observables and the predictions from the MAP estimator
+(or the expectation of the model predictions across model replicas - in the
+linear model these are the same)
 \begin{equation}
     \begin{split}
-        \erep{\model(u^{* \repind})} - f^\prime &= X^\prime (c - X^+ \levone ) \\
-        &= X^\prime X^+ \shift
+        \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law} &=
+        \testset{\linmap} (\lawmodel - \linmap^+ \obspriorcent ) \\
+        &= \testset{\linmap} \linmap^+ \obsnoise \, ,
     \end{split}
 \end{equation}
-where $X$ is the forward map to the training predictions and $\levone$ are
+where we recall that $\linmap$ is the forward map to the training observables
+and $\obspriorcent$ are
 the corresponding training central values. Calculating the covariance across
-training data of $\erep{\model(u^{* \repind})} - f^\prime$ gives
+training data of
+$\emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law}$
+gives
 \begin{equation}
-    \covcent = X^\prime X^+ \cov(X^\prime X^+)^T,
+    \covcent = \testset{\linmap} \linmap^+ \obspriorcov (\testset{\linmap} \linmap^+)^T \, ,
 \end{equation}
-so the full expression for $\mathbf{E}_{\levone}[{\rm bias}]$ is given by
+so the full expression for $\mathbf{E}_{\obspriorcent}[{\rm bias}]$ is given by
 \begin{equation}
-    \mathbf{E}_{\levone}[{\rm bias}] = \frac{1}{\ndata}
-    {\rm Tr} \left[ X^\prime X^+ \cov (X^\prime X^+)^T {\cov^{\prime}}^{-1} \right].
+    \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+    {\rm Tr} \left[
+        \testset{\linmap} \linmap^+ \obspriorcov (\testset{\linmap} \linmap^+)^T
+        \testset{\modelpriorcov}^{-1}
+    \right].
 \end{equation}
 We note that if the test data is identical the data the model was fitted on,
-we recover an intuitive result $\mathbf{E}_{\levone}[{\rm bias}] = \frac{\nmodel}{\ndata}$.
+we recover an intuitive result $\mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{\nmodel}{\ndata}$.
 Consider the example of the polynomial, the maximum value which $\nmodel$ can
-take whilst $X$ still has linearly independent rows is $\ndata$ and in this case
-the $\mathbf{E}_{\levone}[{\rm bias}]$ takes it's maximum value of 1. The central
+take whilst $\linmap$ still has linearly independent rows is $\ndata$ and in this case
+the $\mathbf{E}_{\obspriorcent}[{\rm bias}]$ takes it's maximum value of 1. The central
 predictions from the model exactly pass through each data point.
 
 We can perform a similar exercise on the model replica predictions. The difference
@@ -45,17 +53,19 @@ between the predictions from model replica $\repind$ and the expectation value
 of the model predictions is
 \begin{equation}
     \begin{split}
-        \model(u^{* \repind}) - \erep{\model(u^{* \repind})} &= X^\prime (X^+ \levtwo^{\repind} - X^+ \levone) \\
-        &= X^\prime X^+ \noise^{\repind}.
+        \testset{\fwdobsop}\left(\modelvecrep\right) -
+        \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} &=
+        \testset{\linmap} (\linmap^+ \pseudodat^{\repind} - \linmap^+ \modelpriorcent) \\
+        &= \testset{\linmap} \linmap^+ \noise^{\repind}.
     \end{split}
 \end{equation}
-Since $\noise$ and $\shift$ follow the same distribution, it's clear that
+Since $\noise$ and $\obsnoise$ follow the same distribution, it's clear that
 \begin{equation}
     \covrep = \covcent,
 \end{equation}
 which, as a result means that
 \begin{equation}
-    \var = \mathbf{E}_{\levone}[{\rm bias}].
+    \var = \mathbf{E}_{\obspriorcent}[{\rm bias}].
 \end{equation}
 We recall that when the map is linear, the NNPDF MC methodology generates replicas
 which are sampled from the posterior distribution of the model given the data.
@@ -65,33 +75,43 @@ requirement that $\biasvarratio = 1$.
 
 \subsection{Relating variance to posterior distribution}
 
-When we consider data which was not used to inform the model distribution,
-denoted throughout this section with prime notation, then we can consider the posterior
-distribution from the training data, $\levone$ as a prior for the unseen data.
-The model prior is given by Eq.~\ref{eq:PosteriorMultiGaussModel}, which is fully
-parameterised by mean and covariance: $u_0 = X^+ z$ and
-$C_M^{-1} = X^T\invcov{D}X$ respectively. The posterior data-space distribution
+If the training and test split is ideal, as discussed in
+Sec.~\ref{sec:ClosureEstimatorsDerivation}, such that the two sets of data
+are uncorrelated then it's
+possible to perform a sequential marginalisation of the data \cite{tarantola}.
+The posterior model distribution obtained by marginalising over the training
+data, can be used as a prior when viewing the test data from a Bayesian
+perspective. The model prior for the test data is given by
+Eq.~\ref{eq:PosteriorMultiGaussModel}, which is fully
+parameterised by mean and covariance: $\modelpriorcent = \linmap^+ \obspriorcent$ and
+$\modelpriorcov = \linmap^+ \obspriorcov (\linmap^+)^T$ respectively.
+The posterior data-space distribution
 of the new data is given by Eq.~\ref{eq:PosteriorDataSpace}, which is also a
 Gaussian with mean and covariance given by Eq.~\ref{eq:PosteriorDataParams}.
-Now if we take ${\cov^{\prime}} \to \infty$, which is equivalent to there being
-no data for these predictions yet, the posterior data-space distribution
+Now if we take $\testset{\obspriorcov} \to \infty$, which is equivalent to
+there being prior information for the test data, the posterior data-space distribution
 is given by
 \begin{equation}
     \begin{split}
-        \pi_D(\levone^\prime|\levone,u_0,\mathcal{G}) &\propto \exp
-        \left( - \frac{1}{2}
-            (\levone^\prime - X^\prime X^+ \levone)^T
-            {{X^\prime}^T}^+ X^T \invcov{} X {X^\prime}^+
-            (\levone^\prime - X^\prime X^+ \levone)
+        \pi_D(\testset{\obspriorcent} |\obspriorcent, \modelpriorcent, \linmap)
+        &\propto \exp \left( - \frac{1}{2}
+            (\testset{\obspriorcent} - \testset{\linmap} \linmap^+ \modelpriorcent)^T
+            {{\testset{\linmap}}^T}^+ \linmap^T \obspriorcov \linmap {\testset{\linmap}}^+
+            (\testset{\obspriorcent} - \testset{\linmap} \linmap^+ \modelpriorcent)
         \right) \, ,
     \end{split}
 \end{equation}
 a Gaussian with covariance
-$\covrep = \covcent = \left({{X^\prime}^T}^+ X^T \invcov{} X {X^\prime}^+ \right)^{-1}$
-and mean $X^\prime X^+ \levone$. Comparing $\covrep$ and $\covcent$ can be viewed
-as checking the consistency with the distribution of MAP estimators about the
-true observable values and the covariance of the posterior distribution
-in data-space of unseen data.
+$\left( {{\testset{\linmap}}^T}^+ \linmap^T \obspriorcov \linmap {\testset{\linmap}}^+ \right)^{-1}$
+and mean $\testset{\linmap} \linmap^+ \modelpriorcent$. We recognise that the
+covariance of posterior
+distribution of the test data, is the covariance of model predictions for the
+test data, $\covrep$. Taking $\testset{\obspriorcov} \to \infty$ might seem
+slightly peculiar, however we can understand this as treating the test dataset
+as new observables for which there are no experimental measurements. When comparing
+$\covcent$, the covariance of the MAP estimators, to $\covrep$ we are
+checking that the observed fluctuation of the MAP estimators about the true
+observables is consistent with the posterior data-space covariance.
 
 \subsection{Underparameterised model}
 
@@ -102,17 +122,19 @@ bias would now contain an extra term from the extra parameters in the
 underlying law, schematically:
 \begin{equation}
     \begin{split}
-        \erep{\model(u^{* \repind})} - f^\prime =
-        X^\prime X^+ \shift + X^\prime_{|c| > \nmodel} c_{|c| > \nmodel},
+        (\emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law})_i =
+        \sum_{1 \leq j \leq \nmodel} \testset{\linmap}_{ij} (\linmap^+ \obsnoise)_j +
+        \sum_{\nmodel < j \leq \nlaw} \testset{\linmap}_{ij} \lawmodel_j,
     \end{split}
 \end{equation}
-which would mean that $\biasvarratio \neq 1$. We now see that requiring
-$\biasvarratio = 1$ demands that the model space is suitably flexible. In the
+which would mean that $\biasvarratio \neq 1$. This demonstrates that requiring
+$\biasvarratio = 1$ demands that the model space is suitably flexible, if the
+underlying law is parameterised then this can be summarised as requiring
+$\lawmodel \in \modelspace$. Note that in the
 underparameterised regime the model replicas are still drawn from the posterior
-distribution, however because $\vert c \vert > \vert u \vert$
-%TODO: call model space something different so we just say c not in model space
-we've somehow invalidated our fitting procedure, which is reflected in the
-data space estimator.
+distribution, however because $\lawmodel \notin \modelspace$ we've somehow
+invalidated the assumptions that go into the relation between model predictions
+and the data-space prior.
 
 Although $\biasvarratio$ was largely chosen on practical
 grounds, we see that it is still a stringent test that our assumptions are
@@ -123,8 +145,8 @@ An unfortunate
 trade-off when using $\biasvarratio$ is it can't be used as a diagnostic
 tool, and is instead used simply for validation. For example, if
 $\biasvarratio > 1$, then we
-can't know whether there was a problem with the distribution of the replicas
-or a deeper issue that the model is underparameterised.
+can't know whether there was a problem with the fitting methodology used to
+generate the model replicas or a deeper issue such as an inflexible model.
 
 \section{Neural network parton distribution functions}
 % TODO: here we should properly define the PDFs, forward map and which experimental
@@ -135,7 +157,7 @@ at the initial scale such that the $\chi^2$ is minimised between the
 corresponding theory predictions and a generated pseudodata replica. A set of
 PDFs usually refers to a set of seperate continuous functions, one for each
 flavour of PDF in a particular basis. In this specific study, fits performed
-with \nfit\ parameterise the set of PDFs as a single neural network which takes
+parameterise the set of PDFs as a single neural network which takes
 as input $x$ and $\ln x$ and returns 8 outputs, one for each flavour in the
 fitting basis, multiplied by some preproccessing exponents. The output for a
 single flavour $j$ is

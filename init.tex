@@ -52,15 +52,20 @@
 \newcommand{\obsnoise}{\eta}
 \newcommand{\obspostcent}{\posterior{\obs}}
 \newcommand{\obspostcov}{\posterior{\cov}_D}
-
 % linear map
 \newcommand{\linmap}{\fwdobsop}
 \newcommand{\vander}{\mathcal{X}}
+\newcommand{\nlaw}{N_{\rm law}}
 
 % NNPDF data/model
+\newcommand{\law}{f}
 \newcommand{\pseudodat}{\mu}
 \newcommand{\noise}{\epsilon}
+\newcommand{\repind}{(k)}
 \newcommand{\modelvecrep}{\modelvec_*^{\repind}}
+% likelihood
+\newcommand{\likelihood}{\mathcal{L}}
+\newcommand{\repchis}{{\chi^2}^{\repind}}
 
 % closure fitting
 \newcommand{\lawmodel}{w}
@@ -69,6 +74,9 @@
 \newcommand{\testset}[1]{ {{#1}^{\prime}} }
 \newcommand{\emodel}[1]{ \mathbf{E}_{\{ \modelvec_* \}} \left[ #1 \right] }
 \newcommand{\eout}{\mathcal{E}^{\rm out}}
+
+\newcommand{\nfits}{N_{\rm fits}}
+\newcommand{\nreps}{N_{\rm replicas}}
 
 \newcommand{\bias}{{\rm bias}}
 \newcommand{\var}{{\rm variance}}
@@ -80,45 +88,18 @@
 \newcommand{\xisigdat}[1]{\xi^{(\rm data)}_{#1 \sigma}}
 \newcommand{\xisigdati}[1]{\xi^{(\rm data)}_{#1 {\sigma^i}}}
 \newcommand{\modelstd}{\hat{\sigma}}
-
-% define vector
-\newcommand{\vv}[1]{\mathbf{#1}}
-% should we add a fit index?
-
-% quality of life
-\newcommand{\nfits}{N_{\rm fits}}
-\newcommand{\nreps}{N_{\rm replicas}}
 \newcommand{\erf}{{\rm erf}}
-\newcommand{\repind}{(k)}
-\newcommand{\invcov}[1]{\cov^{-1}_{#1}}
-\newcommand{\erep}[1]{\mathbf{E}_{\noise}\left[ #1 \right]}
-\newcommand{\eshift}[1]{\mathbf{E}_{\shift}\left[ #1 \right]}
-\newcommand{\nfit}{\texttt{n3fit}}
-\newcommand{\repchis}{{\chi^2}^{\repind}}
+
+% abbreviations
 \newcommand{\ie}{{\it i.e.}}
 \newcommand{\eg}{{\it e.g.}}
 \newcommand{\viz}{{\it viz.}}
 
-\newcommand{\likelihood}{\mathcal{L}}
-\newcommand{\logll}{l}
-
-%polynomial model
-\newcommand{\nlaw}{N_{\rm law}}
-%PDF space
-\newcommand{\npoints}{N_{\rm points}}
-
-% TODO: deprecate these!!
-\newcommand{\levone}{z}
-\newcommand{\levtwo}{y}
-\newcommand{\law}{f}
-% aliasing model but aim to replace..
-\newcommand{\model}{\fwdobsop}
-\newcommand{\shift}{\obsnoise}
-\newcommand{\invcovprime}{C_D^{\prime -1}}
-
 % -------------------%
 % deprecated commands
 % -------------------%
+\newcommand{\vv}[1]{\mathbf{#1}}
+
 \newcommand{\vecdiffreptwo}{\left( \vv{\model}^{\repind} - \vv{\levtwo}^{\repind}  \right)}
 \newcommand{\vecdiffcentone}{\left( \erep{\vv{\model}} - \vv{\levone} \right)}
 
@@ -138,5 +119,18 @@
 \newcommand{\diffcentone}{\left( \erep{\model} - \levone \right)}
 \newcommand{\diffcentunder}{\left( \erep{\model} - \law \right)}
 \newcommand{\diffcentrep}{\left( \erep{\model} - \model^{\repind}\right)}
+
+\newcommand{\invcov}[1]{\cov^{-1}_{#1}}
+\newcommand{\erep}[1]{\mathbf{E}_{\noise}\left[ #1 \right]}
+\newcommand{\eshift}[1]{\mathbf{E}_{\shift}\left[ #1 \right]}
+
+\newcommand{\model}{\fwdobsop}
+\newcommand{\shift}{\obsnoise}
+\newcommand{\invcovprime}{C_D^{\prime -1}}
+\newcommand{\levone}{z}
+\newcommand{\levtwo}{y}
+
+\newcommand{\npoints}{N_{\rm points}}
+\newcommand{\nfit}{\texttt{n3fit}}
 
 \graphicspath{{./figures/}}

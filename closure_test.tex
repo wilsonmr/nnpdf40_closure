@@ -213,8 +213,8 @@ uncertainty is absorbed into the prior of the data, since
 \end{equation}
 where $\delta \sim \mathcal{N}(0, \cov^{\rm theory})$. But since the modelisation
 uncertainty is independent of the data uncertainty then from the point of view
-of a closure test we can absorb $\delta$ into $\shift$ by modifying the data
-prior: $\shift \sim \mathcal{N}(0, C + C^{\rm theory})$, we must also update the
+of a closure test we can absorb $\delta$ into $\obsnoise$ by modifying the data
+prior: $\obsnoise \sim \mathcal{N}(0, C + C^{\rm theory})$, we must also update the
 likelihood of the data given the model to use the total covariance $(C + C^{\rm
 theory})$. From now onwards we will omit $C^{\rm theory}$ because it is
 implicit that we always sample and fit data using the total covariance matrix

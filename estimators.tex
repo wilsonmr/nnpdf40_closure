@@ -1,6 +1,7 @@
 \section{Data space estimators} \label{sec:ClosureEstimators}
 
 \subsection{Deriving the data space estimators}
+\label{sec:ClosureEstimatorsDerivation}
 
 We start by defining the model error as the expectation across models of the
 $\chi^2$ between the model predictions and some data central values
@@ -148,7 +149,7 @@ a two-dimensional data space, with a diagonal covariance.
     The origin
     is the true observable values for each data point. The level one data (or
     experimental central values) are
-    shifted away from this by $\shift$. In this example the covariance matrix
+    shifted away from this by $\obsnoise$. In this example the covariance matrix
     is diagonal, so the eigenvectors correspond to the two data points, the
     square root of the eigenvalues are simply the standard deviation of those
     points. This is without loss of generality because any multivariate distribution
@@ -200,24 +201,34 @@ where
             \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} \right)^T
         }
 \end{equation}
-is the covariance matrix of the predictions from the model replicas. Going to a
-basis where $\testset{\obspriorcov}^{-1}$ is diagonal,
+is the covariance matrix of the predictions from the model replicas. Note that
+we can rotate to a basis where $\testset{\obspriorcov}$ is diagonal,
 \begin{equation}
     \label{eq:InvCovPrimeDiag}
     \left(\testset{\obspriorcov}^{-1} \right)_{ij} = \frac{1}{\left(\testset{\sigma}_i\right)^2} 
     \delta_{ij}\, ,
 \end{equation}
-we can rewrite Eq.~\ref{eq:VarDefalternative} as 
+then we can rewrite Eq.~\ref{eq:VarDefalternative} as 
 \begin{equation}
     \label{eq:VarianceInterpretation}
-    \var = \frac{1}{\ndata}\, \sum_i \frac{\covrep_{ii}}{\left(\sigma'_i\right)^2}\, .
+    \var = \frac{1}{\ndata}\, \sum_i \frac{\covrep_{ii}}{\left(\testset{\sigma}_i\right)^2}\, .
 \end{equation}
 The numerator in the right-hand side of the equation above is the variance of
 the theoretical prediction obtained from the fitted replicas, while the
-denominator is the experimental variance. Hence the right-hand side of the
-equation is the average reduction in the variance of the observables between the
-prior distribution, dictated by the experimental covariance, and the posterior
-distribution. The average is computed over the space of test data, \ie\ data points that are not seen by the fit. 
+denominator is the experimental variance, the average is now taken over
+eigenvectors of the experimental covariance matrix.
+
+% The following needs to be reworded or removed, the use of prior and posterior
+% here is confusing because the prior here is nothing to do with the prior
+% of the training data but the posterior is only the posterior of the training
+% data and instead is the prior of the model when considering the test data..
+
+% If the replicas are sampled from the
+% posterior distribution of model, the right-hand side of the
+% equation is the average reduction in the variance of the observables between the
+% prior distribution, dictated by the experimental covariance, and the posterior
+% distribution. The average is computed over the space of test data, \ie\ data
+% points that are not seen by the fit. 
 
 \paragraph{Bias}
 
@@ -227,57 +238,53 @@ covariance, \ie
 \begin{equation}
     \label{eq:BiasDef}
     \bias = \frac{1}{\ndata}
-    \left( \erep{\model(u_*^{\repind})} - f^\prime \right)^T
-        \invcovprime
-    \left( \erep{\model(u_*^{\repind})} - f^\prime \right)\, .
+    \left( \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law} \right)^T
+    \testset{\obspriorcov}^{-1}
+    \left( \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law} \right)\, .
 \end{equation}
 The smaller the bias, the closer the central value of the predictions is to the
 underlying law. In Eq.~\ref{eq:ExpectedBiasVariance}, the expectation value is
 taken across the prior distribution of the training data, which yields
 \begin{equation}
-    \mathbf{E}_{\levone}[{\rm bias}] = \frac{1}{\ndata}
-    {\rm Tr} \left[ \covcent \invcovprime{} \right]\, ,
+    \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+    {\rm Tr} \left[ \covcent \testset{\obspriorcov}^{-1} \right]\, ,
 \end{equation}
 where we have introduced $\covcent$ as the covariance of the expectation value
 of the model predictions,
 \begin{equation}
     \label{eq:CovCentDef}
     \covcent = 
-    \mathbf{E}_{\levone}\left[
-        \left( \erep{\model(u_*^{\repind})} - f^\prime \right)
-        \left( \erep{\model(u_*^{\repind})} - f^\prime \right)^T   
+    \mathbf{E}_{\obspriorcent}\left[
+        \left( \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law} \right)
+        \left( \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law} \right)^T   
     \right]\, .
 \end{equation}
 The point is that the bias on the test data is a stochastic variable which
-depends on the central value of the training data through $u_*^{\repind}$. The
+depends on the central value of the training data through $\modelvecrep$. The
 matrix $\covcent$ describes the fluctuations of the central value of the model
 prediction around the true observable values as we scan different realisations
 of the training data. 
 
 It is important to stress the difference between variance and bias. In the case
 of the variance, we are looking at the fluctuations of the replicas around their
-central value for fixed $\vv{\levone}$. This is what is done in a fit to real
-data, where we have one instance of $\vv{\levone}$, provided by the experiments.
+central value for fixed $\obspriorcent$. This is related the ensemble of model
+replicas we provide as the end product of a fit and can be calculated when
+we have one instance of $\obspriorcent$, provided by the experiments.
 In the case of the bias we consider the flucutations of the central value over
-replicas around the true theoretical prediction as the values of $\vv{\levone}$
-fluctuate around $\vv{\law}$. This latter procedure is only possible in a
-closure test, where the underlying true theoretical prediction is known. The
+replicas around the true theoretical prediction as the values of $\obspriorcent$
+fluctuate around $\law$. This latter procedure is only possible in a
+closure test, where the underlying true observable is known. The
 bias as defined here yields an estimate of the fluctuations of the MAP estimator
-if we could do multiple independent experiments. 
-
-% If we take the expectation across training data, then we get a distribution of
-% expectation values of model predictions. The true observable values are
-% static, and not drawn from a distribution, however the difference between the
-% expected value of our model and the truth is probabilistic and in practical
-% terms the uncertainties of our model predictions should be consistent with the
-% observed distance from the truth.
+if we could do multiple independent experiments.
 
 \paragraph{Bias-variance ratio}
 
 Finally, the {\em bias-variance ratio} is defined as
 \begin{equation}
     \label{eq:RatioDef}
-    \biasvarratio \equiv \sqrt{\frac{\eshift{\bias}}{\eshift{\var}}}\, ,
+    \biasvarratio \equiv \sqrt{\frac{
+        \mathbf{E}_{\obspriorcent}[ \bias ]}{
+            \mathbf{E}_{\obspriorcent}[ \var ]}}\, ,
 \end{equation}
 where we have taken the square root, since bias and variance are both mean
 squared quantities. The value of $\biasvarratio$ yields a measurement of how
@@ -305,10 +312,9 @@ should not lead to instabilities in $\biasvarratio$ unless they correspond to
 directions with very low experimental uncertainty. As an extra precaution, we
 shall estimate an uncertainty on $\biasvarratio$ by performing a bootstrap
 sample on fits and replicas.
-% TODO: summaries that bias and variance are performance estimators but must
-% remain balanced?
 
 \paragraph{Quantile statistics}
+\label{sec:QuantileStatistics}
 
 When the closure test was first presented in \cite{nnpdf30}, there was an estimator
 introduced in the space of PDFs which also aimed to estimate faithfulness of
@@ -320,18 +326,17 @@ analagous expression in the space of data,
     \xisigdat{n} = 
         \frac{1}{\ndata} \sum_{i}^{\ndata} 
         \frac{1}{\nfits} \sum_{l}^{\nfits}
-            I_{[-n\sigma_i^{(l)}, n\sigma_i^{(l)}]}
-            \left( \erep{\model_i}^{(l)} - \law_i \right),
+            I_{[-n \testset{\sigma}_i^{(l)}, n \testset{\sigma}_i^{(l)}]}
+            \left( \emodel{\testset{\fwdobsop}_i}^{(l)} - \testset{\law}_i \right),
 \end{equation}
-where $\sigma^{(l)}$ is the standard deviation of the theory predictions
-estimated from the replicas of fit $l$ and $I_{[a, b]}(x)$ is the indicator
+where $\testset{\sigma}_i^{(l)} = \sqrt{\covrep_{ii}}$ is the standard deviation of the
+theory predictions estimated from the replicas of fit $l$ and $I_{[a, b]}(x)$
+is the indicator
 function, which is one when $a \leq x \leq b$ and zero otherwise. In other
 words, $\xisigdat{n}$ is counting how often the difference between the prediction
 from the MAP estimator and the true observable value is within the $n\sigma$
-confidence interval of the replicas, assuming they're Gaussian. Note that
-in the basis where $i$ runs over the individual data points included in the fit,
-$\sigma^2$ corresponds to the diagonal entries of $\covrep$ in
-Eq.~\ref{eq:CovRep}. Since $\covrep$ is primarily driven by the replica
+confidence interval of the replicas, assuming they're Gaussian. Since $\covrep$
+is primarily driven by the replica
 fluctuations, we assume that it is roughly constant across fits, or independent
 upon the specific instance of observational noise. Also when taking the expectation
 value across fits, we're implicitly taking the expectation value across
@@ -340,20 +345,21 @@ $\xisigdat{n}$ for a specific data point in the limit of infinite fits, each to
 a different instance of the data as
 \begin{equation}
     \label{eq:XiIExpecVel}
-    \xisigdati{n} = 
-    \int_{-\infty}^{\infty} I_{[-n \sigma_i, n \sigma_i]}\,
-    \left( \erep{\model_i}^{(l)} - \law_i \right) 
-    p(\levone)\, 
-    {\rm d}(\levone),
+    \xisigdati{n} =
+    \int_{-\infty}^{\infty} I_{[-n \testset{\sigma}_i, n \testset{\sigma}_i]}\,
+    \left( \emodel{\testset{\fwdobsop}_i}^{(l)} - \testset{\law}_i \right) 
+    \pi_{D}^0(\obspriorcent)\, 
+    {\rm d}(\obspriorcent) \, ,
 \end{equation}
-where $\erep{\model_i}^{(l)}$ has implicit conditional dependence on $z$. If
-the distribution of $\erep{\model_i}^{(l)} - \law_i$ is gaussian, centered on
-zero, we can defined $\modelstd^2$ as the diagonal entries of $\covcent$. In
-which case
+where $\emodel{\fwdobsop_i}^{(l)}$ has implicit conditional dependence on
+$\obspriorcent$. If
+the distribution of $\emodel{\testset{\fwdobsop}_i}^{(l)} - \testset{\law}_i$
+is Gaussian, centered on
+zero, we can defined ${\testset{ \hat{\sigma} }}_i = \sqrt{\covcent_{ii}}$. In which case
 \begin{equation}
     \label{eq:expectedxi}
-    \xisigdati{n} = 
-    \erf \left( \frac{n \sigma_i}{\modelstd_i \sqrt{2}}\right),
+    \xisigdati{n} =
+    \erf \left( \frac{n \testset{\sigma}_i}{\testset{\modelstd}_i \sqrt{2}}\right),
 \end{equation}
 which is simply the standard result of integrating a gaussian over some finite
 symmetric interval.
