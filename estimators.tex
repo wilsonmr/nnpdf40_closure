@@ -99,20 +99,20 @@ value across replicas is taken. The first term in this expression we call the
 {\em variance} and the second term is the {\em bias}.
 
 As previously mentioned $\eout$ should be considered a stochastic estimator, in
-theory we could take the expectation value across training data $\modelpriorcent$ and
+theory we could take the expectation value across training data $\obspriorcent$ and
 test data $\testset{\obspriorcent}$, the latter of which cancels the cross term in
 Eq.~\ref{eq:EoutDecomposition}. The final result of that would be
 \begin{equation}\label{eq:ExpectedBiasVariance}
-    \mathbf{E}_{\modelpriorcent, \testset{\obspriorcent}}[\eout] =
-    \mathbf{E}_{\modelpriorcent}[{\rm bias}] + 
-    \mathbf{E}_{\modelpriorcent}[{\rm variance}] +
-    \mathbf{E}_{\modelpriorcent, \testset{\obspriorcent}}[{\rm noise}]\, .
+    \mathbf{E}_{\obspriorcent, \testset{\obspriorcent}}[\eout] =
+    \mathbf{E}_{\obspriorcent}[{\rm bias}] + 
+    \mathbf{E}_{\obspriorcent}[{\rm variance}] +
+    \mathbf{E}_{\testset{\obspriorcent}}[{\rm noise}]\, .
 \end{equation}
 We are not interested in the observational noise term, since it is
-independent of the model and in the limit of infinite data, replicas and data
-$\mathbf{E}_{\modelpriorcent, \testset{\obspriorcent}}[{\rm noise}] \to 1$.
+independent of the model and in the limit of infinite test data
+$\mathbf{E}_{\testset{\obspriorcent}}[{\rm noise}] \to 1$.
 The two estimators of interest are independent of
-the test data, and therefore we only need to take the expectation value on
+the test data, and therefore we only need to take the expectation value over
 the training data.
 
 \paragraph{Multiple closure fits}
@@ -162,6 +162,7 @@ a two-dimensional data space, with a diagonal covariance.
     \label{fig:diagram2destimators}
 \end{figure}
 %
+
 \subsection{Faithful uncertainties in data space}
 
 The two closure estimators of interest, bias and variance, can be used to
@@ -175,14 +176,16 @@ The {\em variance} in the above decomposition refers to the variance of the
 model predictions in units of the covariance
 \begin{equation}
     \label{eq:VarDef}
-    \var = \frac{1}{\ndata}
-    \emodel{
-            \left( \testset{\fwdobsop}\left(\modelvecrep\right) - 
+    \begin{split}
+        % NOTE: not using \emodel here in order to split line.
+        \var &= \frac{1}{\ndata}\mathbf{E}_{\{ \modelvec_* \}} \Big[ \\
+            &\left( \testset{\fwdobsop}\left(\modelvecrep\right) - 
             \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} \right)^T
             \testset{\obspriorcov}^{-1}
             \left( \testset{\fwdobsop}\left(\modelvecrep\right) - 
             \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} \right)
-        }\, ,
+        \Big] \, ,
+    \end{split}
 \end{equation}
 which can be interpreted as the model uncertainty in the space of the test data.
 It is instructive to rephrase Eq.~\ref{eq:VarDef} as
@@ -348,7 +351,7 @@ a different instance of the data as
     \xisigdati{n} =
     \int_{-\infty}^{\infty} I_{[-n \testset{\sigma}_i, n \testset{\sigma}_i]}\,
     \left( \emodel{\testset{\fwdobsop}_i}^{(l)} - \testset{\law}_i \right) 
-    \pi_{D}^0(\obspriorcent)\, 
+    \pi_{D}^0(\obspriorcent) \, 
     {\rm d}(\obspriorcent) \, ,
 \end{equation}
 where $\emodel{\fwdobsop_i}^{(l)}$ has implicit conditional dependence on

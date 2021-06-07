@@ -10,7 +10,7 @@ values for the test data is given by
 \begin{equation}\label{eq:LinearLawMap}
     \testset{\law} = \testset{\fwdobsop} \lawmodel
 \end{equation}
-where $\lawmodel \in \modelspace$, which means the number of parameters
+where $\lawmodel \in \modelspace$, which means the number of (non-zero) parameters
 in the underlying law is less than or equal to the number of parameters in the
 model, $\nlaw \leq \nmodel$. Using the previous results from
 Sec.~\ref{sec:fluct-fit-values}, we can write down the
@@ -147,32 +147,3 @@ tool, and is instead used simply for validation. For example, if
 $\biasvarratio > 1$, then we
 can't know whether there was a problem with the fitting methodology used to
 generate the model replicas or a deeper issue such as an inflexible model.
-
-\section{Neural network parton distribution functions}
-% TODO: here we should properly define the PDFs, forward map and which experimental
-% data we fitted and which was used in the test set.
-
-When fitting experimental data we vary the parameters of a set of PDF replicas
-at the initial scale such that the $\chi^2$ is minimised between the
-corresponding theory predictions and a generated pseudodata replica. A set of
-PDFs usually refers to a set of seperate continuous functions, one for each
-flavour of PDF in a particular basis. In this specific study, fits performed
-parameterise the set of PDFs as a single neural network which takes
-as input $x$ and $\ln x$ and returns 8 outputs, one for each flavour in the
-fitting basis, multiplied by some preproccessing exponents. The output for a
-single flavour $j$ is
-\begin{equation}
-    NN(x, \ln x)_j * x^{1-\alpha_j} * (1-x)^{\beta_j},
-\end{equation}
-where each flavour has it's own preproccessing exponents $\alpha$ and $\beta$,
-parameters that are varied in these fits, and $NN(x, \ln x)_j$ is the
-$j^{\rm th}$ output from the neural network.
-When an experiment is included in an NNPDF fit, we take the published
-experimental central values and uncertainties (statistical and systematic)
-and use these pieces of information to generate the pseudodata.
-The pseudodata replica is generated
-through Monte Carlo sampling by applying noise to the experimental
-central values.
-After fitting many sets of PDF replicas (usually of order 100 sets),
-each set to an independently generated pseudodata replica, we have an ensemble of
-PDF replicas.

@@ -1,5 +1,34 @@
 \section{Results}
 
+\subsection{Neural network parton distribution functions}
+% TODO: here we should properly define the PDFs, forward map and which experimental
+% data we fitted and which was used in the test set.
+
+When fitting experimental data we vary the parameters of a set of PDF replicas
+at the initial scale such that the $\chi^2$ is minimised between the
+corresponding theory predictions and a generated pseudodata replica. A set of
+PDFs usually refers to a set of seperate continuous functions, one for each
+flavour of PDF in a particular basis. In this specific study, fits performed
+parameterise the set of PDFs as a single neural network which takes
+as input $x$ and $\ln x$ and returns 8 outputs, one for each flavour in the
+fitting basis, multiplied by some preproccessing exponents. The output for a
+single flavour $j$ is
+\begin{equation}
+    NN(x, \ln x)_j * x^{1-\alpha_j} * (1-x)^{\beta_j},
+\end{equation}
+where each flavour has it's own preproccessing exponents $\alpha$ and $\beta$,
+parameters that are varied in these fits, and $NN(x, \ln x)_j$ is the
+$j^{\rm th}$ output from the neural network.
+When an experiment is included in an NNPDF fit, we take the published
+experimental central values and uncertainties (statistical and systematic)
+and use these pieces of information to generate the pseudodata.
+The pseudodata replica is generated
+through Monte Carlo sampling by applying noise to the experimental
+central values.
+After fitting many sets of PDF replicas (usually of order 100 sets),
+each set to an independently generated pseudodata replica, we have an ensemble of
+PDF replicas.
+
 \subsection{Setup}
 
 As input to the closure test, a single replica was drawn randomly from
@@ -52,9 +81,7 @@ produce completely artificial data using a different set of FK tables. From a
 practical standpoint, using the NNPDF3.1 dataset and validating on the newly
 included
 datasets in 4.0 allowed us to validate the PDF uncertainities on data outside
-of the kinematic coverage of data included in the fit. In appendix {\bf TODO}
-we calculate the closure estimators on fitted data, although as discussed the
-meaning of these estimators is less clear.
+of the kinematic coverage of data included in the fit.
 
 \subsection{Bias-variance ratio $\biasvarratio$}
 
@@ -66,10 +93,6 @@ where we randomly sample from both fits and replicas and re-calculate
 $\biasvarratio$, the value and error presented in the table is then the mean
 and standard deviation across bootstrap samples. We checked that the distribution
 of the estimator across bootstrap samples is indeed Gaussian.
-% TODO?
-% , and show it
-% explicitly
-% in Appendix {\bf TODO}.
 
 \begin{table}
     \begin{center}
@@ -124,7 +147,7 @@ estimator in data space, based upon $\xi_{n\sigma}$, which was defined on a grid
 of points in $x$ and $Q^2$ in PDF space in \cite{nnpdf30}. There is not
 a one-to-one correspondence
 between this and $\biasvarratio$, but a loose approximation using
-Eq.~\ref{eq:expectedxi}. In Tab.~{\bf TODO} we compare the estimated
+Eq.~\ref{eq:expectedxi}. In Tab.~\ref{tab:xicomparison} we compare the estimated
 $\xi_{1\sigma}$ from
 subsituting $\biasvarratio$ into Eq.~\ref{eq:expectedxi} and to the
 measured value.
@@ -172,7 +195,7 @@ are not.
     \centering
     \includegraphics[width=0.6 \textwidth]{lhcbxi_data.png}
     \caption{$\xi_1\sigma$ for each eigenvector of the experimental
-    covaraince matrix. We see that the first few eigenvectors have over
+    covariance matrix. We see that the first few eigenvectors have over
     estimated uncertainty, but the latter are more evenly distributed
     around 0.68. The suggested overestimated uncertainty by $\biasvarratio$
     is likely dominated by the first few eigenvectors.}

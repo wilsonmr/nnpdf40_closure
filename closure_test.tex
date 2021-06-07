@@ -23,7 +23,7 @@ explicitly by
 \end{equation}
 where $\law$ is the vector of {\em true} observable values and the obervational
 noise is drawn from a Gaussian centered on zero such as in Eq.~\ref{eq:RhoGauss},
-i.e.$\obsnoise \sim \mathcal{N}(0, \obspriorcov)$ where $\obspriorcov$ is the
+\ie\ $\obsnoise \sim \mathcal{N}(0, \obspriorcov)$ where $\obspriorcov$ is the
 experimental covariance matrix. In
 Eq.~\eqref{eq:levelonedata}, each basis vector corresponds to a separate data
 point, and the vector of shifts $\obsnoise$ permits correlations between data
@@ -45,8 +45,8 @@ independently from the same Gaussian from which the observational noise is
 drawn from, \ie\ $\noise \sim \mathcal{N}(0, \obspriorcov)$.
 
 The parameters for
-each model replica maximise the likelihood of getting the corresponding
-pseudo-data replicas from the model. This is a special case of MAP estimation,
+each model replica maximise the likelihood evaluated on the corresponding
+pseudo-data. This is a special case of MAP estimation,
 described in Eq.~\eqref{eq:MAP}, where the model prior is uniform. Another way
 of viewing this is to take $\modelpriorcov \to \infty$ in Eq.~\eqref{eq:MAP}.
 Either way, there is no prior information about the
