@@ -1,0 +1,114 @@
+\section{Understanding $\deltachi$}
+
+In the closure test presented in NNPDF3.0 \cite{nnpdf30} there was a data-space
+estimator which aimed to measure the level of over or under fitting, $\deltachi$.
+Here we discuss how $\deltachi$ can emerge from the bias-variance decomposition
+and then use the linear model to try and understand it in the context of
+viewing the ensemble of model replicas as a sample from the posterior distribution
+of the model given the data.
+
+Despite the link between the estimators emerging from the decomposition of
+$\eout$ and the posterior distribution for data which is not used to inform
+the model parameters, if we perform the same decomposition as in
+Sec.~\ref{sec:ClosureEstimatorsDerivation} but set
+$\testset{\obspriorcent}=\obspriorcent$ then we find that the cross term
+in the final line of Eq.~\ref{eq:EoutDecomposition} does not go to zero when
+the expectation across data is taken because there is a dependence on
+$\obspriorcent$ in both the model predictions and the noisey data. As a result
+we have to modify Eq.~\ref{eq:ExpectedBiasVariance} to be
+\begin{equation}\label{eq:ExpectedBiasVarianceTraining}
+    \mathbf{E}_{\obspriorcent}[\ein] =
+    \mathbf{E}_{\obspriorcent}[\bias] + 
+    \mathbf{E}_{\obspriorcent}[\var] +
+    \mathbf{E}_{\obspriorcent}[{\rm noise}] +
+    \mathbf{E}_{\obspriorcent}[\noisecross]\, ,
+\end{equation}
+where we refer now to the right hand side of
+Eq.~\ref{eq:ExpectedBiasVarianceTraining} as $\ein$ because it's evaluated on the
+data used to inform the model replicas.
+
+Now if we examine the definition of $\deltachi$ introduced
+in~\cite{Ball:2014uwa}, defined as the difference between the
+$\chi^2$ between the expectation value of the model predictions and the level
+one data, and the $\chi^2$ between the underlying observable values and the
+level one data. In~\cite{Ball:2014uwa} the denominator was also set to be the
+second term in the numerator, however here we slightly re-define
+$\deltachi$ to instead simply be normalised by the number of data points:
+\begin{equation}\label{eq:deltachi2def1}
+    \begin{split}
+        \deltachi &= \frac{1}{\ndata} \left[
+            \left( \emodel{\fwdobsop\left(\modelvecrep\right)} - \obspriorcent \right)^T
+            \obspriorcov^{-1}
+            \left( \emodel{\fwdobsop\left(\modelvecrep\right)} - \obspriorcent \right) - 
+            \left( \law - \obspriorcent \right)^T
+            obspriorcov^{-1}
+            \left( \law - \obspriorcent \right
+        \right] \\
+        &= \bias + \noisecross \, ,
+    \end{split}
+\end{equation}
+where in the second line we show how $\deltachi$ itself can be decomposed to
+be equal to two of the terms in Eq.~\ref{eq:ExpectedBiasVarianceTraining}.
+
+Constant values of $\deltachi$ define elliptical contours in data space
+centered on the level one data. $\deltachi = 0$, in particular, defines a
+contour which is centered on the level one data and passes through the
+underlying law. When viewing $\deltachi$ from a classifcal fitting perspective,
+if $\deltachi < 0$ then the expectation value of the model
+predictions fit the level one data better than the underlying observables -
+which indicates an overfitting of the shift, $\boldsymbol{\shift}$. Similarly,
+$\deltachi > 0$ indicates some underfitting of the level one data.
+
+If we return to the linear model we can write the analytic value of
+$\deltachi$. Firstly, since $\testset{\obspriorcent}=\obspriorcent$ we can
+simplify Eq.~\ref{eq:BiasLinearModel} (assuming the right
+inverse definition Eq.\ref{eq:RightInverse})
+\begin{equation}\label{eq:BiasLinearModelSimple}
+    \begin{split}
+        \mathbf{E}_{\obspriorcent}[{\rm bias}] &= \frac{1}{\ndata}
+            {\rm Tr} \left[
+                \linmap \linmap^+ \obspriorcov (\linmap \linmap^+)^T \obspriorcov^{-1}
+            \right] \\
+            &= \frac{1}{\ndata}{\rm Tr} \left[ \modelpostcov \modelpostcov^{-1}\right] \\
+            &= \frac{\nmodel}{\ndata} \, ,
+    \end{split}
+\end{equation}
+because $\modelpostcov \modelpostcov^{-1}$ is an $\nmodel \times \nmodel$ identity
+matrix. Similarly we can write down the cross term
+\begin{equation}
+    \begin{split}
+        \mathbf{E}_{\obspriorcent}[\noisecross] = -2 \frac{\nmodel}{\ndata}
+    \end{split}
+\end{equation}
+which leaves us with
+\begin{equation}
+    \mathbf{E}_{\obspriorcent}[\deltachi] = - \frac{\nmodel}{\ndata} \, .
+\end{equation}
+The point is that the linear model has already been shown to be a sample from
+posterior distribution of the model given the data. But from the classical
+fitting point of view we would say this model has overfitted.
+
+From the
+Bayesian point of view, the usefulness of this estimator is less clear for
+several reasons:
+\begin{itemize}
+    \item The posterior model distribution cannot be treated as a prior for the
+    data it was obtained from, so the interpretation of estimators in
+    Eq.~\ref{eq:ExpectedBiasVarianceTraining} is unclear.
+    \item The posterior model distribution isn't fitted, it's just a result of
+    marginalising over the data.
+    \item The posterior model distribution for the linear model always appears
+    to be overfitting, which doesn't make so much sense given the previous
+    point and in light of Sec.~\ref{Sec:LinearMapEstimators} where the predictions
+    generated with the posterior model distribution are shown to have
+    faithful uncertainties.
+\end{itemize}
+As such, we do not report any results with $\deltachi$ here, because
+when $\biasvarratio = 1$, it doesn't add much to the discussion. It may still
+be useful as a diagnostic tool when $\biasvarratio \neq 1$, which as discussed
+could be for a variety of reasons - including fitting inefficiency. It also
+may be used as a performance indicator for deciding between two fitting
+methodologies: if both fits are shown to have $\biasvarratio = 1$, the
+methodology with smaller magnitude of $\deltachi$ could be preferential.
+The same could be said for bias and variance however, bias in particular is
+clearly closely related to $\deltachi$.

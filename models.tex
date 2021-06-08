@@ -34,11 +34,11 @@ gives
     \covcent = \testset{\linmap} \linmap^+ \obspriorcov (\testset{\linmap} \linmap^+)^T \, ,
 \end{equation}
 so the full expression for $\mathbf{E}_{\obspriorcent}[{\rm bias}]$ is given by
-\begin{equation}
+\begin{equation}\label{eq:BiasLinearModel}
     \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
     {\rm Tr} \left[
         \testset{\linmap} \linmap^+ \obspriorcov (\testset{\linmap} \linmap^+)^T
-        \testset{\modelpriorcov}^{-1}
+        \testset{\obspriorcov}^{-1}
     \right].
 \end{equation}
 We note that if the test data is identical the data the model was fitted on,
