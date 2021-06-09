@@ -97,13 +97,13 @@ is given by
         \pi_D(\testset{\obspriorcent} |\obspriorcent, \modelpriorcent, \linmap)
         &\propto \exp \left( - \frac{1}{2}
             (\testset{\obspriorcent} - \testset{\linmap} \linmap^+ \modelpriorcent)^T
-            {{\testset{\linmap}}^T}^+ \linmap^T \obspriorcov \linmap {\testset{\linmap}}^+
+            \left( {{\testset{\linmap}}} \linmap^+ \obspriorcov (\linmap^+)^T {\testset{\linmap}^T} \right)^{-1}
             (\testset{\obspriorcent} - \testset{\linmap} \linmap^+ \modelpriorcent)
         \right) \, ,
     \end{split}
 \end{equation}
 a Gaussian with covariance
-$\left( {{\testset{\linmap}}^T}^+ \linmap^T \obspriorcov \linmap {\testset{\linmap}}^+ \right)^{-1}$
+$ \testset{\linmap} \linmap^+ \obspriorcov (\testset{\linmap} \linmap^+)^T$
 and mean $\testset{\linmap} \linmap^+ \modelpriorcent$. We recognise that the
 covariance of posterior
 distribution of the test data, is the covariance of model predictions for the
