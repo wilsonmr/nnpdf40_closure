@@ -25,37 +25,42 @@ error, when evaluated on the ideal case of $\levone^\prime$, as $\eout$. In the
 context of a closure test, $\eout$ is a stochastic quantity which depends both
 on the training data, through the model predictions and the test data.
 
-It is useful perform a decomposition of this expression, a similar exercise is
-performed for the likelihood function associate with least-squares regression in
-\cite{mlforphysics}. Least-squares regression is a special case of minimum
-likelihood estimation, where the uncertainty on each data point is equal in
-magnitude and uncorrelated. Here we review the decomposition in the more general
-framework of data whose uncertainty is multigaussian. Starting with
-Eq.~\ref{eq:chi2kerep} (evaluated on the ideal test data), we can complete the
-square
+We can gain some insight by performing a decomposition of this expression, a
+similar exercise is performed for the likelihood function associated with
+least-squares regression in \cite{mlforphysics}. Least-squares regression is a
+special case of maximum likelihood estimation, where the uncertainty on each
+data point is equal in magnitude and uncorrelated. Here we review the
+decomposition in the more general framework of data whose uncertainty is
+multigaussian. While the two computations are simply related by a change of
+basis in the space of data, it is useful to have explicit expressions with the
+full covariance matrix, which are closely related to the ingredients that are
+usually entering a fit. Starting with Eq.~\ref{eq:chi2kerep} (evaluated on the
+ideal test data), we can expand the square
 \begin{equation}
     \begin{split}
     \label{eq:EoutDecomposition}
-        &\eout = \frac{1}{\ndata} \erep{
+        &\eout = \frac{1}{\ndata} \left( \erep{
             \left( \model\left(u_*^{\repind}\right) - f^\prime \right)^T
             \invcovprime
             \left( \model\left(u_*^{\repind}\right) - f^\prime \right)
-        } + \\
-        &+ \erep{
+        } + \right. \\
+        &+ %\erep{
             \left( f^\prime - \levone^\prime \right)^T
             \invcovprime
             \left( f^\prime - \levone^\prime \right)
-        }+ \\
-        &+ 2 \erep{
+        %}
+        + \\
+        &\left. + 2 \erep{
             \left( \model\left(u_*^{\repind}\right) - f^\prime \right)^T
             \invcovprime
             \left(f^\prime - \levone^\prime \right)
-        }\, .
+        }\right) \, .
     \end{split}
 \end{equation}
-The second term is the shift associated with evaluating the model error on
-noisey data and the final term is a cross term which we will deal with later. We
-can decompose the first term further,
+Let us discuss these three contributions in turn. The second term is the
+contribution associated with evaluating the model error on noisey data, we will
+refer to this term as {\em noise}, while the final term is a cross term which we
+will deal with later. We can decompose the first term further,
 % TODO: add the same thing but for fully in sample data to an appendix.
 \begin{equation}
     \begin{split}
