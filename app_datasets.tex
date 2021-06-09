@@ -1,0 +1,42 @@
+\section{Closure test datasets}
+\label{sec:appendix-datasets}
+
+The full list of datasets included in the test set are shown in
+Tab.~\ref{tab:summarise_new_data}. The central values are not actually used
+in the closure test, however we use the experimental uncertainities in
+the calculation of both $\biasvarratio$ and $\xisigdat{1}$. The corresponding
+predictions generated from the underlying law are used as the true
+observable values. Neither of the data-space closure estimators rely on
+the central values of the test datasets.
+
+\begin{table}[h!]
+    \begin{center}
+        \input{latex_tables/reference_test_data}
+    \end{center}
+    \caption{
+        Observables included in the test data. We wish to stress that the observable
+        central values themselves are not used, however the experimental
+        uncertainities are used in the definition of the closure estimators, and
+        the corresponding predictions from either the underlying law or the
+        closure fits.
+    }
+    \label{tab:summarise_new_data}
+\end{table}
+
+For completeness, in Fig.~\ref{fig:DataKinematicCoverage}
+the kinematic coverage of the training datasets, which
+as mentioned is the NNPDF3.1-like dataset used in \cite{Faura_2020}, and the
+test datasets shown in Tab.~\ref{tab:summarise_new_data} is plotted.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8 \textwidth]{plot_xq2.png}
+    % TODO: make PDF for higher res image.
+    \caption{The kinematic coverage of the training and test data
+    used to train the models and produce results presented in this paper. We emphasise
+    that the split of datasets was largely chosen on practical grounds, not because
+    of a deep reason to split the data chronologically. The kinematics of the two
+    sets of data with this particular split overlaps but there are also kinematic
+    regions which the test dataset probes, for which there was no training data.}
+    \label{fig:DataKinematicCoverage}
+\end{figure}

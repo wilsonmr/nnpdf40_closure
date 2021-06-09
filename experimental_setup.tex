@@ -75,30 +75,17 @@ use a realistic input.
     \label{fig:InputGluonPDF}
 \end{figure}
 
-
 The observables used in the fits are a subset of the full NNPDF4.0 dataset.
 For convenience,
 we chose to fit the PDFs on a variant of the NNPDF3.1 dataset used in
 \cite{Ball_2018}, which is described in detail in a study of the determination
 of the strange PDF \cite{Faura_2020}. The datasets used in the calculation of
 statistical estimators are the new datasets which will be included in NNPDF4.0,
-and are summarised in Tab.~\ref{tab:summarise_new_data}, but not discussed in detail.
+which will be discussed in detail with the main release. For a full summary of
+observables used in the test data and a visual representation of the kinematic
+region of both the training and testing data, see App.~\ref{sec:appendix-datasets}.
 
-\begin{table}[h!]
-    \begin{center}
-        \input{latex_tables/reference_test_data}
-    \end{center}
-    \caption{
-        Observables included in the test data. We wish to stress that the observable
-        central values themselves are not used, however the experimental
-        uncertainities are used in the definition of the closure estimators, and
-        the corresponding predictions from either the underlying law or the
-        closure fits.
-    }
-    \label{tab:summarise_new_data}
-\end{table}
-
-The choice of fitted datasets is
+The choice of data for both fitting and testing is
 considered unimportant, one could consider splitting the data into training
 and test in a way which considered kinematic coverage rather than this
 naive chronological splitting. Alternatively, since the data is generated from
