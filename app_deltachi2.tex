@@ -41,8 +41,8 @@ $\deltachi$ to instead simply be normalised by the number of data points:
             \obspriorcov^{-1}
             \left( \emodel{\fwdobsop\left(\modelvecrep\right)} - \obspriorcent \right) - 
             \left( \law - \obspriorcent \right)^T
-            obspriorcov^{-1}
-            \left( \law - \obspriorcent \right
+            \obspriorcov^{-1}
+            \left( \law - \obspriorcent \right)
         \right] \\
         &= \bias + \noisecross \, ,
     \end{split}
@@ -61,13 +61,12 @@ $\deltachi > 0$ indicates some underfitting of the level one data.
 
 If we return to the linear model we can write the analytic value of
 $\deltachi$. Firstly, since $\testset{\obspriorcent}=\obspriorcent$ we can
-simplify Eq.~\ref{eq:BiasLinearModel} (assuming the right
-inverse definition Eq.\ref{eq:RightInverse})
+simplify Eq.~\ref{eq:BiasLinearModel}
 \begin{equation}\label{eq:BiasLinearModelSimple}
     \begin{split}
         \mathbf{E}_{\obspriorcent}[{\rm bias}] &= \frac{1}{\ndata}
             {\rm Tr} \left[
-                \linmap \linmap^+ \obspriorcov (\linmap \linmap^+)^T \obspriorcov^{-1}
+                \linmap \modelpostcov \linmap^T \obspriorcov^{-1}
             \right] \\
             &= \frac{1}{\ndata}{\rm Tr} \left[ \modelpostcov \modelpostcov^{-1}\right] \\
             &= \frac{\nmodel}{\ndata} \, ,
@@ -77,7 +76,11 @@ because $\modelpostcov \modelpostcov^{-1}$ is an $\nmodel \times \nmodel$ identi
 matrix. Similarly we can write down the cross term
 \begin{equation}
     \begin{split}
-        \mathbf{E}_{\obspriorcent}[\noisecross] = -2 \frac{\nmodel}{\ndata}
+        \mathbf{E}_{\obspriorcent}[\noisecross] &= \frac{-2}{\ndata} \mathbf{E}_{\obspriorcent} \left[
+            (\linmap \modelpostcov \linmap^T \obspriorcov^{-1} \obsnoise)^T \obspriorcov^{-1} \obsnoise
+        \right] \\
+        &= \frac{-2}{\ndata}{\rm Tr} [\linmap \modelpostcov \linmap^T \obspriorcov^{-1}] \\
+        &= -2 \frac{\nmodel}{\ndata}
     \end{split}
 \end{equation}
 which leaves us with
@@ -88,21 +91,21 @@ The point is that the linear model has already been shown to be a sample from
 posterior distribution of the model given the data. But from the classical
 fitting point of view we would say this model has overfitted.
 
-From the
-Bayesian point of view, the usefulness of this estimator is less clear for
-several reasons:
-\begin{itemize}
-    \item The posterior model distribution cannot be treated as a prior for the
-    data it was obtained from, so the interpretation of estimators in
-    Eq.~\ref{eq:ExpectedBiasVarianceTraining} is unclear.
-    \item The posterior model distribution isn't fitted, it's just a result of
-    marginalising over the data.
-    \item The posterior model distribution for the linear model always appears
-    to be overfitting, which doesn't make so much sense given the previous
-    point and in light of Sec.~\ref{Sec:LinearMapEstimators} where the predictions
-    generated with the posterior model distribution are shown to have
-    faithful uncertainties.
-\end{itemize}
+% From the
+% Bayesian point of view, the usefulness of this estimator is less clear for
+% several reasons:
+% \begin{itemize}
+%     \item The posterior model distribution cannot be treated as a prior for the
+%     data it was obtained from, so the interpretation of estimators in
+%     Eq.~\ref{eq:ExpectedBiasVarianceTraining} is unclear.
+%     \item The posterior model distribution isn't fitted, it's just a result of
+%     marginalising over the data.
+%     \item The posterior model distribution for the linear model always appears
+%     to be overfitting, which doesn't make so much sense given the previous
+%     point and in light of Sec.~\ref{Sec:LinearMapEstimators} where the predictions
+%     generated with the posterior model distribution are shown to have
+%     faithful uncertainties.
+% \end{itemize}
 As such, we do not report any results with $\deltachi$ here, because
 when $\biasvarratio = 1$, it doesn't add much to the discussion. It may still
 be useful as a diagnostic tool when $\biasvarratio \neq 1$, which as discussed
