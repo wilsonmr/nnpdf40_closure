@@ -111,36 +111,31 @@ however, and apply to any model whose forward map can be expressed as
 Eq.~\eqref{eq:MatrixG}, for example linear shallow approximation of neural
 networks \cite{ADVANI2020428}. In order to get an exact analytical solution
 for the linear model, we additionally require $\linmap$ to have linearly
-independent rows, and therefore $\linmap \linmap^T$ is invertible. Under these
-hypotheses $\linmap^+$ is a
-right inverse and can be computed as
-\begin{equation}
-    \label{eq:RightInverse}
-    \linmap^+ = \linmap^T \left(\linmap \linmap^T\right)^{-1}\, ,
-\end{equation}
-and we see that $\linmap \linmap^+ = \mathbf{I}$. With no prior information
-on the model, as described in Sec.~\ref{sec:fit-reps}, the posterior
-distribution of model parameters given the data is
-\begin{equation}
-    \label{eq:PosteriorMultiGaussModel}
-    \begin{split}
-        \pi^\obs(\modelvec) &\propto
-        \exp \left(
-            -\frac12 (\linmap \modelvec - \obspriorcent)^T
-            \obspriorcov^{-1}
-            (\linmap \modelvec - \obspriorcent)
-        \right) \\
-        &= \exp \left(
-            -\frac12 (\modelvec - \linmap^+ \obspriorcent)^T
-            \linmap^T \obspriorcov^{-1} \linmap
-            (\modelvec - \linmap^+ \obspriorcent)
-        \right)\, ,
-    \end{split}
-\end{equation}
-where we have explicitly exposed the posterior distribution of
-the model parameters as multigaussian, with mean
-$\modelpostcent = \linmap^+ \obspriorcent$ and covariance
-$(\linmap^T \obspriorcov^{-1} \linmap)^+ = \linmap^+ \obspriorcov (\linmap^+)^T$.
+independent rows, and therefore $\linmap \obspriorcov \linmap^T$ is invertible.
+With no prior information
+on the model, the posterior
+distribution of model parameters is a Gaussian with mean and covariance
+given by Eqs.~\ref{eq:NoPriorLinModel} and \ref{eq:NoPriorLinModelCov}.
+% \begin{equation}
+%     \label{eq:PosteriorMultiGaussModel}
+%     \begin{split}
+%         \pi^\obs(\modelvec) &\propto
+%         \exp \left(
+%             -\frac12 (\linmap \modelvec - \obspriorcent)^T
+%             \obspriorcov^{-1}
+%             (\linmap \modelvec - \obspriorcent)
+%         \right) \\
+%         &= \exp \left(
+%             -\frac12 (\modelvec - \linmap^+ \obspriorcent)^T
+%             \linmap^T \obspriorcov^{-1} \linmap
+%             (\modelvec - \linmap^+ \obspriorcent)
+%         \right)\, ,
+%     \end{split}
+% \end{equation}
+% where we have explicitly exposed the posterior distribution of
+% the model parameters as multigaussian, with mean
+% $\modelpostcent = \linmap^+ \obspriorcent$ and covariance
+% $(\linmap^T \obspriorcov^{-1} \linmap)^+ = \linmap^+ \obspriorcov (\linmap^+)^T$.
 
 If instead we deploy the NNPDF Monte
 Carlo method to fitting model replicas, then in the case under study
@@ -149,12 +144,11 @@ $\repchis$ with respect to the model parameters is zero, i.e.
 \begin{equation}
     \begin{split}
         \label{eq:MAPEstLinModel}
-        \modelvecrep &= (\linmap^T \obspriorcov^{-1} \linmap)^+
+        \modelvecrep &= (\linmap^T \obspriorcov^{-1} \linmap)^{-1}
         \left(
             \linmap^T \obspriorcov^{-1} \obspriorcent +
             \linmap^T \obspriorcov^{-1} \noise^{\repind}
-        \right), \\
-        &= \linmap^+ (\obspriorcent + \noise^{\repind}).
+        \right) \, .
     \end{split}
 \end{equation}
 Eq.~\ref{eq:MAPEstLinModel} shows that $\modelvec_*$ is a linear
@@ -162,12 +156,15 @@ combination of the Gaussian variables $\noise$, and therefore is
 also a Gaussian variable. Its
 probability density is then completely specified by the average and
 covariance of $\modelvec_*$, which can be calculated explicitly, given that the
-probability density for $\noise$ is known.  In this way, we can show
-explicitly that under the
-assumptions specified above,
-$\modelvec_* \sim \mathcal{N}(
-    \linmap^+ \obspriorcent, \, \linmap^+ \obspriorcov (\linmap^+)^T
-)$.
+probability density for $\noise$ is known:
+\begin{align}
+    \emodel{\modelvec_*} &=
+    \modelpostcent = (\linmap^T \obspriorcov^{-1} \linmap)^{-1} \linmap^T
+    \obspriorcov^{-1} \obspriorcent \\
+    {\rm cov}(\modelvec_*) &= \modelpostcov = (\linmap^T \obspriorcov^{-1} \linmap)^{-1} \, .
+\end{align}
+In this way, we can show explicitly that under the assumptions specified above,
+$\modelvec_* \sim \mathcal{N}(\modelpostcent, \, \modelpostcov)$.
 In other words, when the model predictions are linear in the model parameters,
 the NNPDF MC method is shown to produce a sample of models from the posterior
 distribution of model parameters given the data.

@@ -21,8 +21,8 @@ linear model these are the same)
 \begin{equation}
     \begin{split}
         \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law} &=
-        \testset{\linmap} (\lawmodel - \linmap^+ \obspriorcent ) \\
-        &= \testset{\linmap} \linmap^+ \obsnoise \, ,
+        \testset{\linmap} (\modelpostcent - \lawmodel ) \\
+        &= \testset{\linmap} \modelpostcov \linmap^T \obspriorcov \, \obsnoise \, ,
     \end{split}
 \end{equation}
 where we recall that $\linmap$ is the forward map to the training observables
@@ -32,13 +32,13 @@ training data of
 $\emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law}$
 gives
 \begin{equation}
-    \covcent = \testset{\linmap} \linmap^+ \obspriorcov (\testset{\linmap} \linmap^+)^T \, ,
+    \covcent = \testset{\linmap} \modelpostcov \testset{\linmap}^T \, ,
 \end{equation}
 so the full expression for $\mathbf{E}_{\obspriorcent}[{\rm bias}]$ is given by
 \begin{equation}\label{eq:BiasLinearModel}
     \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
     {\rm Tr} \left[
-        \testset{\linmap} \linmap^+ \obspriorcov (\testset{\linmap} \linmap^+)^T
+        \testset{\linmap} \modelpostcov \testset{\linmap}^T
         \testset{\obspriorcov}^{-1}
     \right].
 \end{equation}
@@ -56,8 +56,8 @@ of the model predictions is
     \begin{split}
         \testset{\fwdobsop}\left(\modelvecrep\right) -
         \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} &=
-        \testset{\linmap} (\linmap^+ \pseudodat^{\repind} - \linmap^+ \modelpriorcent) \\
-        &= \testset{\linmap} \linmap^+ \noise^{\repind}.
+        \testset{\linmap} (\modelvecrep - \modelpostcent) \\
+        &= \testset{\linmap} \modelpostcov \linmap^T \obspriorcov \, \noise \, .
     \end{split}
 \end{equation}
 Since $\noise$ and $\obsnoise$ follow the same distribution, it's clear that
@@ -75,6 +75,8 @@ space, the posterior distribution of the model predictions satisfy the
 requirement that $\biasvarratio = 1$.
 
 \subsection{Relating variance to posterior distribution}
+
+{\bf TODO: think again about this section - in light of getting rid of pseudo-inverse.}
 
 If the training and test split is ideal, as discussed in
 Sec.~\ref{sec:ClosureEstimatorsDerivation}, such that the two sets of data
@@ -124,7 +126,7 @@ underlying law, schematically:
 \begin{equation}
     \begin{split}
         (\emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law})_i =
-        \sum_{1 \leq j \leq \nmodel} \testset{\linmap}_{ij} (\linmap^+ \obsnoise)_j +
+        \sum_{1 \leq j \leq \nmodel} \testset{\linmap}_{ij} (\modelpostcent - \lawmodel)_j -
         \sum_{\nmodel < j \leq \nlaw} \testset{\linmap}_{ij} \lawmodel_j,
     \end{split}
 \end{equation}
