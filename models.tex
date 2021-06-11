@@ -74,47 +74,87 @@ We have shown here that provided the underlying law belongs to the model
 space, the posterior distribution of the model predictions satisfy the
 requirement that $\biasvarratio = 1$.
 
-\subsection{Relating variance to posterior distribution}
+We note that due to the invariance of the trace under cyclic permutations, we
+can rearrange Eq.~\ref{eq:BiasLinearModel} as
+\begin{equation}
+    \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+    {\rm Tr} \left[
+        \modelpostcov
+        \testset{\linmap}^T \testset{\obspriorcov}^{-1} \testset{\linmap}
+    \right] \, ,
+\end{equation}
+where the term $\testset{\linmap}^T \testset{\obspriorcov}^{-1} \testset{\linmap}$
+can be understood as the covariance matrix of the posterior distribution in model
+space given the test data, with zero prior knowledge of the model \viz
+\begin{equation}\label{eq:BiasTraceModelPost}
+    \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+    % testset fails here due to double postscript
+    {\rm Tr} \left[ \modelpostcov {\modelpostcov}^{ \prime -1} \right] \, ,
+\end{equation}
+where we emphasise that the covariance matrices $\modelpostcov$ are
+$\testset{\modelpostcov}$ from completely independent Bayesian inferences
+with no prior information on the model parameters.
 
-{\bf TODO: think again about this section - in light of getting rid of pseudo-inverse.}
-
-If the training and test split is ideal, as discussed in
+Alternatively, if the training and test split is ideal, as discussed in
 Sec.~\ref{sec:ClosureEstimatorsDerivation}, such that the two sets of data
-are uncorrelated then it's
-possible to perform a sequential marginalisation of the data \cite{tarantola}.
-The posterior model distribution obtained by marginalising over the training
-data, can be used as a prior when viewing the test data from a Bayesian
-perspective. The model prior for the test data is given by
-Eq.~\ref{eq:PosteriorMultiGaussModel}, which is fully
-parameterised by mean and covariance: $\modelpriorcent = \linmap^+ \obspriorcent$ and
-$\modelpriorcov = \linmap^+ \obspriorcov (\linmap^+)^T$ respectively.
-The posterior data-space distribution
-of the new data is given by Eq.~\ref{eq:PosteriorDataSpace}, which is also a
-Gaussian with mean and covariance given by Eq.~\ref{eq:PosteriorDataParams}.
-Now if we take $\testset{\obspriorcov} \to \infty$, which is equivalent to
-there being prior information for the test data, the posterior data-space distribution
-is given by
+are uncorrelated then it's possible to perform a sequential marginalisation of
+the data \cite{tarantola}. The posterior model distribution obtained by
+marginalising over $\obspriorcent$, can be used as a model prior when
+writing down the posterior distribution of the model parameters given
+$\testset{\obspriorcent}$. Under these assumptions, we can express the
+covariance of the posterior model distribution, Eq.~\ref{eq:PostParams},
+after marginalising over all data as
+\begin{equation}
+    \modelpostcov^{-1} = \left(
+        \testset{\linmap}^T \testset{\obspriorcov}^{-1} \testset{\linmap} + 
+        \linmap^T \obspriorcov^{-1} \linmap
+    \right) \, .
+\end{equation}
+If we then take $\testset{\obspriorcov}^{-1} \to 0$, \ie\ there is no information
+on the observables in the test set, then
+\begin{equation}
+    \modelpostcov^{-1} = \linmap^T \obspriorcov^{-1} \linmap \, ,
+\end{equation}
+or the total posterior model distribution, is identical to the posterior model
+distribution given just the training data - as you would expect. But now if
+we calculate the posterior distribution in data space, in block notation we have
 \begin{equation}
     \begin{split}
-        \pi_D(\testset{\obspriorcent} |\obspriorcent, \modelpriorcent, \linmap)
-        &\propto \exp \left( - \frac{1}{2}
-            (\testset{\obspriorcent} - \testset{\linmap} \linmap^+ \modelpriorcent)^T
-            \left( {{\testset{\linmap}}} \linmap^+ \obspriorcov (\linmap^+)^T {\testset{\linmap}^T} \right)^{-1}
-            (\testset{\obspriorcent} - \testset{\linmap} \linmap^+ \modelpriorcent)
-        \right) \, ,
+        \obspostcov &= \left[ \linmap \, \testset{\linmap} \right] \modelpostcov
+        \begin{bmatrix}
+            \linmap^T \\
+            \testset{\linmap}^T
+        \end{bmatrix}
+        \\
+        &=
+        \begin{bmatrix}
+            \linmap \modelpostcov \linmap^T & \linmap \modelpostcov \testset{\linmap}^T \\
+            \testset{\linmap} \modelpostcov \linmap^T & \testset{\linmap} \modelpostcov \testset{\linmap}^T
+        \end{bmatrix} \, .
     \end{split}
 \end{equation}
-a Gaussian with covariance
-$ \testset{\linmap} \linmap^+ \obspriorcov (\testset{\linmap} \linmap^+)^T$
-and mean $\testset{\linmap} \linmap^+ \modelpriorcent$. We recognise that the
-covariance of posterior
-distribution of the test data, is the covariance of model predictions for the
-test data, $\covrep$. Taking $\testset{\obspriorcov} \to \infty$ might seem
-slightly peculiar, however we can understand this as treating the test dataset
-as new observables for which there are no experimental measurements. When comparing
-$\covcent$, the covariance of the MAP estimators, to $\covrep$ we are
-checking that the observed fluctuation of the MAP estimators about the true
-observables is consistent with the posterior data-space covariance.
+We are free to marginalise over either $\obs$ or $\testset{\obs}$. If we do the
+former then we can express bias (or variance) as
+\begin{equation}
+    \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+    {\rm Tr} \left[
+        \testset{\obspostcov}
+        \testset{\obspriorcov}^{-1}
+    \right] \, ,
+\end{equation}
+where $\testset{\obspostcov}$ is the covariance of the posterior distribution of
+$\testset{\obs}$ with no prior information on that data. If we marginalise
+instead over $\testset{\obs}$, then
+\begin{equation}
+    \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+    {\rm Tr} \left[
+        \obspostcov
+        \obspriorcov^{-1}
+    \right] \, ,
+\end{equation}
+but as we already know, if there was no prior information on the model
+this reduces to $\frac{\nmodel}{\ndata}$ (to convince yourself, set
+$\testset{\modelpostcov} = \modelpostcov$ in Eq.~\ref{eq:BiasTraceModelPost}).
 
 \subsection{Underparameterised model}
 

@@ -116,26 +116,6 @@ With no prior information
 on the model, the posterior
 distribution of model parameters is a Gaussian with mean and covariance
 given by Eqs.~\ref{eq:NoPriorLinModel} and \ref{eq:NoPriorLinModelCov}.
-% \begin{equation}
-%     \label{eq:PosteriorMultiGaussModel}
-%     \begin{split}
-%         \pi^\obs(\modelvec) &\propto
-%         \exp \left(
-%             -\frac12 (\linmap \modelvec - \obspriorcent)^T
-%             \obspriorcov^{-1}
-%             (\linmap \modelvec - \obspriorcent)
-%         \right) \\
-%         &= \exp \left(
-%             -\frac12 (\modelvec - \linmap^+ \obspriorcent)^T
-%             \linmap^T \obspriorcov^{-1} \linmap
-%             (\modelvec - \linmap^+ \obspriorcent)
-%         \right)\, ,
-%     \end{split}
-% \end{equation}
-% where we have explicitly exposed the posterior distribution of
-% the model parameters as multigaussian, with mean
-% $\modelpostcent = \linmap^+ \obspriorcent$ and covariance
-% $(\linmap^T \obspriorcov^{-1} \linmap)^+ = \linmap^+ \obspriorcov (\linmap^+)^T$.
 
 If instead we deploy the NNPDF Monte
 Carlo method to fitting model replicas, then in the case under study
