@@ -77,7 +77,7 @@ Eq.~(\ref{eq:NoisyInverseProblem}), we can write the data likelihood,
 and Bayes' theorem yields
 \begin{align}
   \label{eq:BayesThmInversePosterior}
-  \pi^\obs(\modelvec) = \pi(\modelvec|\obs) \propto \rho(\obs-\fwdobsop(\modelvec)) \pi^0(\modelvec)\, .
+  \pi_M^\obs(\modelvec) = \pi(\modelvec|\obs) \propto \rho(\obs-\fwdobsop(\modelvec)) \pi^0(\modelvec)\, .
 \end{align}
 
 \paragraph{Example}
@@ -180,13 +180,15 @@ where in this case
                -\frac12 \left|\obsnoise\right|_{\obspriorcov}^2
                \right)\, .
 \end{align}
-The probability density $\pi_M(\modelvec|\obspriorcent,\modelpriorcent,\fwdobsop)$ was called $\pi^\obs(\modelvec)$ in
-Eq.~\ref{eq:BayesThmInversePosterior}, where the suffix $\obs$ is a short-hand to
-denote the posterior probability in model space, taking into account all the
-conditional variables. Hence, for the Gaussian case, Bayes' theorem yields
+The probability density
+$\pi_M(\modelvec|\obspriorcent,\modelpriorcent,\fwdobsop)$ was called
+$\pi^\obs(\modelvec)$ in Eq.~\ref{eq:BayesThmInversePosterior}, where the suffix
+$\obs$ is a short-hand to denote the posterior probability in model space,
+taking into account all the conditional variables. Hence, for the Gaussian case,
+the result from Bayes' theorem reduces to
 \begin{align}
   \label{eq:PosteriorModel}
-  \pi^\obs(\modelvec) &\propto 
+  \pi_M^\obs(\modelvec) &\propto 
   \exp\left(
   -\frac12 \left| \obspriorcent - \fwdobsop(\modelvec) \right|_{\obspriorcov}^2
   -\frac12 \left| \modelvec - \modelpriorcent \right|_{\modelpriorcov}^2
@@ -196,12 +198,13 @@ conditional variables. Hence, for the Gaussian case, Bayes' theorem yields
   \right]\, .
 \end{align}
 Note that in the argument of the likelihood function we have the central values
-of the data points $\obspriorcent$. Eq.~(\ref{eq:PosteriorModel}) is the Bayesian answer
-to the inverse problem, our knowledge of the model $\modelvec$ is encoded in the
-probability measure $\mu^\obs$, which is fully specified by the density $\pi^\obs$.
-There are several ways to characterise a probability distribution. The NNPDF
-approach is focused on the determination of the {\em Maximum A Posteriori (MAP)}
-estimator, \ie\ the element $u_* \in \modelspace$ that maximises $\pi^\obs(\modelvec)$:
+of the data points $\obspriorcent$. Eq.~(\ref{eq:PosteriorModel}) is the
+Bayesian answer to the inverse problem, our knowledge of the model $\modelvec$
+is encoded in the probability measure $\mu^\obs$, which is fully specified by
+the density $\pi_M^\obs$. There are several ways to characterise a probability
+distribution. The NNPDF approach is focused on the determination of the {\em
+Maximum A Posteriori (MAP)} estimator, \ie\ the element $u_* \in \modelspace$
+that maximises $\pi_M^\obs(\modelvec)$:
 \begin{align}\label{eq:MAP}
   u_* = \arg\min_{\modelvec \in \modelspace} 
   \left(
@@ -214,18 +217,19 @@ minimising a regulated $\chi^2$, we will refer to this procedure as the {\em
 classical fit} of experimental data to a model. Note that in the Bayesian
 approach, the regulator appears naturally after having specified carefully all
 the assumptions that enter in the prior. In this specific example the regulator
-arises from the Gaussian prior for the model input $\modelvec$, which is normally
-ditributed around a solution $\modelpriorcent$. The MAP estimator provides the explicit
-connection between the Bayesian approach and the classical fit.
+arises from the Gaussian prior for the model input $\modelvec$, which is
+normally ditributed around a solution $\modelpriorcent$. The MAP estimator
+provides the explicit connection between the Bayesian approach and the classical
+fit.
 
 \subsection{Comparison with classical fitting}
 \label{sec:comp-class-fit}
 
 There are a number of results that make the connection between the two
-approaches more quantitative, and therefore more transparent. We are
-going to summarise these results here without proofs, referring the
-reader to the mathematical literature for the missing details. Working
-in the finite-dimensional case, we assume 
+approaches more quantitative, and therefore more transparent. We are going to
+summarise these results here without proofs, referring the reader to the
+mathematical literature for the missing details. Working in the
+finite-dimensional case, we assume 
 \begin{align*}
   \modelvec &\in \real^{\nmodel} \, ,\\
   \obs &\in \real^{\ndata}\, ,
