@@ -1,0 +1,111 @@
+\section{Gaussian integrals}
+\label{sec:GaussianIntegrals}
+
+Theory errors can be included in this framework by allowing the distribution of
+observables around the theory prediction to have a finite width, \eg\ by
+replacing the Dirac delta 
+\begin{equation}
+    \label{eq:DiracInApp}
+    \delta(y-\mathcal{G}u)
+\end{equation}
+in Eq.~\ref{xxx} with a Gaussian 
+\begin{equation}
+    \label{eq:TheoryGaussian}
+    \theta(\obs,\modelvec|\fwdobsop) \propto \exp\left[
+        -\frac12 \left(y-\mathcal{G}u\right)^T
+        C_T^{-1} \left(y-\mathcal{G}u\right)
+    \right]\, .
+\end{equation}
+For the purposes of this study, we do not want to provide a realistic estimate
+of theory errors. Instead we will be assuming that the errors are uncorrelated
+and identical for all data points
+\begin{equation}
+    \label{eq:DiagTheoryCov}
+    C_T = \sigma^2 \mathds{1}\, ,
+\end{equation}
+and we will be interested in the limit where $\sigma^2\to 0$. 
+
+\subsection{Integrating out the data}
+\label{sec:IntOutData}
+
+Marginalizing with respect to \obs\ in this case yields 
+\begin{align}
+  \label{eq:MarginGaussData}
+  \pi_M(\modelvec|\obspriorcent,\modelpriorcent,\fwdobsop) 
+  &\propto \pi_{M}^0(\modelvec|\modelpriorcent) \, 
+  \int dy\, \pi_{D}^0(\obs|\obspriorcent) 
+    \theta(\obs,\modelvec|\fwdobsop) \, .
+\end{align}
+The argument of the exponential in the integrand is a quadratic form in \obs, 
+\begin{equation}
+    \label{eq:QuadFormDataInt}
+    A = \left(y-y_0\right)^T C_D^{-1} \left(y-y_0\right) +
+    \left(y-\mathcal{G}u\right)^T C_T^{-1} \left(y-\mathcal{G}u\right)\, .
+\end{equation}
+The integral can be easily evaluated by completing the square, 
+\begin{equation}
+    \label{eq:QuadFormDataIntSquare}
+    A = \left(y-\tilde{y}\right)^T 
+    \tilde{C}_D^{-1}
+    \left(y-\tilde{y}\right) + R_D\, .
+\end{equation}
+Comparing Eqs.~\ref{eq:QuadFormDataInt} and~\ref{eq:QuadFormDataIntSquare} at order $y^2$ and \obs, yields
+\begin{align}
+    \tilde{C}_D^{-1} &= \frac{1}{\sigma^2}
+    \left(\mathds{1} + \sigma^2 C_D^{-1}\right)\, , \\
+    \tilde{y} &= \left(\mathds{1} + \sigma^2 C_D^{-1}\right)^{-1} 
+    \left(
+        \mathcal{G}u + \sigma^2 C_D^{-1} y_0
+    \right)\, ,
+\end{align}
+and therefore
+\begin{align}
+    \tilde{y}^T \tilde{C}_D^{-1} \tilde{y}
+    &= \frac{1}{\sigma^2} \left(\mathcal{G}u\right)^T
+    \left(\mathds{1}+\sigma^2 C_D^{-1}\right)^{-1} \left(\mathcal{G}u\right) +
+    y_0^T C_D^{-1} \left(\mathds{1}+\sigma^2 C_D^{-1}\right)^{-1} 
+    \left(\mathcal{G}u\right) + \nonumber \\
+    \label{eq:RemainderFromSquare}
+    & \quad + \left(\mathcal{G}u\right)^T C_D^{-1} 
+    \left(\mathds{1}+\sigma^2 C_D^{-1}\right)^{-1} y_0 + 
+    \sigma^2 y_0^T C_D^{-1} \left(\mathds{1}+\sigma^2 C_D^{-1}\right)^{-1} 
+    C_D^{-1} y_0\, .
+\end{align}
+Note that the four terms in the equation above are ordered in increasing powers
+of $\sigma^2$ and ultimately we will be interested in the limit $\sigma^2\to 0$,
+which reproduces the Dirac delta in $\theta(y,u)$. Plugging
+Eq.~\ref{eq:RemainderFromSquare} in Eq.~\ref{eq:QuadFormDataIntSquare} and again
+comparing to Eq.~\ref{eq:QuadFormDataInt}, we find
+\begin{align}
+    \label{eq:RDBeforeLimit}   
+    R_D 
+    &= \frac{1}{\sigma^2} \left(\mathcal{G}u\right)^T 
+    \left[
+        1 - \frac{1}{1+\sigma^2 C_D^{-1}} 
+    \right]
+    \left(\mathcal{G}u\right) - y_0^T C_D^{-1} \left(\mathcal{G}u\right)
+    - \left(\mathcal{G}u\right)^T C_D^{-1} y_0 + y_0^T C_D^{-1} y_0\, ,
+\end{align}
+Expanding for small values of $\sigma^2$ the terms of order $1/\sigma^2$ cancel;
+keeping only finite terms in the limit $\sigma^2 \to 0$ we finally obtain
+\begin{equation}
+    \label{eq:RDAfterLimit}
+    R_D = \left(\mathcal{G}u - y_0\right)^T C_D^{-1}
+    \left(\mathcal{G}u - y_0\right)\, .
+\end{equation}
+This is exactly the result that we obtained earlier when 
+\begin{equation}
+    \label{eq:RemindTheta}
+    \theta(y,u|\mathcal{G}) = \delta(y-\mathcal{G}u)\, .
+\end{equation}
+It should not come as a surprise since in the limit where $\sigma^2 \to 0$ the
+Gaussian distribution that we chose to describe the fluctutations of the data
+around the theory predictions reduces indeed to a Dirac delta. The posterior for
+the model is exactly the one we computed in Sect.~\ref{sec:closure}. We do not
+learn anything new from this exercise, but it is a useful warm-up for the next
+example. The integral over \obs\ can now be performed easily, since it is yet
+again a Gaussian integral. 
+
+
+\subsection{Integrating out the model}
+\label{eq:IntModOut}
