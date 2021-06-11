@@ -86,12 +86,26 @@ comparing to Eq.~\ref{eq:QuadFormDataInt}, we find
     \left(\mathcal{G}u\right) - y_0^T C_D^{-1} \left(\mathcal{G}u\right)
     - \left(\mathcal{G}u\right)^T C_D^{-1} y_0 + y_0^T C_D^{-1} y_0\, ,
 \end{align}
-Expanding and keeping only finite terms for $\sigma^2 \to 0$ we finally obtain
+Expanding for small values of $\sigma^2$ the terms of order $1/\sigma^2$ cancel;
+keeping only finite terms in the limit $\sigma^2 \to 0$ we finally obtain
 \begin{equation}
     \label{eq:RDAfterLimit}
     R_D = \left(\mathcal{G}u - y_0\right)^T C_D^{-1}
     \left(\mathcal{G}u - y_0\right)\, .
 \end{equation}
+This is exactly the result that we obtained earlier when 
+\begin{equation}
+    \label{eq:RemindTheta}
+    \theta(y,u|\mathcal{G}) = \delta(y-\mathcal{G}u)\, .
+\end{equation}
+It should not come as a surprise since in the limit where $\sigma^2 \to 0$ the
+Gaussian distribution that we chose to describe the fluctutations of the data
+around the theory predictions reduces indeed to a Dirac delta. The posterior for
+the model is exactly the one we computed in Sect.~\ref{sec:closure}. We do not
+learn anything new from this exercise, but it is a useful warm-up for the next
+example. The integral over \obs\ can now be performed easily, since it is yet
+again a Gaussian integral. 
 
 
-
+\subsection{Integrating out the model}
+\label{eq:IntModOut}
