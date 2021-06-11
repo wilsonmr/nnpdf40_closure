@@ -135,7 +135,7 @@ we calculate the posterior distribution in data space, in block notation we have
 \end{equation}
 We are free to marginalise over either $\obs$ or $\testset{\obs}$. If we do the
 former then we can express bias (or variance) as
-\begin{equation}
+\begin{equation}\label{eq:BiasTraceObsPost}
     \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
     {\rm Tr} \left[
         \testset{\obspostcov}
@@ -143,7 +143,16 @@ former then we can express bias (or variance) as
     \right] \, ,
 \end{equation}
 where $\testset{\obspostcov}$ is the covariance of the posterior distribution of
-$\testset{\obs}$ with no prior information on that data. If we marginalise
+$\testset{\obs}$ with no prior information on that data. This might seem peculiar
+because in determining $\testset{\obspostcov}$ we set $\testset{\obspriorcov}^{-1}$
+but in Eq.~\ref{eq:BiasTraceObsPost} we require $\testset{\obspriorcov}^{-1}$. However
+we understand Eq.~\ref{eq:BiasTraceObsPost} as a comparison between
+the posterior distribution in the space of data of some unseen observables to an
+independently determined prior from performing the relevant experiment which
+measures the same observables. Comparing moments of these two distributions
+is what you would expect when the new experimental data is published.
+
+If we marginalise
 instead over $\testset{\obs}$, then
 \begin{equation}
     \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
