@@ -183,8 +183,8 @@ Collecting all terms we find
         \left(\mathcal{G} C_M \mathcal{G}^T\right)^{-1}
         \left(y- \mathcal{G} u_0\right)\, .
 \end{equation}
-Performing the Gaussian integral over $u$ in Eq.~\ref{eq:MarginGaussModel}, the
-posterior distribution of the data is:
+Performing the Gaussian integral over $u$ in Eq.~\ref{eq:MarginGaussModel}, we
+obtain the posterior distribution of the data
 \begin{equation}
     \label{eq:PosteriorDataDistr}
     \pi_D^y(y) \propto 
@@ -193,4 +193,32 @@ posterior distribution of the data is:
     \left(\mathcal{G} C_M \mathcal{G}^T\right)^{-1}
     \left(y - \mathcal{G} u_0\right)
     \right]\, .
+\end{equation}
+As in the case above, we note that this is a Gaussian distribution,
+\begin{equation}
+    \label{eq:PosteriorDataDistrGauss}
+    \pi_D^{y}(y) \propto
+    \exp \left[
+        -\frac12 \left(y - \tilde{y}\right)^T
+        \tilde{C}_D^{-1} 
+        \left(y - \tilde{y}\right)
+    \right]\, ,
+\end{equation}
+where the mean and the covariance are given in
+Eqs.~\ref{eq:PosteriorDataParamsMean} and~\ref{eq:PosteriorDataParamsCov}. We
+can rewrite those expressions as
+\begin{align}
+    \tilde{y} &= \mathcal{G} \tilde{u} \, , \\
+    \tilde{C}_D^{-1} &=
+        C_D^{-1} + \left(\mathcal{G} C_M \mathcal{G}^T\right)^{-1}\, .
+\end{align}
+In order to simplify the notation we introduce
+\begin{equation}
+    \hat{C}_M = \left(\mathcal{G} C_M \mathcal{G}^T\right)\, ,
+\end{equation}
+and then
+\begin{equation}
+    \tilde{C}_D = \hat{C}_M
+    - \hat{C}_M \left(\hat{C}_M + C_D \right)^{-1} 
+    \hat{C}_M\, .
 \end{equation}

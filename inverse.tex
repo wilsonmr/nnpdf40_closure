@@ -358,15 +358,16 @@ function $S(\modelvec)$ is a quadratic function of $\modelvec$,
   \left( \modelvec - \modelpriorcent \right)^T \modelpriorcov^{-1} \left(\modelvec - \modelpriorcent \right) \\
   &= 
   \left(\modelvec - \modelpostcent\right) \modelpostcov^{-1}
-  \left(\modelvec - \modelpriorcent\right) + \mathrm{const}\, ,
+  \left(\modelvec - \modelpostcent\right) + \mathrm{const}\, ,
 \end{align} 
 where
 \begin{align}
-  \label{eq:PostParams}
+  \label{eq:PostParamsCov}
   \modelpostcov^{-1} &= 
   \left(
-    \linmap^T \obspriorcov^{-1} G + \modelpriorcov^{-1}
+    \linmap^T \obspriorcov^{-1} \linmap + \modelpriorcov^{-1}
   \right)\, , \\
+  \label{eq:PostParamsMean}
   \modelpostcent &=
   \modelpostcov  \left(
     \linmap^T \obspriorcov^{-1} \obspriorcent + \modelpriorcov^{-1} \modelpriorcent
@@ -385,7 +386,8 @@ the limit $\modelpriorcov^{-1} \to 0$, which yields
     \linmap^T \obspriorcov^{-1} \obspriorcent 
   \right)\, . \label{eq:NoPriorLinModelCov}
 \end{align}
-The action of $\obspriorcov^{-1}$ on the vector of obseved data $\obspriorcent$ is best visualised using a spectral decomposition
+The action of $\obspriorcov^{-1}$ on the vector of observed data $\obspriorcent$
+is best visualised using a spectral decomposition
 \begin{equation}
   \label{eq:CDSpecDec}
   \obspriorcov^{-1} = \sum_n \frac{1}{\sigma_n^2} P_n\, ,
@@ -395,10 +397,10 @@ $\sigma_n^2$ is the corresponding eigenvalue. The action of $\obspriorcov^{-1}$ 
 perform a weighted average of the components of $\obspriorcent$ in the directions of the
 eigenvectors of $\obspriorcov$.
 
-An explicit expression can also be obtained for the posterior distribution of
-data, which can be obtained from the joint distribution by marginalising over
-the model input $\modelvec$:
-\begin{align}\label{eq:PosteriorDataSpace}
+An explicit expression for the posterior distribution of data can be obtained
+from the joint distribution by marginalising over the model input $\modelvec$:
+\begin{align}
+  \label{eq:PosteriorDataSpace}
   \pi_D(\obs|\obspriorcent,\modelpriorcent,\linmap)
   &= \int du\, \pi(\obs,\modelvec|\obspriorcent,\modelpriorcent,\linmap) \\
   &\propto \exp\left(
@@ -407,10 +409,61 @@ the model input $\modelvec$:
   \right)\, ,
 \end{align}
 where
-\begin{align}\label{eq:PosteriorDataParams}
+\begin{align}
+  \label{eq:PosteriorDataParamsMean}
   \obspostcent &= \linmap \modelpostcent\, , \\
+  \label{eq:PosteriorDataParamsCov}
   \obspostcov &= \linmap \modelpostcov \linmap^T\, .
 \end{align}
+
+\paragraph{Posterior distribution of unseen data}
+
+In real-life cases we are interested in the posterior distribution of a set of
+data that have not been included in the fit. In the Bayesian framework that we
+have developed this can be modeled by having two sets of data $y$ and $y'$, for
+which we have a prior distribution 
+\begin{align}
+  \label{eq:JointIndepDataPrior}
+  \pi_D^0&\left(y,y'|y_0,y'_0,C_D,C'_D\right) 
+   = \pi_D^0\left(y'|y'_0,C'_D\right) \pi_D^0\left(y|y_0,C_D\right) \\
+  & \propto 
+  \exp\left[-\frac12 \left(y'-y'_0\right)^T (C'_D)^{-1} 
+  \left(y'-y'_0\right)\right]\, 
+  \exp\left[-\frac12 \left(y-y_0\right)^T (C_D)^{-1} 
+  \left(y-y_0\right)\right]\, .
+\end{align}
+Following the derivation above, we can write the joint distribution for the data
+and the model 
+\begin{equation}
+  \label{eq:JointModelData}
+  \pi(y,y',u) \propto \pi_D^0(y,y') \pi_M^0(u) 
+  \delta\left(y - \mathcal{G}u\right)
+  \delta\left(y'- \mathcal{G}'u\right)\, .
+\end{equation}
+Note that because both sets of data are derived from the same model $u$, the joint distribution above introduces a correlation between the data sets. 
+
+We can now marginalise with respect to the dataset $y$, 
+\begin{equation}
+  \label{eq:MarginaliseDatasetY}
+  \pi(y',u) \propto
+  \exp\left[-\frac12 \left(y'-y'_0\right)^T (C'_D)^{-1} 
+  \left(y'-y'_0\right)\right]\, 
+  \exp\left[-\frac12 \left(u-\tilde{u}\right)^T (\tilde{C}_M)^{-1} 
+  \left(u-\tilde{u}\right)\right]\, ,
+\end{equation}
+where $\tilde{C}_M$ and $\tilde{u}$ are given respectively in
+Eqs.~\ref{eq:PostParamsCov} and \ref{eq:PostParamsMean}. By marginalising again,
+this time with respect to the model, we derive the posterior distribution of the
+unseen data,
+\begin{equation}
+  \label{eq:MarginaliseModelU}
+  \pi^y_D(y') \propto 
+  \exp \left[ 
+   \frac12 \left(y' - \tilde{y}'\right)^T
+   (\tilde{C}'_D)^{-1} 
+   \left(y' - \tilde{y}'\right)
+   \right]\, .
+\end{equation}
 
 \paragraph{Non-linear Models}
 
