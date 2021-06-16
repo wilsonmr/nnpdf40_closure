@@ -435,10 +435,10 @@ where
 
 \paragraph{Posterior distribution of unseen data}
 
-In real-life cases we are interested in the posterior distribution of a set of
-data that have not been included in the fit. In the Bayesian framework that we
-have developed this can be modeled by having two sets of data $y$ and $y'$, for
-which we have a prior distribution 
+In real-life cases we are also interested in the posterior distribution of a set
+of data that have not been included in the fit. In the Bayesian framework that
+we have developed this can be modeled by having two sets of data $y$ and $y'$,
+for which we have a prior distribution 
 \begin{align}
   \label{eq:JointIndepDataPrior}
   \pi_D^0&\left(y,y'|y_0,C_D,y'_0,C'_D\right) 
@@ -465,11 +465,15 @@ joint distribution above introduces a correlation between the data sets.
 We can now marginalise with respect to the dataset $y$, 
 \begin{equation}
   \label{eq:MarginaliseDatasetY}
-  \pi(y',u) \propto
-  \exp\left[-\frac12 \left(y'-y'_0\right)^T (C'_D)^{-1} 
-  \left(y'-y'_0\right)\right]\, 
-  \exp\left[-\frac12 \left(u-\tilde{u}\right)^T (\tilde{C}_M)^{-1} 
-  \left(u-\tilde{u}\right)\right]\, ,
+  \begin{split}
+    \pi(y',u) 
+    \propto &
+    \exp\left[-\frac12 \left(y'-y'_0\right)^T (C'_D)^{-1} 
+    \left(y'-y'_0\right)\right]\, 
+    \exp\left[-\frac12 \left(u-\tilde{u}\right)^T (\tilde{C}_M)^{-1} 
+    \left(u-\tilde{u}\right)\right] \\
+    & \quad \times \delta\left(y'- \mathcal{G}'u\right)\, .
+  \end{split}
 \end{equation}
 where $\tilde{C}_M$ and $\tilde{u}$ are given respectively in
 Eqs.~\ref{eq:PostParamsCov} and \ref{eq:PostParamsMean}. By marginalising again,
@@ -482,8 +486,30 @@ unseen data,
    \frac12 \left(y' - \tilde{y}'\right)^T
    (\tilde{C}'_D)^{-1} 
    \left(y' - \tilde{y}'\right)
-   \right]  \, .
+   \right]\, ,
 \end{equation}
+where
+\begin{align}
+  \tilde{C}'_D 
+  &= \mathcal{G}' \tilde{C}'_M \mathcal{G}'^{T} \\
+  \tilde{y}'
+  &= \mathcal{G}' \tilde{u}'\, ,
+\end{align}
+and 
+\begin{align}
+  \tilde{C}_M'^{-1} 
+  &= \mathcal{G}'^T C_D'^{-1} \mathcal{G}' + \tilde{C}_M^{-1} \\
+  \tilde{u}' 
+  &= \tilde{C}'_M \left(
+    \mathcal{G}'^T C_D'^{-1} y_0' + \tilde{C}_M^{-1} \tilde{u} 
+    \right) \\
+  \tilde{C}_M^{-1}
+  &= \mathcal{G}^T C_D^{-1} \mathcal{G} + C_M^{-1} \\
+  \tilde{u}
+  &= \tilde{C}_M \left(
+    \mathcal{G}^T C_D^{-1} y_0 + C_M^{-1} u_0
+  \right)\, .
+\end{align}
 
 \paragraph{Non-linear Models}
 
