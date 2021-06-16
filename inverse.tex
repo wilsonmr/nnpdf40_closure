@@ -40,9 +40,9 @@ number of measurements, we introduce an {\em observation operator}
   O : ~& R \to Y \nonumber \\
        & r \mapsto \obs \, ,
 \end{align}
-where $\obs \in Y$ is a vector in a finite-dimensional space $Y$ that contains all
-the experimental results, \eg\ the value of the structure function for different
-values of the kinematics. In general we will assume that $\obs \in
+where $\obs \in Y$ is a vector in a finite-dimensional space $Y$ that contains
+all the experimental results, \eg\ the value of the structure function for
+different values of the kinematics. In general we will assume that $\obs \in
 \real^{\ndata}$, \ie\ we have a finite number $\ndata$ of real experimental
 values. The quantity of interest is the composed operator
 \begin{align}
@@ -62,14 +62,14 @@ given $\obs$. It is often the case that inverse problems are ill-defined
 in the sense that the solution may not exist, may not be unique, or
 may be unstable under small variations of the problem. 
 
-In solving this problems we are going to adopt a Bayesian point of view; our
+In solving this problem we are going to adopt a Bayesian point of view; our
 prior knowledge about $\modelvec$ is encoded in a prior probability measure
-$\mu^0$, and we use Bayes' theorem to compute the posterior
-probability measure of $\modelvec$ given the data $\obs$, which we denote as
-$\mu^\obs$. We denote the probability densities associated to $\mu^0$ and
-$\mu^\obs$ by $\pi^0$ and $\pi^\obs$ respectively. Then, using
-Eq.~(\ref{eq:NoisyInverseProblem}), we can write the data likelihood,
-\ie\ the probability density of $\obs$ given $\modelvec$,
+$\mu_M^0$, and we use Bayes' theorem to compute the posterior probability
+measure of $\modelvec$ given the data $\obs$, which we denote as
+$\mu_M^\fwdobsop$. When possible, we denote the probability densities associated
+to $\mu_M^0$ and $\mu_M^\fwdobsop$, by $\pi_M^0$ and $\pi_M^\fwdobsop$
+respectively. Then, using Eq.~(\ref{eq:NoisyInverseProblem}), we can write the
+data likelihood, \ie\ the probability density of $\obs$ given $\modelvec$,
 \begin{align}
   \label{eq:YGivenUProbDensity}
   \pi(\obs|\modelvec) = \rho(\obs-\fwdobsop(\modelvec))\, ,
@@ -77,30 +77,35 @@ Eq.~(\ref{eq:NoisyInverseProblem}), we can write the data likelihood,
 and Bayes' theorem yields
 \begin{align}
   \label{eq:BayesThmInversePosterior}
-  \pi_M^\obs(\modelvec) = \pi(\modelvec|\obs) \propto \rho(\obs-\fwdobsop(\modelvec)) \pi^0(\modelvec)\, .
+  \pi_M^\fwdobsop(\modelvec) = \pi(\modelvec|\obs) \propto \rho(\obs-\fwdobsop(\modelvec)) \pi_M^0(\modelvec)\, .
 \end{align}
 
 \paragraph{Example}
 
-The concepts that we have introduced so far should sound familiar, and are best
-exemplified by considering the case where both the observational noise and the
-model prior are Gaussian. We assume that we are given a set of central values
-$\obspriorcent \in \real^{\ndata}$ and their covariance matrix $\obspriorcov$. Then the {\em
-prior} probability density of the observable $\obs$ is 
+Even though the concepts that we have introduced so far should sound familiar,
+it is worthwhile to spend a few paragraphs to clarify some ideas and present an
+explicit argument, where all the probability densities are carefully defined.
+This is best exemplified by considering the case where both the observational
+noise and the model prior are Gaussian. We assume that we are given a set of
+central values $\obspriorcent \in \real^{\ndata}$ and their covariance matrix
+$\obspriorcov$. Then the {\em prior} probability density of the observable
+$\obs$ is 
 \begin{equation}
   \label{eq:PriorData}
-  \pi_{D}^0(\obs|\obspriorcent) \propto \exp\left(
+  \pi_{D}^0(\obs|\obspriorcent,\obspriorcov) \propto \exp\left(
     -\frac12 \left| \obs - \obspriorcent \right|_{\obspriorcov}^2
     \right)\, ,
 \end{equation}
 where the suffix $D$ emphasises the fact that this is a probability density in
 data space, and the notation explicitly reminds us that this is the probability
-density given the central values $\obspriorcent$ (and the covariance matrix). Similarly we
-can choose a Gaussian distribution for the input model, characterized by a
-central value $\modelpriorcent$ and a covariance $\modelpriorcov$:
+density given the central values $\obspriorcent$ (and the covariance matrix).
+Similarly we can choose a Gaussian distribution for the input model,
+characterized by a central value $\modelpriorcent$ and a covariance
+$\modelpriorcov$:
 \begin{align}
   \label{eq:PiZeroGauss}
-  \pi_{M}^0(\modelvec|\modelpriorcent)  &\propto \exp\left(
+  \pi_{M}^0(\modelvec|\modelpriorcent,\modelpriorcov)  
+  &\propto \exp\left(
               -\frac12 \left| \modelvec - \modelpriorcent \right|_{\modelpriorcov}^2
               \right)\, .
 \end{align}
@@ -111,9 +116,8 @@ respectively, and introduced the short-hand notation
 \begin{align}
   \left|a\right|_M^2 = \left| M^{-1/2} a\right|^2\, ,
 \end{align}
-where $a$ denotes a generic element of $\modelspace$, $R$ or $\real^{\ndata}$. For
-the case where $a \in \real^{\ndata}$, we can use the usual Euclidean norm
-and
+where $a$ denotes a generic element of $\modelspace$, $R$ or $\real^{\ndata}$.
+For the case where $a \in \real^{\ndata}$, we use the Euclidean norm and
 \begin{align}
   \left| a \right|_M^2 = \sum_{i,j} a_i M_{ij} a_j\, ,
 \end{align}
@@ -122,7 +126,8 @@ Up to this point data and models are completely independent, and the joint
 distribution is simply the product of $\pi_{D}^0$ and $\pi_{M}^0$. 
 
 The forward map induces a correlation between the input model and the
-observables, 
+observables, so we introduce a probability density $\theta$ that describes these
+correlations due to the physical theory,  
 \begin{equation}
   \label{eq:ThetaCorr}
   \theta(\obs,\modelvec|\fwdobsop) = \delta\left(\obs - \fwdobsop(\modelvec)\right)\, ,
@@ -138,26 +143,33 @@ using a Gaussian with covariance $C_T$,
     \left| \obs - \fwdobsop(\modelvec)
     \right|_{C_T}^2\right)\, .
 \end{equation}
-Note however that it is not clear that theoretical errors are normally
-distributed. Taking the correlation $\theta(\obs,\modelvec)$ into account, the joint
-distribution of $\obs$ and $\modelvec$ is
+Note however that there are no rigorous arguments favouring the fact that
+theoretical errors are normally distributed. Taking the correlation
+$\theta(\obs,\modelvec|\fwdobsop)$ into account, the joint distribution of
+$\obs$ and $\modelvec$ is
 \begin{align}
   \label{eq:JointYAndU}
-  \pi(\obs,\modelvec|\obspriorcent,\modelpriorcent,\fwdobsop) \propto 
-  \pi_{D}^0(\obs|\obspriorcent) \pi_{M}^0(\modelvec|\modelpriorcent) \theta(\obs,\modelvec|\fwdobsop)\, .
+  \pi^\fwdobsop(\obs,\modelvec|\obspriorcent,\obspriorcov,\modelpriorcent,\modelpriorcov) 
+  \propto 
+  \pi_{D}^0(\obs|\obspriorcent,\obspriorcov) 
+  \pi_{M}^0(\modelvec|\modelpriorcent, \modelpriorcov) 
+  \theta(\obs,\modelvec|\fwdobsop)\, .
 \end{align}
 We can now marginalize with respect to \obs, neglecting theory errors, 
 \begin{align}
   \label{eq:MarginOne}
-  \pi_M(\modelvec|\obspriorcent,\modelpriorcent,\fwdobsop) 
-  &\propto \int dy\, \pi_{D}^0(\obs|\obspriorcent) \pi_{M}^0(\modelvec|\modelpriorcent) 
+  \pi^\fwdobsop_M(\modelvec|\obspriorcent,\obspriorcov,\modelpriorcent,\modelpriorcov) 
+  &\propto \int dy\, \pi_{D}^0(\obs|\obspriorcent,\obspriorcov) 
+    \pi_{M}^0(\modelvec|\modelpriorcent,\modelpriorcov) 
     \theta(\obs,\modelvec|\fwdobsop) \\
-  & \propto \pi_{M}^0(\modelvec|\modelpriorcent)  \int dy\, \pi_{D}^0(\obs|\obspriorcent) 
-    \theta(\obs,\modelvec|\fwdobsop) \\
-  & \propto \pi_{M}^0(\modelvec|\modelpriorcent) \pi_{D}^0(\fwdobsop(\modelvec)|\obspriorcent)\, .
+  & \propto \pi_{M}^0(\modelvec|\modelpriorcent,\modelpriorcov)  
+    \int dy\, \pi_{D}^0(\obs|\obspriorcent,\obspriorcov) 
+    \delta\left(\obs-\fwdobsop(\modelvec)\right) \\
+  & \propto \pi_{M}^0(\modelvec|\modelpriorcent,\modelpriorcov) 
+    \pi_{D}^0(\fwdobsop(\modelvec)|\obspriorcent,\obspriorcov)\, .
 \end{align}
-The log-likelihood in the Gaussian case is simply the $\chi^2$ of the data to
-the theory prediction:
+The log-likelihood in the Gaussian case is simply the $\chi^2$ of the data,
+$\obspriorcent$, to the theory prediction, $\fwdobsop(\modelvec)$:
 \begin{equation}
   \label{eq:LikelyChiSq}
   -\log\pi_D^0(\fwdobsop(\modelvec)|\obspriorcent) =  
@@ -181,31 +193,35 @@ where in this case
                \right)\, .
 \end{align}
 The probability density
-$\pi_M(\modelvec|\obspriorcent,\modelpriorcent,\fwdobsop)$ was called
-$\pi^\obs(\modelvec)$ in Eq.~\ref{eq:BayesThmInversePosterior}, where the suffix
-$\obs$ is a short-hand to denote the posterior probability in model space,
-taking into account all the conditional variables. Hence, for the Gaussian case,
-the result from Bayes' theorem reduces to
+$\pi^\fwdobsop_M(\modelvec|\obspriorcent,\obspriorcov,\modelpriorcent,\modelpriorcov)$
+was called $\pi_M^\fwdobsop(\modelvec)$ in
+Eq.~\ref{eq:BayesThmInversePosterior}, where the suffix $\fwdobsop$ is a
+short-hand to denote the posterior probability in model space, taking into
+account all the conditional variables. Hence, for the Gaussian case, the result
+from Bayes' theorem reduces to
 \begin{align}
   \label{eq:PosteriorModel}
-  \pi_M^\obs(\modelvec) &\propto 
-  \exp\left(
-  -\frac12 \left| \obspriorcent - \fwdobsop(\modelvec) \right|_{\obspriorcov}^2
-  -\frac12 \left| \modelvec - \modelpriorcent \right|_{\modelpriorcov}^2
-  \right)\\ 
-  &= \exp\left[
+  \pi_M^\fwdobsop(\modelvec) 
+  &\propto 
+  \exp\left[
+    -\frac12 \left| \obspriorcent - \fwdobsop(\modelvec) \right|_{\obspriorcov} ^2
+    -\frac12 \left| \modelvec - \modelpriorcent \right|_{\modelpriorcov}^2
+  \right] \\ 
+  &= 
+  \exp\left[
     - S(\modelvec)
   \right]\, .
 \end{align}
 Note that in the argument of the likelihood function we have the central values
 of the data points $\obspriorcent$. Eq.~(\ref{eq:PosteriorModel}) is the
 Bayesian answer to the inverse problem, our knowledge of the model $\modelvec$
-is encoded in the probability measure $\mu^\obs$, which is fully specified by
-the density $\pi_M^\obs$. There are several ways to characterise a probability
-distribution. The NNPDF approach is focused on the determination of the {\em
-Maximum A Posteriori (MAP)} estimator, \ie\ the element $u_* \in \modelspace$
-that maximises $\pi_M^\obs(\modelvec)$:
-\begin{align}\label{eq:MAP}
+is encoded in the probability measure $\mu_M^\fwdobsop$, which is fully
+specified by the density $\pi_M^\fwdobsop$. There are several ways to
+characterise a probability distribution. The NNPDF approach is focused on the
+determination of the {\em Maximum A Posteriori (MAP)} estimator, \ie\ the
+element $u_* \in \modelspace$ that maximises $\pi_M^\fwdobsop(\modelvec)$:
+\begin{align}
+  \label{eq:MAP}
   u_* = \arg\min_{\modelvec \in \modelspace} 
   \left(
   -\frac12 \left| \obspriorcent - \fwdobsop(\modelvec) \right|_{\obspriorcov}^2
@@ -259,14 +275,13 @@ multi-dimensional Gaussian, centred at $0$ with covariance matrix $\modelpriorco
 this case the posterior distribution can be written as
 \begin{equation}
   \label{eq:GaussPostExplicit}
-    \pi^\obs(\modelvec) \propto \exp \left[
-    -\frac{1}{2\gamma^2} \left|\obs - (g^T \modelvec) \right|^2 - \frac12 \left|
-      \modelvec
-    \right|_{\modelpriorcov}^2 
+    \pi_M^\fwdobsop(\modelvec) 
+    \propto \exp \left[
+      -\frac{1}{2\gamma^2} \left|\obs - (g^T \modelvec) \right|^2 - \frac12 \left|\modelvec\right|_{\modelpriorcov}^2 
     \right]\, ,
 \end{equation}
-which is still a Gaussian distribution for $\modelvec$. The mean and covariance are
-respectively
+which is still a Gaussian distribution for $\modelvec$. The mean and covariance
+are respectively
 \begin{align}
   m &= \frac{(\modelpriorcov g) \obs}{\gamma^2 + (g^T \modelpriorcov g)}\, , \\
   \Sigma &= \modelpriorcov - 
@@ -313,7 +328,8 @@ we are going to assume a Gaussian prior with unit variance for $\modelvec$, whic
 for the posterior distribution:
 \begin{equation}
   \label{eq:OverDetPost}
-  \pi^\obs(\modelvec) \propto 
+  \pi_M^\fwdobsop(\modelvec) 
+    \propto 
     \exp\left(
       -\frac{1}{2\gamma^2} \left| \obs - g(\modelvec + \beta \modelvec^3)\right|^2
       -\frac12 \modelvec^2
@@ -401,8 +417,9 @@ An explicit expression for the posterior distribution of data can be obtained
 from the joint distribution by marginalising over the model input $\modelvec$:
 \begin{align}
   \label{eq:PosteriorDataSpace}
-  \pi_D(\obs|\obspriorcent,\modelpriorcent,\linmap)
-  &= \int du\, \pi(\obs,\modelvec|\obspriorcent,\modelpriorcent,\linmap) \\
+  \pi_D^\fwdobsop(\obs|\obspriorcent,\obspriorcov,\modelpriorcent,\modelpriorcov)
+  &= \int du\, 
+  \pi^\fwdobsop(\obs,\modelvec|\obspriorcent,\obspriorcov,\modelpriorcent,\modelpriorcov) \\
   &\propto \exp\left(
     -\frac12 \left(\obs - \obspostcent\right)^T \obspostcov^{-1}
     \left(\obs - \obspostcent\right)
@@ -424,7 +441,7 @@ have developed this can be modeled by having two sets of data $y$ and $y'$, for
 which we have a prior distribution 
 \begin{align}
   \label{eq:JointIndepDataPrior}
-  \pi_D^0&\left(y,y'|y_0,y'_0,C_D,C'_D\right) 
+  \pi_D^0&\left(y,y'|y_0,C_D,y'_0,C'_D\right) 
    = \pi_D^0\left(y'|y'_0,C'_D\right) \pi_D^0\left(y|y_0,C_D\right) \\
   & \propto 
   \exp\left[-\frac12 \left(y'-y'_0\right)^T (C'_D)^{-1} 
@@ -436,11 +453,14 @@ Following the derivation above, we can write the joint distribution for the data
 and the model 
 \begin{equation}
   \label{eq:JointModelData}
-  \pi(y,y',u) \propto \pi_D^0(y,y') \pi_M^0(u) 
+  \pi^\fwdobsop(y,y',u) 
+  \propto 
+  \pi_D^0(y,y'|y_0,C_D,y'_0,C'_D) \pi_M^0(u) 
   \delta\left(y - \mathcal{G}u\right)
   \delta\left(y'- \mathcal{G}'u\right)\, .
 \end{equation}
-Note that because both sets of data are derived from the same model $u$, the joint distribution above introduces a correlation between the data sets. 
+Note that because both sets of data are derived from the same model $u$, the
+joint distribution above introduces a correlation between the data sets. 
 
 We can now marginalise with respect to the dataset $y$, 
 \begin{equation}
@@ -462,14 +482,14 @@ unseen data,
    \frac12 \left(y' - \tilde{y}'\right)^T
    (\tilde{C}'_D)^{-1} 
    \left(y' - \tilde{y}'\right)
-   \right]\, .
+   \right]  \, .
 \end{equation}
 
 \paragraph{Non-linear Models}
 
-These linear models may look over-simplified at first sight. In practice, it
-turns out that non-linear models can often be linearised around the central
-value of the prior distribution, 
+The linear models that we have discussed so far may look over-simplified at
+first sight. In practice, it turns out that non-linear models can often be
+linearised around the central value of the prior distribution, 
 \begin{equation}
   \label{eq:LinU0}
   \fwdobsop(\modelvec) = \fwdobsop(\modelpriorcent) + G \left(\modelvec - \modelpriorcent\right) + \ldots\, ,
@@ -479,7 +499,8 @@ where
   \label{eq:FirstDerU0}
   G^i_\alpha = \left. \frac{\partial \fwdobsop^i}{\partial u_\alpha} \right|_{\modelpriorcent}\, ,
 \end{equation}
-where we have neglected higher-order terms in the expansion of $\fwdobsop(\modelvec)$.
+and we have neglected higher-order terms in the expansion of
+$\fwdobsop(\modelvec)$.
 
 If these terms are not negligible, another option is to find the MAP estimator,
 and then expand the the forward map around it, which yields equations very
@@ -494,11 +515,11 @@ MAP estimator, then the linear approximation can be sufficiently accurate.
 In the finite-dimensional case, where the probability measures are specified by
 their densities with respect to the Lebesgue measure,
 Eq.~(\ref{eq:BayesThmInversePosterior}) can be rephrased by saying  that $\rho$
-is the Radon-Nikodym derivative of the probability measure $\mu^\obs$ with respect
-to $\mu_0$, \viz
+is the Radon-Nikodym derivative of the probability measure $\mu^\fwdobsop$ with
+respect to $\mu_0$, \viz
 \begin{align}
   \label{eq:RadonNikodym}
-  \frac{d\mu^\obs}{d\mu_0} (\modelvec) \propto \rho(\obs-\fwdobsop(\modelvec)) \pi_0(\modelvec)\, .
+  \frac{d\mu^\fwdobsop}{d\mu^0} (\modelvec) \propto \rho(\obs-\fwdobsop(\modelvec)) \pi^0(\modelvec)\, .
 \end{align}
 Finally, using the fact that the density $\rho$ is a positive
 function, we can rewrite 
@@ -509,7 +530,7 @@ function, we can rewrite
 and therefore
 \begin{align}
   \label{eq:RadonNikodymTwo}
-  \frac{d\mu^\obs}{d\mu^0} (\modelvec) \propto \exp\left(-\Phi(\modelvec;\obs)\right)\, .
+  \frac{d\mu^\fwdobsop}{d\mu^0} (\modelvec) \propto \exp\left(-\Phi(\modelvec;\obs)\right)\, .
 \end{align}
 In finite-dimensional spaces, the three equations above are just definitions
 that do not add much content. Their interest resides in the fact that the last
@@ -603,7 +624,7 @@ version of the true solution. The kernel $R$ is given by
   \label{eq:BackKernel}
   R(x,x') = Q^i(x) G^i(x')\, .
 \end{equation}
-The coefficients $Q(x)$ can be chosen so that the kernel is a close as possible
+The coefficients $Q(x)$ can be chosen so that the kernel is as close as possible
 to a delta function:
 \begin{equation}
   \label{eq:BackDelta}
