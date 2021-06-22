@@ -16,7 +16,7 @@ $\testset{\obspriorcent}$, normalised by the number of data points
 \end{equation}
 where we defined the expectation value over the ensemble of model replicas as
 \begin{equation}
-    \emodel{\cdot} \equiv \frac{1}{\nreps} \sum_{k=1}^{\nreps} \cdot \, ,
+    \emodel{x} \equiv \frac{1}{\nreps} \sum_{k=1}^{\nreps} x \, ,
 \end{equation}
 and we purposely denoted the data which the model error is evaluated on as
 $\testset{\obspriorcent}$, as opposed to the data which is used to determine the model
@@ -24,13 +24,10 @@ parameters $\obspriorcent$. We could of course set
 $\testset{\obspriorcent} = \obspriorcent$ and
 evaluate the model performance on the fitted data however, as is common in
 machine learning literature, we intend to use a separate set of test data.
-Ideally we would choose $\testset{\obspriorcent}$ such that the joint prior
-distribution of training and test set can be written as
-$\pi_{D}^0(\testset{\obspriorcent}, \obspriorcent) =
-\pi_{D}^0(\testset{\obspriorcent})\pi_{D}^0(\obspriorcent)$, in other words the
-training and test set are statistically independent. If the prior distribution
-in data-space is Gaussian, then the total covariance of the prior would be
-block diagonal in the training and test covariance:
+Ideally we would choose $\testset{\obspriorcent}$ such that $\testset{\obspriorcent}$
+and $\obspriorcent$ are statistically independent, as in Eq.~\ref{eq:JointIndepDataPrior}.
+This is achieved by choosing the split such that the experimental covariance matrix
+is block diagonal:
 \begin{equation}
     \modelpriorcov^{\rm Total} =
     \begin{bmatrix}
@@ -120,7 +117,7 @@ In practical terms, taking the expectation value across the training data can
 be achieved by running multiple closure fits, each with a different
 observational noise vector $\obsnoise$, and taking the average i.e.
 \begin{equation}
-    \mathbf{E}_{\modelpriorcent}[ \cdot ] = \frac{1}{\nfits} \sum_{j=1}^{\nfits} \cdot.
+    \mathbf{E}_{\obspriorcent}[ x ] = \frac{1}{\nfits} \sum_{j=1}^{\nfits} x.
 \end{equation}
 Clearly this is resource intensive, and requires us to perform many fits. In
 NNPDF3.0 \cite{nnpdf30}, single replica proxy fits were used to perform a study
@@ -296,7 +293,7 @@ completely faithful, then $\biasvarratio = 1$. We note that the relationship
 does not work both ways and $\biasvarratio = 1$ does not necessarily guarantee
 that the uncertainty is faithful. We also note that $\biasvarratio$ is not
 completely general: it is not a measure defined in model space and depends on
-the choice of test data. Therefore it only gives 'local' information on the
+the choice of test data. Therefore it only gives {\em local} information on the
 model uncertainties. If the distribution of the expectation value of model
 predictions is gaussian centered on the true observable values, with covariance
 $\covcent$ and the distribution of the model replicas is also gaussian, with
@@ -323,7 +320,7 @@ When the closure test was first presented in \cite{nnpdf30}, there was an estima
 introduced in the space of PDFs which also aimed to estimate faithfulness of
 PDF uncertainties using the combined assumption of Gaussian PDF uncertainties
 and quantile statistics, called $\xi_{1\sigma}$. Here we can define an
-analagous expression in the space of data,
+analogous expression in the space of data,
 \begin{equation}
     \label{eq:XiDataDef}
     \xisigdat{n} = 
@@ -337,13 +334,11 @@ theory predictions estimated from the replicas of fit $l$ and $I_{[a, b]}(x)$
 is the indicator
 function, which is one when $a \leq x \leq b$ and zero otherwise. In other
 words, $\xisigdat{n}$ is counting how often the difference between the prediction
-from the MAP estimator and the true observable value is within the $n\sigma$
-confidence interval of the replicas, assuming they're Gaussian. Since $\covrep$
+from the MAP estimator and the true observable value is within the $n\sigma$-confidence
+interval of the replicas, assuming they're Gaussian. Since $\covrep$
 is primarily driven by the replica
 fluctuations, we assume that it is roughly constant across fits, or independent
-upon the specific instance of observational noise. Also when taking the expectation
-value across fits, we're implicitly taking the expectation value across
-the prior distribution of the fitted data. This allows us to write
+upon the specific instance of observational noise. This allows us to write
 $\xisigdat{n}$ for a specific data point in the limit of infinite fits, each to
 a different instance of the data as
 \begin{equation}
@@ -351,11 +346,11 @@ a different instance of the data as
     \xisigdati{n} =
     \int_{-\infty}^{\infty} I_{[-n \testset{\sigma}_i, n \testset{\sigma}_i]}\,
     \left( \emodel{\testset{\fwdobsop}_i}^{(l)} - \testset{\law}_i \right) 
-    \pi_{D}^0(\obspriorcent) \, 
-    {\rm d}(\obspriorcent) \, ,
+    \rho(\obsnoise) \, 
+    {\rm d}(\obsnoise) \, ,
 \end{equation}
 where $\emodel{\fwdobsop_i}^{(l)}$ has implicit conditional dependence on
-$\obspriorcent$. If
+$\obsnoise$. If
 the distribution of $\emodel{\testset{\fwdobsop}_i}^{(l)} - \testset{\law}_i$
 is Gaussian, centered on
 zero, we can defined ${\testset{ \hat{\sigma} }}_i = \sqrt{\covcent_{ii}}$. In which case

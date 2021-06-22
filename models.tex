@@ -93,48 +93,20 @@ space given the test data, with zero prior knowledge of the model \viz
 \end{equation}
 where we emphasise that the covariance matrices $\modelpostcov$ are
 $\testset{\modelpostcov}$ from completely independent Bayesian inferences
-with no prior information on the model parameters.
+with no prior information on the model parameters, unlike in
+Eq.~\ref{eq:ModelPostSequential} where a sequential marginalisation causes
+$\testset{\modelpostcov}$ to depend on $\modelpostcov$.
 
-Alternatively, if the training and test split is ideal, as discussed in
-Sec.~\ref{sec:ClosureEstimatorsDerivation}, such that the two sets of data
-are uncorrelated then it's possible to perform a sequential marginalisation of
-the data \cite{tarantola}. The posterior model distribution obtained by
-marginalising over $\obspriorcent$, can be used as a model prior when
-writing down the posterior distribution of the model parameters given
-$\testset{\obspriorcent}$. Under these assumptions, we can express the
-covariance of the posterior model distribution, Eq.~\ref{eq:PostParams},
-after marginalising over all data as
-\begin{equation}
-    \modelpostcov^{-1} = \left(
-        \testset{\linmap}^T \testset{\obspriorcov}^{-1} \testset{\linmap} + 
-        \linmap^T \obspriorcov^{-1} \linmap
-    \right) \, .
-\end{equation}
-If we then take $\testset{\obspriorcov}^{-1} \to 0$, \ie\ there is no information
+Alternatively, if we perform a sequential marginalisation of
+the data, and use the result in Eq.~\ref{eq:ModelPostSequential}, but
+then take $\testset{\obspriorcov}^{-1} \to 0$, \ie\ there is no information
 on the observables in the test set, then
 \begin{equation}
     \modelpostcov^{-1} = \linmap^T \obspriorcov^{-1} \linmap \, ,
 \end{equation}
 or the total posterior model distribution, is identical to the posterior model
-distribution given just the training data - as you would expect. But now if
-we calculate the posterior distribution in data space, in block notation we have
-\begin{equation}
-    \begin{split}
-        \obspostcov &= \left[ \linmap \, \testset{\linmap} \right] \modelpostcov
-        \begin{bmatrix}
-            \linmap^T \\
-            \testset{\linmap}^T
-        \end{bmatrix}
-        \\
-        &=
-        \begin{bmatrix}
-            \linmap \modelpostcov \linmap^T & \linmap \modelpostcov \testset{\linmap}^T \\
-            \testset{\linmap} \modelpostcov \linmap^T & \testset{\linmap} \modelpostcov \testset{\linmap}^T
-        \end{bmatrix} \, .
-    \end{split}
-\end{equation}
-We are free to marginalise over either $\obs$ or $\testset{\obs}$. If we do the
-former then we can express bias (or variance) as
+distribution given just the training data - as you would expect.
+Now we can express bias (or variance) as
 \begin{equation}\label{eq:BiasTraceObsPost}
     \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
     {\rm Tr} \left[
@@ -144,26 +116,30 @@ former then we can express bias (or variance) as
 \end{equation}
 where $\testset{\obspostcov}$ is the covariance of the posterior distribution of
 $\testset{\obs}$ with no prior information on that data. This might seem peculiar
-because in determining $\testset{\obspostcov}$ we set $\testset{\obspriorcov}^{-1}$
-but in Eq.~\ref{eq:BiasTraceObsPost} we require $\testset{\obspriorcov}^{-1}$. However
-we understand Eq.~\ref{eq:BiasTraceObsPost} as a comparison between
+because in determining $\testset{\obspostcov}$ we took the limit
+$\testset{\obspriorcov}^{-1} \to 0$, because we had no prior information on the
+unseen data, however
+in Eq.~\ref{eq:BiasTraceObsPost} we require
+$\testset{\obspriorcov}^{-1}$ to be finite.
+However
+we rationalise Eq.~\ref{eq:BiasTraceObsPost} as a comparison between
 the posterior distribution in the space of data of some unseen observables to an
 independently determined prior from performing the relevant experiment which
 measures the same observables. Comparing moments of these two distributions
 is what you would expect when the new experimental data is published.
 
-If we marginalise
-instead over $\testset{\obs}$, then
-\begin{equation}
-    \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
-    {\rm Tr} \left[
-        \obspostcov
-        \obspriorcov^{-1}
-    \right] \, ,
-\end{equation}
-but as we already know, if there was no prior information on the model
-this reduces to $\frac{\nmodel}{\ndata}$ (to convince yourself, set
-$\testset{\modelpostcov} = \modelpostcov$ in Eq.~\ref{eq:BiasTraceModelPost}).
+% If we marginalise
+% instead over $\testset{\obs}$, then
+% \begin{equation}
+%     \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+%     {\rm Tr} \left[
+%         \obspostcov
+%         \obspriorcov^{-1}
+%     \right] \, ,
+% \end{equation}
+% but as we already know, if there was no prior information on the model
+% this reduces to $\frac{\nmodel}{\ndata}$ (to convince yourself, set
+% $\testset{\modelpostcov} = \modelpostcov$ in Eq.~\ref{eq:BiasTraceModelPost}).
 
 \subsection{Underparameterised model}
 

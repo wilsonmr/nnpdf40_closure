@@ -47,7 +47,8 @@ drawn from, \ie\ $\noise \sim \mathcal{N}(0, \obspriorcov)$.
 The parameters for each model replica maximise the likelihood evaluated on the
 corresponding pseudo-data. This is a special case of MAP estimation, described
 in Eq.~\eqref{eq:MAP}, where the model prior is uniform. Another way of viewing
-this is to take $\modelpriorcov \to \infty$ in Eq.~\eqref{eq:MAP}. Either way,
+this is to take $\modelpriorcov^{-1} \to 0$ in Eq.~\eqref{eq:MAP}, as was done
+to obtain the result in Eq.~\ref{eq:NoPriorLinModel}. Either way,
 there is no prior information about the model. In this framework, the
 parameterisation of the model is fixed, so the model space is the finite space
 of parameters $\modelvec \in \real^{\nmodel}$. Furthermore, we actually find the
@@ -162,8 +163,9 @@ NNPDF MC method to fit artificially generated closure data, the pseudo-data
 replicas that are fitted by the model replicas are referred to as level 2 (L2)
 data.
 
-In a closure test, our assumption of the prior distribution of the data is
-satisfied by default. In the original closure test in NNDPF3.0 there was also no
+In a closure test, the assumed prior of the data is fully consistent with the
+particular instance of observed central values, $\obspriorcent$, by construction.
+In the original closure test in NNDPF3.0 there was also no
 modelisation uncertainty, the true observable values were assumed to be obtained
 by applying the forward map $\fwdobsop$ to a vector in model space $\lawmodel$.
 It is worth noting that the assumption of zero modelisation uncertainties is
