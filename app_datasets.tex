@@ -1,5 +1,7 @@
-\section{Closure test datasets}
+\section{Closure test setup details}
 \label{sec:appendix-datasets}
+
+\subsection{Data}
 
 The full list of datasets included in the test set are shown in
 Tab.~\ref{tab:summarise_new_data}. The central values are not actually used
@@ -40,3 +42,32 @@ test datasets shown in Tab.~\ref{tab:summarise_new_data} is plotted.
     regions which the test dataset probes, for which there was no training data.}
     \label{fig:DataKinematicCoverage}
 \end{figure}
+
+\subsection{Models}
+
+A summary of the hyperparameters for the neural networks used during the closure
+fits is given in table Tab.~\ref{tab:Hyperparams}. These hyperparameters were
+chosen as part of an extensive hyperparameters scan, which will be explained in
+detail in NNPDF4.0, for this study we simply provide the values of the
+hyperparameters as a point of reference.
+
+\begin{table}
+    \begin{center}
+        \begin{tabular}[h]{c|c}
+            \toprule
+            hyperparameter & value \\
+            \midrule
+            architecture & 2-25-20-8 \\
+            activation & tanh-tanh-linear \\
+            minimiser & NAdam \\
+            max training length & 17000 epochs \\
+            pre-processing exponents & not fitted \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+    \caption{Hyperparameters for neural networks used in this study. The parameter
+    choices, and how these choices were made will be discussed in the full NNPDF4.0
+    paper. The table here is simply to add context to the results below. There
+    are 763 trainable parameters.}
+    \label{tab:Hyperparams}
+\end{table}

@@ -1,4 +1,4 @@
-\section{Understanding $\deltachi$}
+\section{Understanding NNPDF3.0 data estimators}
 
 In the closure test presented in NNPDF3.0 \cite{nnpdf30} there was a data-space
 estimator which aimed to measure the level of over or under fitting, $\deltachi$.
@@ -28,22 +28,22 @@ Eq.~\ref{eq:ExpectedBiasVarianceTraining} as $\ein$ because it's evaluated on th
 data used to inform the model replicas.
 
 Now if we examine the definition of $\deltachi$ introduced
-in~\cite{Ball:2014uwa}, defined as the difference between the
+in~\cite{nnpdf30}, defined as the difference between the
 $\chi^2$ between the expectation value of the model predictions and the level
 one data, and the $\chi^2$ between the underlying observable values and the
-level one data. In~\cite{Ball:2014uwa} the denominator was also set to be the
+level one data. In~\cite{nnpdf30} the denominator was also set to be the
 second term in the numerator, however here we slightly re-define
 $\deltachi$ to instead simply be normalised by the number of data points:
 \begin{equation}\label{eq:deltachi2def1}
     \begin{split}
-        \deltachi &= \frac{1}{\ndata} \left[
-            \left( \emodel{\fwdobsop\left(\modelvecrep\right)} - \obspriorcent \right)^T
+        \deltachi &= \\
+            \frac{1}{\ndata} & \Big[ \left( \emodel{\fwdobsop\left(\modelvecrep\right)} - \obspriorcent \right)^T
             \obspriorcov^{-1}
-            \left( \emodel{\fwdobsop\left(\modelvecrep\right)} - \obspriorcent \right) - 
-            \left( \law - \obspriorcent \right)^T
+            \left( \emodel{\fwdobsop\left(\modelvecrep\right)} - \obspriorcent \right) \\
+            & \, - \left( \law - \obspriorcent \right)^T
             \obspriorcov^{-1}
             \left( \law - \obspriorcent \right)
-        \right] \\
+        \Big] \\
         &= \bias + \noisecross \, ,
     \end{split}
 \end{equation}
