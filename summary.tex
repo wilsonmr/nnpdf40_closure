@@ -1,0 +1,64 @@
+\section{Summary}
+
+We've presented a formal framework for inverse problems, from a Bayesian
+perspective. In particular, the framework provides a more formal understanding
+of what it means when we talk about propagating experimental uncertainities
+into the space of models. The framework itself doesn't concern itself with
+the concept of fitting parameters, and the posterior model distribution is simply
+the result of marginalising the joint prior distribution of the model and
+data. We note that sampling from the posterior distribution of the model is,
+in general, highly non-trivial but show that at least for linear problems the
+NNPDF MC methodology can be shown to produce a sample of models which are
+distributed according to the posterior model distribution. Furthermore, we
+provide evidence that even for non-linear models this result at least holds
+as a good approximation close to the MAP estimator.
+
+We then use this formal framework to think about some of the estimators which
+we use as part of the NNPDF closure test. In particular we derive bias and
+variance from decomposing an out of sample error function, but then show
+that these estimators can be related back to the posterior distributions in
+the Bayesian framework. We note that the estimators themselves are not perfect
+and suffer from only testing the model uncertainties locally (in regions where
+the test data probes). Furthermore, the estimators only give an approximate
+overall picture, and cannot be used to diagnose where the problem arises if
+we find evidence that the model uncertaintes are not faithful.
+
+Given the framework set out here, future work should be undertaken to try and
+design some more general closure estimators in model space. Combining the ideas
+of the data space closure estimators with the formal understanding of
+infinite-dimensional probability measures.
+
+We give some preliminary closure results, as a proof of principle, the results
+presented here will be examined in more detail alongside the full NNPDF4.0
+release but serve as an example of how the data space estimators can be practically
+included even in a rather complex setting. The preliminary results are very
+positive and provide evidence that for unseen data, the NNPDF methodology
+appears to provide faithful uncertainities. As previously mentioned, a more
+general set of estimators in model space would be the gold-standard and give
+us confidence in our uncertainities for future observables which probe
+regions which are not covered by either the training or testing data.
+
+Something which was touched upon, but not investigated in detail, is that a
+closure test has fully consistent observable central values and uncertainities
+by construction which is likely not the case in real world fits. Other
+future work could focus on whether a closure test could be designed where this
+is not the case, and what faithful uncertainities would mean in this context.
+There already exist methodologies which deal with inconsistent data (or unknown
+systematics) in a Bayesian framework,
+for example in these cosmological studies \cite{Luis_Bernal_2018, Hobson_2002},
+and so the framework we presented here facilitates using this kind of
+formal approach to including inconsistent data. This should emphasise the
+importance of future developments to the NNPDF methodology keeping in touch
+with the formal understanding of inverse problems, since we can draw on a wide
+range of techniques from other disciplines who are also using a Bayesian
+approach.
+
+As a final thought, in light of the Bayesian framework set out here, one could
+even conceive of a methodology which
+used a different MC technique to sample directly from the posterior model
+distribution, for which we have an explicit (unnormalised) expression. This
+would be a complete paradigm shift from the approach described in
+Sec.~\ref{sec:fluct-fit-values} but could have some advantages, such as
+guaranteeing that the model replicas were exactly sampled from the posterior
+model distribution, even in the tails of the distribution far from the MAP
+estimator.
