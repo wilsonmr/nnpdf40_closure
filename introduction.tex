@@ -1,6 +1,58 @@
 \section{Introduction}
 \label{sec:Intro}
 
+Inverse problems are the typical example of inference where a model is sought
+starting from a finite-dimensional set of experimental observations. These
+problems are notoriously difficult, and often require trying to guess a
+continuous function, \ie\ an element of an infite dimensional space, from a
+finite amount of data. As emphasised by Hadamard a long time ago, it is easy to
+end up in a situation where we deal with ill-posed problems, in the sense that
+the solution may not exist, may not be unique, or may be unstable under small
+variations of the input data. The determination of parton distributions from
+experimental data, or the reconstruction of spectral densities from lattice QCD
+simulations, are just two examples where these problems arise in particle
+physics. In all these cases, finding a robust solution becomes very challenging,
+if not impossible, especially at a time where precision studies are the ultimate
+challenge in order to highlight divergences from the Standard Model. 
+
+A Bayesian approach provides an apter tool for addressing inverse problems.
+Starting from a prior distribution for the model, which encodes our theoretical
+knowledge or prejudice, basic statistical tools allow us to determine the
+posterior distribution of the solution, {\it after taking into account a set of
+experimental observations.} The probabilities encode our knowledge about the
+model before and after incorporating the experimental results. There are
+multiple advantages to this formulation: the inverse problem is well defined,
+the prior distribution ensures that all the assumptions are explicit, and it
+allows to regulate the likelihood distribution. 
+
+Probability measures can be defined in infinite-dimensional spaces, which allows
+at least in principle to address the problem directly in terms of the posterior
+probability measure of the model function. It is often convenient for practical
+reasons to define a parametrization of the model function in terms of a finite,
+albeit large, number of parameters and reduce the problem to a finite
+dimensional one. The price to pay for this simplification is the introduction of
+some bias, which needs to be understood and possibly quantified. An expressive
+parametrization clearly helps in this case. The Bayesian approach is also well
+suited to include potentially inconsistent data in a systematic way. We will
+briefly touch upon this aspect below. 
+
+A Bayesian approach to inverse problems has been actively developed by
+mathematicians for a long time, and this development has accelerated quickly in
+the last decade. In this paper we aim at using the existing framework and adapt
+it to analyse the fits of parton distribution functions obtained by the NNPDF
+collaboration. We will review the formalism in Sect. 2, trying to define the
+notation that we will be used in the rest of the paper. We will report some
+examples already known, for illustrative purposes. We then try to connect the
+Bayesian approach with the NNPDF fits based on replicas, which contain the
+results of the multple replicas. We can anticipate here that the NNPDF procedure
+for Gaussian data is able to characterise completely the posterior proabillity
+density. We then use the Bayesian formalism to try understand how to quantify systematic errors by performing a set of self consistent firs. 
+
+
+
+
+
+
 {\bf to be written. Keeping the text below for reference}
 
 In an NNPDF fit to experimental data, a set of replicas are fitted to pseudodata
