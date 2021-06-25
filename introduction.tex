@@ -48,12 +48,34 @@ examples already known, for illustrative purposes. We then try to connect the
 Bayesian approach with the NNPDF fits based on a Monte Carlo methodology, where
 the distribution of the PDFs is encoded in a set of fits to artificially
 generated data, called replicas. We can anticipate here that, under the
-hypothesis that the data are Gaussian, the NNPDF procedure is able to
-characterise completely the posterior proabillity density. We then use the
-Bayesian formalism to understand how to quantify systematic errors by performing
-a set of self consistent firs. 
+hypotheses that the data are Gaussian and the model is linear, the NNPDF
+procedure would characterise completely the posterior proabillity density. When
+the model is non-linear two modifications need to be taken into account. First
+of all the analytical calculation that we present in
+Sect.~\ref{sec:BayesianInverse} is no longer possible, and one needs to rely on
+the fact that a linearization of the model yields an accurate prediction. Even
+though linear models are known to provide good approximations~\cite{xxx}, the
+systematic errors introduced by this approximation are not easy to quantify.
+There is also a more subtle effect that needs to be taken into account. When
+working with linear models, the minimization procedure is know to have a unique
+minimum, which can be computed exactly. Non-linear models can be plagued by
+multiple minima, and more importantly by inefficiencies of the algorithm in
+finding them. While it is important to be aware of the limitations of the
+analytical calculation, it is also very useful to have an explicit result as a
+template to guide the analysis of our numerical investigations. 
+
+
+
+We then use the Bayesian formalism to understand how to quantify systematic
+errors by performing a set of self consistent fits.
 
 {\bf to be written. Keeping the text below for reference}
+
+define a successful fit 
+
+closure test philosophy
+
+refined estimators
 
 In an NNPDF fit to experimental data, a set of replicas are fitted to pseudodata
 which is generated according the experimental central values and uncertainties.
