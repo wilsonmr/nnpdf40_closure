@@ -64,29 +64,22 @@ finding them. While it is important to be aware of the limitations of the
 analytical calculation, it is also very useful to have an explicit result as a
 template to guide the analysis of our numerical investigations. 
 
+In the NNPDF fitting framework, the posterior probability of the parton
+distribution functions, is encoded in an ensemble of fits to replicas of the
+data, where the data replicas have been generated in order to reproduce the
+fluctuations described by the experimental central values and uncertainties.
+This bootstrap procedure propagates the data fluctuations in the space of fitted
+PDFs. A successful fit should yield robust confidence intervals for observables,
+in particular for those that are more relevant for phenomenology.
 
-
-We then use the Bayesian formalism to understand how to quantify systematic
-errors by performing a set of self consistent fits.
-
-{\bf to be written. Keeping the text below for reference}
-
-define a successful fit 
-
-closure test philosophy
-
-refined estimators
-
-In an NNPDF fit to experimental data, a set of replicas are fitted to pseudodata
-which is generated according the experimental central values and uncertainties.
-A successful fit is realised if the resulting replicas agree with the underlying
-law within uncertainties. Since the underlying law is usually unknown we cannot
-directly measure if this is the case.
-
-We can, however, test the methodology in a fit to artificial data, which is
-generated from theory predictions from an input PDF and check that we agree with
-the input PDF within uncertainties. This is the basis of a closure test, which
-has already been used to test to validity of previous iterations of the NNPDF
-methodology. Here we aim to refine some of the pre-existing closure test
-estimators and with the help of fast fitting methodology perform a more
-extensive study of how faithful our uncertainties are.
+The idea of {\em closure tests} is to test this procedure in a fit to artificial
+data that have been generated from a known set of input PDFs. In this case the
+underlying law is known and we can check how the posterior distribution compares
+to the underlying law. This is the basis of a closure test, which has already
+been used to test to validity of previous iterations of the NNPDF methodology.
+Here we aim to refine some of the pre-existing closure test estimators and with
+the help of fast fitting methodology perform a more extensive study of how
+faithful our uncertainties are. For this purpose we introduce new estimators
+that allow us to quantify the quality of our fits. These esimators are defined
+both in the space of data and in the space of PDFs, and we can use the Bayesian
+formalism in order to compute analytically their probabiity distributions. 
