@@ -6,9 +6,9 @@ The problem of determining PDFs from a set of experimental data falls under the
 general category of {\em inverse problems}, \ie\ the problem of finding the
 input to a given model knowing a set of observations, which are often finite and
 noisy. In this Section we are going to review the Bayesian formulation of
-inverse problems. It is impossible to do justice to vast subject here. Instead
-we try to emphasise the aspects that are relevant for quantifying uncertainties
-on PDF determinations. 
+inverse problems. It is impossible to do justice to this vast subject here.
+Instead we try to emphasise the aspects that are relevant for quantifying
+uncertainties on PDF determinations. 
 
 \subsection{Statement of the problem}
 \label{sec:BayesianInverse}
@@ -20,13 +20,15 @@ The model is specified by a {\em forward map}
   \fwdmapop : ~& \modelspace \to R \nonumber \\
       & \modelvec \mapsto r=\fwdmapop(\modelvec) \, ,
 \end{align}
-which associates a response $r \in R$ to the input $\modelvec \in \modelspace$, where we assume
-that $\modelspace$ and $R$ are Banach spaces.~\footnote{Banach spaces are complete normed
-vector spaces. We do not need to get into a more detailed discussion here, but
-it is important to note that working in Banach spaces allows us to generalise
-the results to infinite-dimensional spaces of functions.} As an example we can
-think of $\modelvec$ as being a Parton Distribution Function, \ie\ a function defined on
-the interval $[0,1]$, and $r$ a DIS structure function,
+which associates a response $r \in R$ to the input $\modelvec \in \modelspace$,
+where we assume that $\modelspace$ and $R$ are Banach spaces.~\footnote{Banach
+spaces are complete normed vector spaces. We do not need to get into a more
+detailed discussion here, but it is important to note that working in Banach
+spaces allows us to generalise the results to infinite-dimensional spaces of
+functions.} As an example we can think of $\modelvec$ as being a Parton
+Distribution Function, \ie\ a function defined on the interval $[0,1]$, and $r$
+a DIS structure function, which is related to the PDF by a factorization formula
+involving perturbative coefficient functions: 
 \begin{align}
   \label{eq:DISExample}
   r(x,Q^2) = \int_x^1 \frac{dz}{z}\, C(z,Q^2) \modelvec(x/z,Q^2)\, .
@@ -40,36 +42,38 @@ number of measurements, we introduce an {\em observation operator}
   O : ~& R \to Y \nonumber \\
        & r \mapsto \obs \, ,
 \end{align}
-where $\obs \in Y$ is a vector in a finite-dimensional space $Y$ that contains
-all the experimental results, \eg\ the value of the structure function for
-different values of the kinematics. In general we will assume that $\obs \in
+where $\obs \in Y$ is a vector in a finite-dimensional space $Y$ of experimental
+results, \eg\ the value of the structure function for some values of the
+kinematic variables $x$ and $Q^2$. In general we will assume that $\obs \in
 \real^{\ndata}$, \ie\ we have a finite number $\ndata$ of real experimental
 values. The quantity of interest is the composed operator
 \begin{align}
   \fwdobsop : ~& \modelspace \to \real^{\ndata} \nonumber \\
                  & \fwdobsop = O \circ G\, ,
 \end{align}
-which maps the input $\modelvec$ to the set of data. Taking into account the fact that
-experimental data are subject to noise, we can write
+which maps the input $\modelvec$ to the set of data. Taking into account the
+fact that experimental data are subject to noise, we can write
 \begin{align}
   \label{eq:NoisyInverseProblem}
   \obs = \fwdobsop(\modelvec) + \obsnoise\, ,
 \end{align}
-where $\obsnoise$ is a random variable defined over $\real^{\ndata}$
-with probability density $\rho(\obsnoise)$. We will refer to $\obsnoise$ as the
-{\em observational noise}. The inverse problem becomes finding $\modelvec$
-given $\obs$. It is often the case that inverse problems are ill-defined
-in the sense that the solution may not exist, may not be unique, or
-may be unstable under small variations of the problem. 
+where $\obsnoise$ is a random variable defined over $\real^{\ndata}$ with
+probability density $\rho(\obsnoise)$. We will refer to $\obsnoise$ as the {\em
+observational noise}. In this setting, the inverse problem becomes finding
+$\modelvec$ given $\obs$. As pointed out by Hadamard a long time ago, it is
+often the case that inverse problems are ill-defined in the sense that the
+solution may not exist, may not be unique, or may be unstable under small
+variations of the problem. 
 
-In solving this problem we are going to adopt a Bayesian point of view; our
-prior knowledge about $\modelvec$ is encoded in a prior probability measure
-$\mu_M^0$, and we use Bayes' theorem to compute the posterior probability
-measure of $\modelvec$ given the data $\obs$, which we denote as
-$\mu_M^\fwdobsop$. When possible, we denote the probability densities associated
-to $\mu_M^0$ and $\mu_M^\fwdobsop$, by $\pi_M^0$ and $\pi_M^\fwdobsop$
-respectively. Then, using Eq.~(\ref{eq:NoisyInverseProblem}), we can write the
-data likelihood, \ie\ the probability density of $\obs$ given $\modelvec$,
+In solving this problem we are going to adopt a Bayesian point of view, which
+can be summarised as follows: our prior knowledge about $\modelvec$ is encoded
+in a prior probability measure $\mu_M^0$, where the suffix $M$ indicates that the measure is defined in the space of models, and the suffix 0 refers to the fact that this is a prior distribution. We use Bayes' theorem to compute
+the posterior probability measure of $\modelvec$ given the data $\obs$, which we
+denote as $\mu_M^\fwdobsop$. When possible, we denote the probability densities
+associated to $\mu_M^0$ and $\mu_M^\fwdobsop$, by $\pi_M^0$ and
+$\pi_M^\fwdobsop$ respectively. Then, using Eq.~(\ref{eq:NoisyInverseProblem}),
+we can write the data likelihood, \ie\ the probability density of $\obs$ given
+$\modelvec$,
 \begin{align}
   \label{eq:YGivenUProbDensity}
   \pi(\obs|\modelvec) = \rho(\obs-\fwdobsop(\modelvec))\, ,
@@ -84,7 +88,7 @@ and Bayes' theorem yields
 
 Even though the concepts that we have introduced so far should sound familiar,
 it is worthwhile to spend a few paragraphs to clarify some ideas and present an
-explicit argument, where all the probability densities are carefully defined.
+explicit example, where all the probability densities are carefully defined.
 This is best exemplified by considering the case where both the observational
 noise and the model prior are Gaussian. We assume that we are given a set of
 central values $\obspriorcent \in \real^{\ndata}$ and their covariance matrix
@@ -96,10 +100,11 @@ $\obs$ is
     -\frac12 \left| \obs - \obspriorcent \right|_{\obspriorcov}^2
     \right)\, ,
 \end{equation}
-where the suffix $D$ emphasises the fact that this is a probability density in
-data space, and the notation explicitly reminds us that this is the probability
-density given the central values $\obspriorcent$ (and the covariance matrix).
-Similarly we can choose a Gaussian distribution for the input model,
+where, similarly to the convention used above, the suffix $D$ emphasises the
+fact that this is a probability density in data space, and the notation
+explicitly reminds us that this is the probability density given the central
+values $\obspriorcent$ (and the covariance matrix). Similarly we can choose a
+Gaussian distribution for the prior distribution of the input model,
 characterized by a central value $\modelpriorcent$ and a covariance
 $\modelpriorcov$:
 \begin{align}
@@ -168,7 +173,8 @@ We can now marginalize with respect to \obs, neglecting theory errors,
   & \propto \pi_{M}^0(\modelvec|\modelpriorcent,\modelpriorcov) 
     \pi_{D}^0(\fwdobsop(\modelvec)|\obspriorcent,\obspriorcov)\, .
 \end{align}
-The log-likelihood in the Gaussian case is simply the $\chi^2$ of the data,
+We see that we have recovered Eq.~\ref{eq:BayesThmInversePosterior}. The
+log-likelihood in the Gaussian case is simply the $\chi^2$ of the data,
 $\obspriorcent$, to the theory prediction, $\fwdobsop(\modelvec)$:
 \begin{equation}
   \label{eq:LikelyChiSq}
@@ -566,7 +572,7 @@ infinite-dimensional, allowing a rigorous extension of the Bayesian formulation
 of inverse problems to the case of infinite-dimensional spaces. 
 
 Adopting a heuristic approach, we can say that a function $f$ is a random
-function is $f(x)$ is a random variable for all values of $x$. Since the values
+function if $f(x)$ is a random variable for all values of $x$. Since the values
 of the function at different values of $x$ can be correlated, a random function
 is fully characterised by specifying the joint probability densities
 \begin{equation}
