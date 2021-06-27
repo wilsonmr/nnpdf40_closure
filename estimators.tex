@@ -1,4 +1,18 @@
-\section{Data space estimators} \label{sec:ClosureEstimators}
+\section{Data space estimators} 
+\label{sec:ClosureEstimators}
+
+In order to make a quantitative analysis of the results obtained in the closure
+tests, we discuss several estimators, which are computed from the outcome of the
+closure test fits. These are stochastic variables and therefore we need to
+understand their probability distributions in order to validate our fitting
+procedure. We begin this section by defining estimators in data space, \ie\
+estimators that are computed from the model predictions for a set of
+experimental data points. Having defined the estimators, we define criteria to
+characterise faithful uncertainties. We conclude this section with a discussion
+of the predictions that can be obtained for our estimators in the case of a
+linear model, where analytical calculations can be performed. While these cannot
+be applied directly to the NNPDF fits, they are useful examples that illustrate
+the expected behaviour of these quantities.  
 
 \subsection{Deriving the data space estimators}
 \label{sec:ClosureEstimatorsDerivation}
@@ -139,9 +153,9 @@ predictions. An example of this is given in Fig.~\ref{fig:diagram2destimators},
 where for simplicity we have considered a system with just two data points, \ie\
 a two-dimensional data space, with a diagonal covariance.
 %
-\begin{figure}
+\begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.8\textwidth]{diagonal_basis_2d_estimators_diagram.png}
+    \includegraphics[width=0.75\textwidth]{diagonal_basis_2d_estimators_diagram.png}
     \caption{Example of geometric interpretation of closure test estimators.
     The origin
     is the true observable values for each data point. The level one data (or
@@ -382,6 +396,182 @@ approximation
 \begin{equation}\label{eq:CompareXiRatio}
     \xisigdat{n} \sim \erf \left( \frac{ n\biasvarratio}{\sqrt{2}} \right).
 \end{equation}
-Whilst it's clear Eq.~\ref{eq:CompareXiRatio} is reliant on a fair few
+Whilst it is clear that Eq.~\ref{eq:CompareXiRatio} is reliant on a fair few
 assumptions which may not hold, we will use the comparison of $\xisigdat{n}$ with
 $\biasvarratio$ to consider how valid these assumptions may be.
+
+\subsection{Closure estimators - Linear problems}
+\label{Sec:LinearMapEstimators}
+
+Once again we return to the linear model framework set out in
+Sec.~\ref{sec:fluct-fit-values}. We can perform an analytical closure
+test in this framework, and check our
+understanding of the closure estimators. Consider the true observable
+values for the test data is given by
+\begin{equation}\label{eq:LinearLawMap}
+    \testset{\law} = \testset{\fwdobsop} \lawmodel
+\end{equation}
+where $\lawmodel \in \modelspace$, which means the number of (non-zero) parameters
+in the underlying law is less than or equal to the number of parameters in the
+model, $\nlaw \leq \nmodel$. Using the previous results from
+Sec.~\ref{sec:fluct-fit-values}, we can write down the
+difference between the true observables and the predictions from the MAP estimator
+(or the expectation of the model predictions across model replicas - in the
+linear model these are the same)
+\begin{equation}
+    \begin{split}
+        \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law} &=
+        \testset{\linmap} (\modelpostcent - \lawmodel ) \\
+        &= \testset{\linmap} \modelpostcov \linmap^T \obspriorcov \, \obsnoise \, ,
+    \end{split}
+\end{equation}
+where we recall that $\linmap$ is the forward map to the training observables
+and $\obspriorcent$ are
+the corresponding training central values. Calculating the covariance across
+training data of
+$\emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law}$
+gives
+\begin{equation}
+    \covcent = \testset{\linmap} \modelpostcov \testset{\linmap}^T \, ,
+\end{equation}
+so the full expression for $\mathbf{E}_{\obspriorcent}[{\rm bias}]$ is given by
+\begin{equation}\label{eq:BiasLinearModel}
+    \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+    {\rm Tr} \left[
+        \testset{\linmap} \modelpostcov \testset{\linmap}^T
+        \testset{\obspriorcov}^{-1}
+    \right].
+\end{equation}
+We note that if the test data is identical the data the model was fitted on,
+we recover an intuitive result $\mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{\nmodel}{\ndata}$.
+Consider the example of the polynomial, the maximum value which $\nmodel$ can
+take whilst $\linmap$ still has linearly independent rows is $\ndata$ and in this case
+the $\mathbf{E}_{\obspriorcent}[{\rm bias}]$ takes its maximum value of 1. The central
+predictions from the model exactly pass through each data point.
+
+We can perform a similar exercise on the model replica predictions. The difference
+between the predictions from model replica $\repind$ and the expectation value
+of the model predictions is
+\begin{equation}
+    \begin{split}
+        \testset{\fwdobsop}\left(\modelvecrep\right) -
+        \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} &=
+        \testset{\linmap} (\modelvecrep - \modelpostcent) \\
+        &= \testset{\linmap} \modelpostcov \linmap^T \obspriorcov \, \noise \, .
+    \end{split}
+\end{equation}
+Since $\noise$ and $\obsnoise$ follow the same distribution, it is clear that
+\begin{equation}
+    \covrep = \covcent,
+\end{equation}
+which, as a result means that
+\begin{equation}
+    \var = \mathbf{E}_{\obspriorcent}[{\rm bias}].
+\end{equation}
+We recall that when the map is linear, the NNPDF MC methodology generates replicas
+which are sampled from the posterior distribution of the model given the data.
+We have shown here that provided the underlying law belongs to the model
+space, the posterior distribution of the model predictions satisfy the
+requirement that $\biasvarratio = 1$.
+
+We note that due to the invariance of the trace under cyclic permutations, we
+can rearrange Eq.~\ref{eq:BiasLinearModel} as
+\begin{equation}
+    \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+    {\rm Tr} \left[
+        \modelpostcov
+        \testset{\linmap}^T \testset{\obspriorcov}^{-1} \testset{\linmap}
+    \right] \, ,
+\end{equation}
+where the term $\testset{\linmap}^T \testset{\obspriorcov}^{-1} \testset{\linmap}$
+can be understood as the covariance matrix of the posterior distribution in model
+space given the test data, with zero prior knowledge of the model \viz
+\begin{equation}\label{eq:BiasTraceModelPost}
+    \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+    % testset fails here due to double postscript
+    {\rm Tr} \left[ \modelpostcov {\modelpostcov}^{ \prime -1} \right] \, ,
+\end{equation}
+where we emphasise that the covariance matrices $\modelpostcov$ are
+$\testset{\modelpostcov}$ from completely independent Bayesian inferences
+with no prior information on the model parameters, unlike in
+Eq.~\ref{eq:ModelPostSequential} where a sequential marginalisation causes
+$\testset{\modelpostcov}$ to depend on $\modelpostcov$.
+
+Alternatively, if we perform a sequential marginalisation of
+the data, and use the result in Eq.~\ref{eq:ModelPostSequential}, but
+then take $\testset{\obspriorcov}^{-1} \to 0$, \ie\ there is no information
+on the observables in the test set, then
+\begin{equation}
+    \modelpostcov^{-1} = \linmap^T \obspriorcov^{-1} \linmap \, ,
+\end{equation}
+or the total posterior model distribution, is identical to the posterior model
+distribution given just the training data - as you would expect.
+Now we can express bias (or variance) as
+\begin{equation}\label{eq:BiasTraceObsPost}
+    \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+    {\rm Tr} \left[
+        \testset{\obspostcov}
+        \testset{\obspriorcov}^{-1}
+    \right] \, ,
+\end{equation}
+where $\testset{\obspostcov}$ is the covariance of the posterior distribution of
+$\testset{\obs}$ with no prior information on that data. This might seem peculiar
+because in determining $\testset{\obspostcov}$ we took the limit
+$\testset{\obspriorcov}^{-1} \to 0$, because we had no prior information on the
+unseen data, however
+in Eq.~\ref{eq:BiasTraceObsPost} we require
+$\testset{\obspriorcov}^{-1}$ to be finite.
+However
+we rationalise Eq.~\ref{eq:BiasTraceObsPost} as a comparison between
+the posterior distribution in the space of data of some unseen observables to an
+independently determined prior from performing the relevant experiment which
+measures the same observables. Comparing moments of these two distributions
+is what you would expect when the new experimental data is published.
+
+% If we marginalise
+% instead over $\testset{\obs}$, then
+% \begin{equation}
+%     \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
+%     {\rm Tr} \left[
+%         \obspostcov
+%         \obspriorcov^{-1}
+%     \right] \, ,
+% \end{equation}
+% but as we already know, if there was no prior information on the model
+% this reduces to $\frac{\nmodel}{\ndata}$ (to convince yourself, set
+% $\testset{\modelpostcov} = \modelpostcov$ in Eq.~\ref{eq:BiasTraceModelPost}).
+
+\paragraph{Underparameterised model}
+
+Note that if we were to choose the
+number of model parameters such that $\nlaw > \nmodel$, then the variance
+would be unaffected, since the underlying law parameters cancel. However, the
+bias would now contain an extra term from the extra parameters in the
+underlying law, schematically:
+\begin{equation}
+    \begin{split}
+        (\emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law})_i =
+        \sum_{1 \leq j \leq \nmodel} \testset{\linmap}_{ij} (\modelpostcent - \lawmodel)_j -
+        \sum_{\nmodel < j \leq \nlaw} \testset{\linmap}_{ij} \lawmodel_j,
+    \end{split}
+\end{equation}
+which would mean that $\biasvarratio \neq 1$. This demonstrates that requiring
+$\biasvarratio = 1$ demands that the model space is suitably flexible, if the
+underlying law is parameterised then this can be summarised as requiring
+$\lawmodel \in \modelspace$. Note that in the
+underparameterised regime the model replicas are still drawn from the posterior
+distribution, however because $\lawmodel \notin \modelspace$ we've somehow
+invalidated the assumptions that go into the relation between model predictions
+and the data-space prior.
+
+Although $\biasvarratio$ was largely chosen on practical
+grounds, we see that it is still a stringent test that our assumptions are
+correct and that the distribution our model replicas are drawn from is meaningful,
+this is what we mean when we say {\em faithful uncertainties}.
+
+An unfortunate
+trade-off when using $\biasvarratio$ is it can't be used as a diagnostic
+tool, and is instead used simply for validation. For example, if
+$\biasvarratio > 1$, then we
+can't know whether there was a problem with the fitting methodology used to
+generate the model replicas or a deeper issue such as an inflexible model.

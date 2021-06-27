@@ -518,7 +518,7 @@ and
   \right)\, .
 \end{align}
 
-\paragraph{Non-linear Models}
+\paragraph{A comment on non-linear models}
 
 The linear models that we have discussed so far may look over-simplified at
 first sight. In practice, it turns out that non-linear models can often be
@@ -552,10 +552,9 @@ is the Radon-Nikodym derivative of the probability measure $\mu^\fwdobsop$ with
 respect to $\mu_0$, \viz
 \begin{align}
   \label{eq:RadonNikodym}
-  \frac{d\mu^\fwdobsop}{d\mu^0} (\modelvec) \propto \rho(\obs-\fwdobsop(\modelvec)) \pi^0(\modelvec)\, .
+  \frac{d\mu^\fwdobsop}{d\mu^0} (\modelvec) \propto \rho(\obs-\fwdobsop(\modelvec))\, .
 \end{align}
-Finally, using the fact that the density $\rho$ is a positive
-function, we can rewrite 
+Using the fact that the density $\rho$ is a positive function, we can rewrite 
 \begin{align}
   \label{eq:PotentialDef}
   \rho(\obs-\fwdobsop(\modelvec)) = \exp\left(-\Phi(\modelvec;\obs)\right)\, ,
@@ -586,32 +585,32 @@ These finite-dimensional densities allow the definition of a probability
 measure, under some regularity hypotheses that we will not investigate here.
 Similarly to what happens in the finite-dimensional case, a Gaussian random
 function is completely characterised by the two-dimensional probability
-densities $\pi(x_1,x_2;t_1,t_2)$.
+densities $\pi(f_1,f_2;x_1,x_2)$.
 
 \paragraph{Functional linear problems} This formalism allows us to formulate a Bayesian solution of the inverse problem 
 \begin{equation}
   \label{eq:BayesLinearInverse}
   y^i = \int dx\, G^i(x) u(x)\, ,
 \end{equation}
-where $y_i$ is a discrete set of oobservables and $u(x)$ is Gaussian random
+where $y_i$ is a discrete set of observables and $u(x)$ is a Gaussian random
 function, with prior mean $u_0(x)$ and covariance $C_M(x,x')$. The vector of
 observed values is denoted $y_0$, and we assume that the prior distribution of
-$y$ is a Gaussian centred at $y_0$ with covariance $C_D$. We introduce the
-matrix
+$y$ is a Gaussian centred at $y_0$ with covariance $C_D$. Introducing the matrix
 \begin{equation}
   \label{eq:Smatrix}
   S^{ij} =
   \int dx dx'\, G^i(x) C_M(x,x') G^j(x') + C_D^{ij}\, ,
 \end{equation}
-and its inverse $T_{ij}=\left(S^{-1}\right)^{ij}$. Just like in the finite-dimensional example discussed above, the posterior Gaussian field is centred at
+and its inverse $T_{ij}=\left(S^{-1}\right)^{ij}$, the posterior Gaussian field is centred at
 \begin{align}
   \label{eq:PostMeanFunc}
   \tilde{u}(x) = u_0(x) + 
   \int dx'\, C_M(x,x') G^i(x') T_{ij} \left(
     y_0^j - \int dx''\, G^j(x'') u_0(x'') 
-  \right)\, .
+  \right)\, ,
 \end{align}
-Interestingly, this can be rewritten as
+which is the expected generalization of the finite-dimensional example discussed
+above, Interestingly, this can be rewritten as
 \begin{equation}
   \label{eq:TowardsBackus}
   \tilde{u}(x) = u_0(x) + 
