@@ -1,25 +1,44 @@
 \section{Data space estimators} 
 \label{sec:ClosureEstimators}
 
-In order to make a quantitative analysis of the results obtained in the closure
-tests, we discuss several estimators, which are computed from the outcome of the
-closure test fits. These are stochastic variables and therefore we need to
-understand their probability distributions in order to validate our fitting
-procedure. We begin this section by defining estimators in data space, \ie\
-estimators that are computed from the model predictions for a set of
-experimental data points. Having defined the estimators, we define criteria to
-characterise faithful uncertainties. We conclude this section with a discussion
-of the predictions that can be obtained for our estimators in the case of a
-linear model, where analytical calculations can be performed. While these cannot
-be applied directly to the NNPDF fits, they are useful examples that illustrate
-the expected behaviour of these quantities.  
+In order to perform a quantitative analysis of the results obtained in the
+closure tests, we discuss several estimators, which are computed from the
+outcome of the closure test fits. These results depend on the pseudo-data that
+have been generated and therefore are stochastic variables which can fluctuate.
+The values of the estimators on a single replica will not tell anything about
+the quality of our fits: we need to understand their probability distributions
+in order to validate our fitting procedure. We begin this section by defining
+estimators in data space, \ie\ estimators that are computed from the model
+predictions for a set of experimental data points. Having defined the
+estimators, we define criteria to characterise faithful uncertainties. We
+conclude this section with a discussion of the predictions that can be obtained
+for these estimators in the case of a linear model, where analytical
+calculations can be performed. As we already discussed, the analytical results
+cannot be applied directly to the NNPDF fits, but they are useful examples that
+illustrate the expected behaviour of these quantities.
 
 \subsection{Deriving the data space estimators}
 \label{sec:ClosureEstimatorsDerivation}
 
-We start by defining the model error as the expectation across models of the
-$\chi^2$ between the model predictions and some data central values
-$\testset{\obspriorcent}$, normalised by the number of data points
+For a given model $\modelvecrep$, obtained from fitting the $k$-th replica, we
+start by defining the model error as the $\chi^2$ between the model predictions
+and some data central values $\testset{\obspriorcent}$, normalised by the number
+of data points
+\begin{equation}
+    \label{eq:chi2kereponerep}
+    \frac{1}{\ndata} 
+        \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\obspriorcent} \right)^T
+        \testset{\obspriorcov}^{-1}
+        \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\obspriorcent} \right)\, ,
+\end{equation}
+and we purposely denoted the data which the model error is evaluated on as
+$\testset{\obspriorcent}$, as opposed to the data which is used to determine the
+model parameters $\obspriorcent$. Note that in Eq.~\ref{eq:chi2kereponerep},
+$y'_0$ is a stochastic variable, but also $\modelvecrep$ is a stochastic
+variable, with its pattern of fluctuations, since the fitted model depends on
+the data $\obspriorcent$ that enter the fit. We define the model error $\eout$
+on the set of data $\testset{\obspriorcent}$ by taking the average over the
+models,
 \begin{equation}
     \label{eq:chi2kerep}
     \eout = \frac{1}{\ndata} \emodel{
@@ -30,35 +49,32 @@ $\testset{\obspriorcent}$, normalised by the number of data points
 \end{equation}
 where we defined the expectation value over the ensemble of model replicas as
 \begin{equation}
-    \emodel{x} \equiv \frac{1}{\nreps} \sum_{k=1}^{\nreps} x \, ,
+    \emodel{x} \equiv \frac{1}{\nreps} \sum_{k=1}^{\nreps} x^{(k)} \, .
 \end{equation}
-and we purposely denoted the data which the model error is evaluated on as
-$\testset{\obspriorcent}$, as opposed to the data which is used to determine the model
-parameters $\obspriorcent$. We could of course set
-$\testset{\obspriorcent} = \obspriorcent$ and
-evaluate the model performance on the fitted data however, as is common in
-machine learning literature, we intend to use a separate set of test data.
-Ideally we would choose $\testset{\obspriorcent}$ such that $\testset{\obspriorcent}$
-and $\obspriorcent$ are statistically independent, as in Eq.~\ref{eq:JointIndepDataPrior}.
-This is achieved by choosing the split such that the experimental covariance matrix
-is block diagonal:
+We could of course set $\testset{\obspriorcent} = \obspriorcent$ and evaluate
+the model performance on the fitted data however, as is common in machine
+learning literature, we intend to use a separate set of test data. Ideally we
+would choose $\testset{\obspriorcent}$ such that $\testset{\obspriorcent}$ and
+$\obspriorcent$ are statistically independent, as in
+Eq.~\ref{eq:JointIndepDataPrior}. This is achieved by choosing the split such
+that the experimental covariance matrix is block diagonal:
 \begin{equation}
-    \modelpriorcov^{\rm Total} =
+    \modelpriorcov^{\rm total} =
     \begin{bmatrix}
         \modelpriorcov  & 0  \\ 
         0  & \testset{\modelpriorcov}  \\ 
-    \end{bmatrix}
+    \end{bmatrix}\, .
 \end{equation}
-In the
-context of a closure test, $\eout$ is a stochastic quantity which depends both
-on the training data, through the ensemble of MAP estimators, and the test data.
+% In the context of a closure test, $\eout$ is a stochastic quantity which
+% depends both on the training data, through the ensemble of MAP estimators, and
+% the test data.
 
-It is useful perform a decomposition of this expression, a similar exercise is
-performed for the likelihood function associate with least-squares regression in
-\cite{mlforphysics}. Least-squares regression is a special case of minimum
-likelihood estimation, where the uncertainty on each data point is equal in
-magnitude and uncorrelated. Here we review the decomposition in the more general
-framework of data whose uncertainty is multigaussian. Starting with
+It is useful to perform a decomposition of Eq.~\ref{eq:chi2kerep}, following
+usual manipulations of the likelihood function associated with least-squares
+regression in~\cite{mlforphysics}. Least-squares regression is a special case of
+minimum likelihood estimation, where the uncertainty on each data point is equal
+in magnitude and uncorrelated. Here we review the decomposition in the more
+general framework of data whose uncertainty is multigaussian. Starting with
 Eq.~\ref{eq:chi2kerep} (evaluated on the ideal test data), we can complete the
 square
 \begin{equation}
@@ -83,7 +99,7 @@ square
 \end{equation}
 The second term is the shift associated with evaluating the model error on
 noisey test data and the final term is a cross term which we will deal with
-later. We can decompose the first term further,
+later. For now we focus on decomposing the first term further,
 % TODO: add the same thing but for fully in sample data to an appendix.
 \begin{equation}
     \begin{split}
