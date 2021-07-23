@@ -124,7 +124,7 @@ respectively, and introduced the short-hand notation
 where $a$ denotes a generic element of $\modelspace$, $R$ or $\real^{\ndata}$.
 For the case where $a \in \real^{\ndata}$, we use the Euclidean norm and
 \begin{align}
-  \left| a \right|_M^2 = \sum_{i,j} a_i M_{ij} a_j\, ,
+  \left| a \right|_M^2 = \sum_{i,j} a_i M^{-1}_{ij} a_j\, ,
 \end{align}
 where the indices $i,j$ run from 1 to $\ndata$.  
 Up to this point data and models are completely independent, and the joint
@@ -635,10 +635,12 @@ Using the notation introduced above, the posterior covariance can be written as
   C_M(x,x') - \Psi^i(x) T_{ij} \Psi^j(x')\, .
 \end{equation}
 
-The Bayesian result summarised above can be compared with the method proposed by Backus and Gilbert to solve the same problem. Assuming that there exists an unknown 'true' model $\utrue$, such that the observed data are
+The Bayesian result summarised above can be compared with the method proposed by Backus and Gilbert 
+to solve the same problem. Assuming that there exists an unknown 'true' model $\utrue$, such that 
+the observed data are
 \begin{equation}
   \label{eq:BackStart}
-  y_0^i = \int dx\, G^i(x) \utrue\, ,
+  y_0^i = \int dx\, G^i(x) \utrue(x)\, ,
 \end{equation}
 we look for an estimate $\uest$ of the true solution in the form
 \begin{equation}
