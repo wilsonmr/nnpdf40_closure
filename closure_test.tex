@@ -43,14 +43,20 @@ $\obspriorcent$ with some noise, $\noise^{\repind}$,
 \end{equation}
 where $k$ is the replica index and each instance of the noise, $\noise$, is
 drawn independently from the same Gaussian from which the observational noise is
-drawn from, \ie\ $\noise \sim \mathcal{N}(0, \obspriorcov)$. A simple
+drawn from, \ie\ $\noise \sim \mathcal{N}(0, \obspriorcov)$. For each replica $k$, 
+$\pseudodat^{\repind}$ is a vector in $\real^{\ndata}$. A simple
 one-dimensional example is shown in Fig.~\ref{fig:DistRep}. Note that, if we
 were to repeat this construction multiple times, the true value $f$ would be
 within a 1$\sigma$ interval centred at $y_0$ with a 68\% probability.
 \begin{figure}
     \centering
-    \includegraphics[scale=0.6]{ReplicaDistribution.png}
-    \caption{Histogram showing the distribution of $10^4$ replicas generated around an experimental value $y_0$ with unit variance. The central value $y_0$, which is represented by the solid dot at the centre of the replica distribution, is drawn from a Gaussian distribution with unit variance centred at the true value $f$, which is assumed to be the origin in this plot.\label{fig:DistRep}}
+    \includegraphics[scale=0.8]{ReplicaDistribution.png}
+    \caption{Histogram showing the distribution of $10^4$ replicas generated around 
+    an experimental value $y_0$ with unit variance. The central value $y_0$, which 
+    is represented by the solid dot at the centre of the replica distribution, 
+    is drawn from a Gaussian distribution with unit variance centred at the true 
+    value $f$, which is assumed to be the origin in this plot. The central value 
+    $y_0$ is kept fixed for the whole set of replicas.\label{fig:DistRep}}
 \end{figure}
 
 The parameters for each model replica maximise the likelihood evaluated on the
@@ -60,7 +66,7 @@ prior that regulates the likelihood. Another way of viewing this is to take
 $\modelpriorcov^{-1} \to 0$ in Eq.~\eqref{eq:MAP}, as was done to obtain the
 result in Eq.~\ref{eq:NoPriorLinModel}. Either way, there is no prior
 information about the model. The parameterisation of the model is fixed, so the
-model space is the finite space of parameters $\modelvec \in \real^{\nmodel}$.
+model space is the space of parameters $\modelvec \in \real^{\nmodel}$.
 In $\real^{\nmodel}$, we find the parameters which minimise the $\chi^2$ between
 the predictions from the model and the corresponding pseudo-data
 $\pseudodat^{\repind}$
@@ -126,7 +132,7 @@ and \ref{eq:NoPriorLinModelCov}.
 
 If instead we deploy the NNPDF Monte Carlo method to fitting model replicas,
 then in the case under study $\arg\min_{\modelvec^{\repind}} \repchis$ is found
-analytically by imposing thatthe derivative of $\repchis$ with respect to the
+analytically by imposing that the derivative of $\repchis$ with respect to the
 model parameters is zero, i.e.
 \begin{equation}
     \begin{split}
@@ -147,7 +153,7 @@ probability density for $\noise$ is known:
 \begin{align}
     \emodel{\modelvec_*} &=
     \modelpostcent = (\linmap^T \obspriorcov^{-1} \linmap)^{-1} \linmap^T
-    \obspriorcov^{-1} \obspriorcent \\
+    \obspriorcov^{-1} \obspriorcent\, , \\
     {\rm cov}(\modelvec_*) &= \modelpostcov = (\linmap^T \obspriorcov^{-1} \linmap)^{-1} \, .
 \end{align}
 We see explicitly here that, under the assumptions specified above, $\modelvec_*
@@ -177,7 +183,7 @@ uncertainities.
 The concept of the closure test, which was first introduced in
 Ref.~\cite{nnpdf30}, is to construct artificial data by using a known
 pre-existing function to generate the {\em true} observable values, $\law$. One
-way of achieving this is by choosing $\lawmodel$ such that $\law =
+way of achieving this is by choosing $\lawmodel$ and then compute $\law =
 \fwdobsop(\lawmodel)$. Then the experimental central values are artificially
 generated according to Eq.~\ref{eq:levelonedata}, where the observational noise
 is pseudo-randomly generated from the assumed distribution.

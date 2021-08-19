@@ -32,13 +32,13 @@ of data points
         \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\obspriorcent} \right)\, ,
 \end{equation}
 and we purposely denoted the data which the model error is evaluated on as
-$\testset{\obspriorcent}$, as opposed to the data which is used to determine the
-model parameters $\obspriorcent$. Note that in Eq.~\ref{eq:chi2kereponerep},
-$y'_0$ is a stochastic variable, but also $\modelvecrep$ is a stochastic
-variable, with its pattern of fluctuations, since the fitted model depends on
-the data $\pseudodat^{\repind}$ that enter the fit. We define the model error
-$\eout$ on the set of data $\testset{\obspriorcent}$ by taking the average over
-the models,
+$\testset{\obspriorcent}$, as opposed to the training data $\obspriorcent$,
+which is used to determine the model parameters. Note that in
+Eq.~\ref{eq:chi2kereponerep}, $\testset{\obspriorcent}$ is a stochastic
+variable, but also $\modelvecrep$ is a stochastic variable, with its pattern of
+fluctuations, since the fitted model depends on the data $\pseudodat^{\repind}$
+that enter the fit. We define the model error $\eout$ on the set of data
+$\testset{\obspriorcent}$ by taking the average over the models,
 \begin{equation}
     \label{eq:chi2kerep}
     \eout = \frac{1}{\ndata} \emodel{
@@ -97,9 +97,10 @@ square
         }\, .
     \end{split}
 \end{equation}
-The second term is the shift associated with evaluating the model error on
-noisey test data and the final term is a cross term which we will deal with
-later. For now we focus on decomposing the first term further,
+Let us now discuss these terms one by one, starting from the last two. The
+second term is the shift associated with evaluating the model error on noisey
+test data and the final term is a cross term which we will deal with later. For
+now we focus on decomposing the first term further,
 % TODO: add the same thing but for fully in sample data to an appendix.
 \begin{equation}
     \begin{split}
@@ -161,17 +162,50 @@ fitting code.
 It is possible to interpret the relevant data space estimators geometrically, by
 considering a coordinate system where each basis vector corresponds to an
 eigenvector of the experimental covariance matrix normalised by the square root
-of the corresponding eigenvalue. The origin of the coordinate system is the true
-value of the observable. The model predictions are then a set of points, where
-the mean squared radius of those points is what we call the variance. The bias
-is the l2-norm of the vector between the origin and the mean of the model
-predictions. An example of this is given in Fig.~\ref{fig:diagram2destimators},
-where for simplicity we have considered a system with just two data points, \ie\
-a two-dimensional data space, with a diagonal covariance.
+of the corresponding eigenvalue. An example of this is given in
+Fig.~\ref{fig:diagram2destimators}, where for simplicity we have considered a
+system with just two data points, \ie\ a two-dimensional data space, with a
+diagonal covariance. The origin of the coordinate system is the true value of
+the observable. The observational noise in these coordinates corresponds to a
+unit circle centred in the origin as shown in
+Fig.~\ref{fig:diagram2destimators}. If the experimental covariance is faithful,
+there is a 68\%  probability that the experimental value $y_0$ is within this
+unit circle. Fig.~\ref{fig:diagram2destimators} shows one possible instance of
+$y_0$. Repeating the entire fit procedure multiple times requires generating new
+sets of experimental data $y_0$. The average over $y_0$ mentioned above, is
+precisely the average over multiple fits, restarting the procedure each time
+from a new instance of $y_0$.
+
+For a given $y_0$ the replicas are generated as a set of points Gaussianly
+distributed around it and therefore, in the limit of a large number of replicas,
+68\% of them will fall within a unit circle centred in $y_0$. This is the dashed
+circe in the figure. Clearly there is also a 68\% probability that the true
+value (\ie\ the origin in our plot) is inside this second circle. The model
+predictions, one for each replica, are then a set of points, whose mean is
+$E_\epsilon[g]$. The mean squared radius of those points is what we call the
+variance. The bias is the l2-norm of the vector between the origin and the mean
+of the model predictions. 
+
+A faithful representation of the errors requires that the true value, \ie\ the
+origin of the coordinate system in our figure, has 68\% probability of being
+within 1$\sigma$ from the central value of the fit, which is given by
+$E_\epsilon[g]$. Looking at the figure again, the probability for the origin to
+be inside the shaded circle must be 68\%. We will discuss faithful errors in
+more detail in the next subsection.
 %
-\begin{figure}[ht!]
+\begin{figure}[h!]
     \centering
-    \includegraphics[width=0.75\textwidth]{diagonal_basis_2d_estimators_diagram.png}
+    %\includegraphics[width=0.75\textwidth]{diagonal_basis_2d_estimators_diagram.png}
+    \begin{tikzpicture}
+        \draw[blue!75, fill=blue!5, thick] (-0.5, 0.8) circle (1.2 cm);
+        \draw[thick] (0,0) circle (2 cm);
+        \draw[green, very thick, dashed] (1.2,1.2) circle (2 cm);
+        \draw[step=1cm,gray!25!,very thin] (-4,-4) grid (4,4);
+        \draw[thick,<->] (-3,0) -- (3,0) node[anchor=north west] {$1/\sigma_1$};
+        \draw[thick,<->] (0,-3) -- (0,3) node[anchor=south east] {$1/\sigma_2$};
+        \draw[green!50,thick,->] (0,0) -- (1.2,1.2) node[anchor=north west] {$\obspriorcent$};
+        \draw[blue!75,thick,->] (0,0) -- (-0.5, 0.8) node[anchor=south east] {$E_\epsilon[g]$};
+        \end{tikzpicture}
     \caption{Example of geometric interpretation of closure test estimators.
     The origin
     is the true observable values for each data point. The level one data (or
@@ -194,7 +228,7 @@ a two-dimensional data space, with a diagonal covariance.
 
 The two closure estimators of interest, bias and variance, can be used to
 understand faithful uncertainties in a practical sense. If we return to
-Eq.~\ref{eq:ExpectedBiasVariance} we can examine both estimators in a bit more
+Eq.~\ref{eq:ExpectedBiasVariance} we can examine both estimators in a more
 detail.
 
 \paragraph{Variance}
@@ -246,7 +280,10 @@ then we can rewrite Eq.~\ref{eq:VarDefalternative} as
 The numerator in the right-hand side of the equation above is the variance of
 the theoretical prediction obtained from the fitted replicas, while the
 denominator is the experimental variance, the average is now taken over
-eigenvectors of the experimental covariance matrix.
+eigenvectors of the experimental covariance matrix. Note that this ratio does
+not need to be equal to one, the model error on a given point can be smaller
+than the experimental one, since all theoretical estimates are correlated by the
+underlying theoretical law. 
 
 % The following needs to be reworded or removed, the use of prior and posterior
 % here is confusing because the prior here is nothing to do with the prior
@@ -297,15 +334,15 @@ of the training data.
 
 It is important to stress the difference between variance and bias. In the case
 of the variance, we are looking at the fluctuations of the replicas around their
-central value for fixed $\obspriorcent$. This is related the ensemble of model
-replicas we provide as the end product of a fit and can be calculated when
-we have one instance of $\obspriorcent$, provided by the experiments.
-In the case of the bias we consider the flucutations of the central value over
-replicas around the true theoretical prediction as the values of $\obspriorcent$
-fluctuate around $\law$. This latter procedure is only possible in a
-closure test, where the underlying true observable is known. The
-bias as defined here yields an estimate of the fluctuations of the MAP estimator
-if we could do multiple independent experiments.
+central value for fixed $\obspriorcent$. This is related to the ensemble of
+model replicas we provide as the end product of a fit and can be calculated when
+we have one instance of $\obspriorcent$, provided by the experiments. In the
+case of the bias we consider the flucutations of the central value over replicas
+around the true theoretical prediction as the values of $\obspriorcent$
+fluctuate around $\law$. This latter procedure is only possible in a closure
+test, where the underlying true observable is known. The bias as defined here
+yields an estimate of the fluctuations of the MAP estimator if we could do
+multiple independent experiments.
 
 \paragraph{Bias-variance ratio}
 
@@ -319,15 +356,18 @@ Finally, the {\em bias-variance ratio} is defined as
 where we have taken the square root, since bias and variance are both mean
 squared quantities. The value of $\biasvarratio$ yields a measurement of how
 much uncertainties are over or under estimated. If the uncertainties are
-completely faithful, then $\biasvarratio = 1$. We note that the relationship
-does not work both ways and $\biasvarratio = 1$ does not necessarily guarantee
-that the uncertainty is faithful. We also note that $\biasvarratio$ is not
-completely general: it is not a measure defined in model space and depends on
-the choice of test data. Therefore it only gives {\em local} information on the
-model uncertainties. If the distribution of the expectation value of model
-predictions is gaussian centered on the true observable values, with covariance
-$\covcent$ and the distribution of the model replicas is also gaussian, with
-covariance $\covrep$ then model uncertainties are faithful if
+completely faithful, then $\biasvarratio = 1$. 
+% We note that the relationship
+% does not work both ways and $\biasvarratio = 1$ does not necessarily guarantee
+% that the uncertainty is faithful. 
+%
+We note that $\biasvarratio$ is not completely general: it is not a measure
+defined in model space and depends on the choice of test data. Therefore it only
+gives {\em local} information on the model uncertainties. If the distribution of
+the expectation value of model predictions is gaussian centered on the true
+observable values, with covariance $\covcent$ and the distribution of the model
+replicas is also gaussian, with covariance $\covrep$ then model uncertainties
+are faithful if
 \begin{equation}\label{eq:IdealRatioDef}
     \covcent {\covrep}^{-1} = 1.
 \end{equation}
@@ -359,18 +399,17 @@ analogous expression in the space of data,
             I_{[-n \testset{\sigma}_i^{(l)}, n \testset{\sigma}_i^{(l)}]}
             \left( \emodel{\testset{\fwdobsop}_i}^{(l)} - \testset{\law}_i \right),
 \end{equation}
-where $\testset{\sigma}_i^{(l)} = \sqrt{\covrep_{ii}}$ is the standard deviation of the
-theory predictions estimated from the replicas of fit $l$ and $I_{[a, b]}(x)$
-is the indicator
-function, which is one when $a \leq x \leq b$ and zero otherwise. In other
-words, $\xisigdat{n}$ is counting how often the difference between the prediction
-from the MAP estimator and the true observable value is within the $n\sigma$-confidence
-interval of the replicas, assuming they're Gaussian. Since $\covrep$
-is primarily driven by the replica
-fluctuations, we assume that it is roughly constant across fits, or independent
-upon the specific instance of observational noise. This allows us to write
-$\xisigdat{n}$ for a specific data point in the limit of infinite fits, each to
-a different instance of the data as
+where $\testset{\sigma}_i^{(l)} = \sqrt{\covrep_{ii}}$ is the standard deviation
+of the theory predictions estimated from the replicas of fit $l$ and $I_{[a,
+b]}(x)$ is the indicator function, which is one when $a \leq x \leq b$ and zero
+otherwise. In other words, $\xisigdat{n}$ is counting how often the difference
+between the prediction from the MAP estimator and the true observable value is
+within the $n\sigma$-confidence interval of the replicas, assuming they're
+Gaussian. Since $\covrep$ is primarily driven by the replica fluctuations, we
+assume that it is roughly constant across fits, or independent upon the specific
+instance of observational noise. This allows us to write $\xisigdat{n}$ for a
+specific data point in the limit of infinite fits, each to a different instance
+of the data as
 %
 \begin{equation}
     \label{eq:XiIExpecVel}
@@ -382,11 +421,10 @@ a different instance of the data as
 \end{equation}
 %
 where $\emodel{\fwdobsop_i}^{(l)}$ has implicit conditional dependence on
-$\obsnoise$.
-If
-the distribution of \linebreak $\emodel{\testset{\fwdobsop}_i}^{(l)} - \testset{\law}_i$
-is Gaussian, centered on
-zero, we can defined ${\testset{ \hat{\sigma} }}_i = \sqrt{\covcent_{ii}}$. In which case
+$\obsnoise$. If the distribution of \linebreak
+$\emodel{\testset{\fwdobsop}_i}^{(l)} - \testset{\law}_i$ is Gaussian, centered
+on zero, we can define ${\testset{ \hat{\sigma} }}_i = \sqrt{\covcent_{ii}}$.
+In this case
 \begin{equation}
     \label{eq:expectedxi}
     \xisigdati{n} =
@@ -396,18 +434,18 @@ which is simply the standard result of integrating a gaussian over some finite
 symmetric interval.
 
 The analogy between $\biasvarratio$ and $\xisigdat{n}$ is clear, the ratios of
-uncertainties are both attempts to quantify Eq.~\ref{eq:IdealRatioDef} whilst keeping
-effects due to using finite statistics under control. Whilst with
-$\biasvarratio$ we take the average over
-test data before taking the ratio, $\xisigdat{n}$ instead takes the ratio
-of the diagonal elements - ignoring correlations. Since the predictions
-from the model will be compared with experimental central values, taking into
-account experimental error, we find it more natural to calculate $\xisigdat{n}$
-in the basis which diagonalises the experimental covariance of the test data as
-in Eq.~\ref{eq:InvCovPrimeDiag}. If we assume that in this new basis, that
-both $\frac{\covrep_{ii}}{\left(\sigma'_i\right)^2}$ and
-$\frac{\covcent_{ii}}{\left(\sigma'_i\right)^2}$ are approximately constant
-for all eigenvectors of the experimental covariance matrix, then we recover the
+uncertainties are both attempts to quantify Eq.~\ref{eq:IdealRatioDef} whilst
+keeping effects due to using finite statistics under control. Whilst with
+$\biasvarratio$ we take the average over test data before taking the ratio,
+$\xisigdat{n}$ instead takes the ratio of the diagonal elements - ignoring
+correlations. Since the predictions from the model will be compared with
+experimental central values, taking into account experimental error, we find it
+more natural to calculate $\xisigdat{n}$ in the basis which diagonalises the
+experimental covariance of the test data as in Eq.~\ref{eq:InvCovPrimeDiag}. If
+we assume that in this new basis, that both
+$\frac{\covrep_{ii}}{\left(\sigma'_i\right)^2}$ and
+$\frac{\covcent_{ii}}{\left(\sigma'_i\right)^2}$ are approximately constant for
+all eigenvectors of the experimental covariance matrix, then we recover the
 approximation
 \begin{equation}\label{eq:CompareXiRatio}
     \xisigdat{n} \sim \erf \left( \frac{ n\biasvarratio}{\sqrt{2}} \right).
@@ -420,20 +458,19 @@ $\biasvarratio$ to consider how valid these assumptions may be.
 \label{Sec:LinearMapEstimators}
 
 Once again we return to the linear model framework set out in
-Sec.~\ref{sec:fluct-fit-values}. We can perform an analytical closure
-test in this framework, and check our
-understanding of the closure estimators. Consider the true observable
-values for the test data is given by
+Sec.~\ref{sec:fluct-fit-values}. We can perform an analytical closure test in
+this framework, and check our understanding of the closure estimators. Consider
+the true observable values for the test data is given by
 \begin{equation}\label{eq:LinearLawMap}
     \testset{\law} = \testset{\fwdobsop} \lawmodel
 \end{equation}
-where $\lawmodel \in \modelspace$, which means the number of (non-zero) parameters
-in the underlying law is less than or equal to the number of parameters in the
-model, $\nlaw \leq \nmodel$. Using the previous results from
-Sec.~\ref{sec:fluct-fit-values}, we can write down the
-difference between the true observables and the predictions from the MAP estimator
-(or the expectation of the model predictions across model replicas - in the
-linear model these are the same)
+where $\lawmodel \in \modelspace$, which means the number of (non-zero)
+parameters in the underlying law is less than or equal to the number of
+parameters in the model, $\nlaw \leq \nmodel$. Using the previous results from
+Sec.~\ref{sec:fluct-fit-values}, we can write down the difference between the
+true observables and the predictions from the MAP estimator (or the expectation
+of the model predictions across model replicas - in the linear model these are
+the same)
 \begin{equation}
     \begin{split}
         \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law} &=
@@ -442,11 +479,9 @@ linear model these are the same)
     \end{split}
 \end{equation}
 where we recall that $\linmap$ is the forward map to the training observables
-and $\obspriorcent$ are
-the corresponding training central values. Calculating the covariance across
-training data of
-$\emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law}$
-gives
+and $\obspriorcent$ are the corresponding training central values. Calculating
+the covariance across training data of
+$\emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law}$ gives
 \begin{equation}
     \covcent = \testset{\linmap} \modelpostcov \testset{\linmap}^T \, ,
 \end{equation}
@@ -458,16 +493,17 @@ so the full expression for $\mathbf{E}_{\obspriorcent}[{\rm bias}]$ is given by
         \testset{\obspriorcov}^{-1}
     \right].
 \end{equation}
-We note that if the test data is identical the data the model was fitted on,
-we recover an intuitive result $\mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{\nmodel}{\ndata}$.
-Consider the example of the polynomial, the maximum value which $\nmodel$ can
-take whilst $\linmap$ still has linearly independent rows is $\ndata$ and in this case
-the $\mathbf{E}_{\obspriorcent}[{\rm bias}]$ takes its maximum value of 1. The central
-predictions from the model exactly pass through each data point.
+We note that if the test data is identical the data the model was fitted on, we
+recover an intuitive result $\mathbf{E}_{\obspriorcent}[{\rm bias}] =
+\frac{\nmodel}{\ndata}$. Consider the example of the polynomial, the maximum
+value which $\nmodel$ can take whilst $\linmap$ still has linearly independent
+rows is $\ndata$ and in this case the $\mathbf{E}_{\obspriorcent}[{\rm bias}]$
+takes its maximum value of 1. The central predictions from the model exactly
+pass through each data point.
 
-We can perform a similar exercise on the model replica predictions. The difference
-between the predictions from model replica $\repind$ and the expectation value
-of the model predictions is
+We can perform a similar exercise on the model replica predictions. The
+difference between the predictions from model replica $\repind$ and the
+expectation value of the model predictions is
 \begin{equation}
     \begin{split}
         \testset{\fwdobsop}\left(\modelvecrep\right) -
@@ -484,10 +520,10 @@ which, as a result means that
 \begin{equation}
     \var = \mathbf{E}_{\obspriorcent}[{\rm bias}].
 \end{equation}
-We recall that when the map is linear, the NNPDF MC methodology generates replicas
-which are sampled from the posterior distribution of the model given the data.
-We have shown here that provided the underlying law belongs to the model
-space, the posterior distribution of the model predictions satisfy the
+We recall that when the map is linear, the NNPDF MC methodology generates
+replicas which are sampled from the posterior distribution of the model given
+the data. We have shown here that provided the underlying law belongs to the
+model space, the posterior distribution of the model predictions satisfy the
 requirement that $\biasvarratio = 1$.
 
 We note that due to the invariance of the trace under cyclic permutations, we
@@ -499,9 +535,10 @@ can rearrange Eq.~\ref{eq:BiasLinearModel} as
         \testset{\linmap}^T \testset{\obspriorcov}^{-1} \testset{\linmap}
     \right] \, ,
 \end{equation}
-where the term $\testset{\linmap}^T \testset{\obspriorcov}^{-1} \testset{\linmap}$
-can be understood as the covariance matrix of the posterior distribution in model
-space given the test data, with zero prior knowledge of the model \viz
+where the term $\testset{\linmap}^T \testset{\obspriorcov}^{-1}
+\testset{\linmap}$ can be understood as the covariance matrix of the posterior
+distribution in model space given the test data, with zero prior knowledge of
+the model \viz
 \begin{equation}\label{eq:BiasTraceModelPost}
     \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
     % testset fails here due to double postscript
@@ -531,17 +568,16 @@ Now we can express bias (or variance) as
     \right] \, ,
 \end{equation}
 where $\testset{\obspostcov}$ is the covariance of the posterior distribution of
-$\testset{\obs}$ with no prior information on that data. This might seem peculiar
-because in determining $\testset{\obspostcov}$ we took the limit
-$\testset{\obspriorcov}^{-1} \to 0$, because we had no prior information on the
-unseen data, however
-in Eq.~\ref{eq:BiasTraceObsPost} we require
-$\testset{\obspriorcov}^{-1}$ to be finite.
-We rationalise Eq.~\ref{eq:BiasTraceObsPost} as a comparison between
-the posterior distribution in the space of data of some unseen observables to an
-independently determined prior from performing the relevant experiment which
-measures the same observables. Comparing moments of these two distributions
-is what you would expect when the new experimental data is published.
+$\testset{\obs}$ with no prior information on that data. This might seem
+peculiar because in determining $\testset{\obspostcov}$ we took the limit
+$\testset{\obspriorcov}^{-1} \to 0$, which encodes the fact that we had no prior
+information on the unseen data, however in Eq.~\ref{eq:BiasTraceObsPost} we
+require $\testset{\obspriorcov}^{-1}$ to be finite. We rationalise
+Eq.~\ref{eq:BiasTraceObsPost} as a comparison between the posterior distribution
+in the space of data of some unseen observables to an independently determined
+prior from performing the relevant experiment which measures the same
+observables. Comparing moments of these two distributions is what you would
+expect when the new experimental data is published.
 
 % If we marginalise
 % instead over $\testset{\obs}$, then
@@ -558,11 +594,10 @@ is what you would expect when the new experimental data is published.
 
 \paragraph{Underparameterised model}
 
-Note that if we were to choose the
-number of model parameters such that $\nlaw > \nmodel$, then the variance
-would be unaffected, since the underlying law parameters cancel. However, the
-bias would now contain an extra term from the extra parameters in the
-underlying law, schematically:
+Note that if we were to choose the number of model parameters such that $\nlaw >
+\nmodel$, then the variance would be unaffected, since the underlying law
+parameters cancel. However, the bias would now contain an extra term from the
+extra parameters in the underlying law, schematically:
 \begin{equation}
     \begin{split}
         (\emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law})_i =
@@ -573,20 +608,18 @@ underlying law, schematically:
 which would mean that $\biasvarratio \neq 1$. This demonstrates that requiring
 $\biasvarratio = 1$ demands that the model space is suitably flexible, if the
 underlying law is parameterised then this can be summarised as requiring
-$\lawmodel \in \modelspace$. Note that in the
-underparameterised regime the model replicas are still drawn from the posterior
-distribution, however because $\lawmodel \notin \modelspace$ we've somehow
-invalidated the assumptions that go into the relation between model predictions
-and the data-space prior.
+$\lawmodel \in \modelspace$. Note that in the underparameterised regime the
+model replicas are still drawn from the posterior distribution, however because
+$\lawmodel \notin \modelspace$ we have somehow invalidated the assumptions that
+go into the relation between model predictions and the data-space prior.
 
-Although $\biasvarratio$ was largely chosen on practical
-grounds, we see that it is still a stringent test that our assumptions are
-correct and that the distribution our model replicas are drawn from is meaningful,
-this is what we mean when we say {\em faithful uncertainties}.
+Although $\biasvarratio$ was largely chosen on practical grounds, we see that it
+is still a stringent test that our assumptions are correct and that the
+distribution our model replicas are drawn from is meaningful, this is what we
+mean when we say {\em faithful uncertainties}.
 
-An unfortunate
-trade-off when using $\biasvarratio$ is it can't be used as a diagnostic
-tool, and is instead used simply for validation. For example, if
-$\biasvarratio > 1$, then we
-can't know whether there was a problem with the fitting methodology used to
-generate the model replicas or a deeper issue such as an inflexible model.
+An unfortunate trade-off when using $\biasvarratio$ is it cannot be used as a
+diagnostic tool, and is instead used simply for validation. For example, if
+$\biasvarratio > 1$, then we cannot know whether there was a problem with the
+fitting methodology used to generate the model replicas or a deeper issue such
+as an inflexible model.
