@@ -1,18 +1,21 @@
 \section{NNPDF Monte Carlo approach to inverse problems}
 \label{sec:closure-test}
 
-In this section we discuss the NNPDF approach to inverse problems, trying to
+In this section we discuss the NNPDF approach to inverse problems, and
 make contact explicitly with the formalism laid out in
-Sec.~\ref{sec:inverse-problems}. In particular, Eq.~\eqref{eq:PosteriorModel}
-gives a formal description of propagating the information contained in the
-experimental data into model space. In practice, sampling from the posterior
+Sec.~\ref{sec:inverse-problems}. In the Bayesian formulation, 
+Eq.~\eqref{eq:PosteriorModel} gives a quantitative description of how 
+the information contained in the
+experimental data propagates into our knowledge of the space of models. 
+In practice, sampling from the posterior
 distribution is not straightforward and we defer the investigation of this issue
-to further studies. 
+to further studies. Here we focus instead on the standard NNPDF fitting procedure
+and investigate its relation with the Bayesian result. 
 
 \subsection{Fitting replicas}
 \label{sec:fit-reps}
 
-The approach for generating a sample in model space employed by NNPDF can
+The approach for generating a sample in model space utilised by NNPDF can
 broadly be described as fitting model replicas to pseudo-data replicas. As
 discussed in Eq.~\eqref{eq:NoisyInverseProblem} the experimental values are
 subject to observational noise. If we assume this observational noise to be
@@ -22,8 +25,8 @@ explicitly by
     \label{eq:levelonedata}
     \obspriorcent = \law + \obsnoise,
 \end{equation}
-where $\law$ is the vector of {\em true} observable values, and the obervational
-noise is drawn from a Gaussian centered on zero such as in
+where $\law$ is the vector of {\em true} observable values, and the observational
+noise is drawn from a Gaussian centred on zero such as in
 Eq.~\ref{eq:RhoGauss}, \ie\ $\obsnoise \sim \mathcal{N}(0, \obspriorcov)$ where
 $\obspriorcov$ is the experimental covariance matrix. In
 Eq.~\eqref{eq:levelonedata}, each basis vector corresponds to a separate data
@@ -44,7 +47,8 @@ $\obspriorcent$ with some noise, $\noise^{\repind}$,
 where $k$ is the replica index and each instance of the noise, $\noise$, is
 drawn independently from the same Gaussian from which the observational noise is
 drawn from, \ie\ $\noise \sim \mathcal{N}(0, \obspriorcov)$. For each replica $k$, 
-$\pseudodat^{\repind}$ is a vector in $\real^{\ndata}$. A simple
+$\pseudodat^{\repind}$ is a vector in $\real^{\ndata}$. The distribution of 
+pseudo-data in a simple
 one-dimensional example is shown in Fig.~\ref{fig:DistRep}. Note that, if we
 were to repeat this construction multiple times, the true value $f$ would be
 within a 1$\sigma$ interval centred at $y_0$ with a 68\% probability.
@@ -91,8 +95,8 @@ likelihood, $\likelihood$, since $\chi^2 \equiv -\log{\likelihood}$.
 As a final note: since we do not include the model prior, overall normalisations
 can be omitted in Eq.~\ref{eq:NNPDFLikelihood}. It is clear however that if we
 were including a model prior in our MAP, it is important that the relative
-normalisations between the likelihood function and the model prior are
-self-consistent.
+normalisation between the likelihood function and the model prior is clearly
+specified.
 
 \subsection{Fluctuations of fitted values}
 \label{sec:fluct-fit-values}
@@ -116,10 +120,10 @@ vector of $\nmodel$ polynomial coefficients and $\linmap$ is the Vandermonde mat
     \end{bmatrix}.
 \end{equation}
 In this case the forward map yields
-\begin{equation}
-    \label{eq:PolyMod}
-    y_i = \sum_{j=0}^{\nmodel-1} u_j x_i^j\, , 
-\end{equation}
+    \begin{equation}
+        \label{eq:PolyMod}
+        y_i = \sum_{j=0}^{\nmodel-1} u_j x_i^j\, , 
+    \end{equation}
 where $i=1,\ldots,\ndata$. The arguments here are not restricted to polynomials,
 however, and apply to any model whose forward map can be expressed as
 Eq.~\eqref{eq:MatrixG}, for example a linear shallow approximation of neural
@@ -144,12 +148,10 @@ model parameters is zero, i.e.
         \right) \, .
     \end{split}
 \end{equation}
-Eq.~\ref{eq:MAPEstLinModel} shows that $\modelvec_*$ is a linear
-combination of the Gaussian variables $\noise$, and therefore is
-also a Gaussian variable. Its
-probability density is then completely specified by the average and
-covariance of $\modelvec_*$, which can be calculated explicitly, given that the
-probability density for $\noise$ is known:
+Eq.~\ref{eq:MAPEstLinModel} shows that $\modelvec_*$ is a linear combination of
+the Gaussian variables $\noise$, and therefore is also a Gaussian variable. Its
+probability density is then completely specified by the mean and covariance, which can be calculated explicitly, given that the probability
+density for $\noise$ is known:
 \begin{align}
     \emodel{\modelvec_*} &=
     \modelpostcent = (\linmap^T \obspriorcov^{-1} \linmap)^{-1} \linmap^T
