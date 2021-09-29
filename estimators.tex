@@ -13,9 +13,9 @@ predictions for a set of experimental data points. Having defined the
 estimators, we define criteria to characterise faithful uncertainties. We
 conclude this section with a discussion of the predictions that can be obtained
 for these estimators in the case of a linear model, where analytical
-calculations can be performed. As we already discussed, the analytical results
-cannot be applied directly to the NNPDF fits, but they are useful examples that
-illustrate the expected behaviour of these quantities.
+calculations can be performed. As we already saw in the previoius Section, the
+analytical results cannot be applied directly to the NNPDF fits, but they are
+useful examples that illustrate the expected behaviour of these quantities.
 
 \subsection{Deriving the data space estimators}
 \label{sec:ClosureEstimatorsDerivation}
@@ -33,13 +33,13 @@ of data points
 \end{equation}
 and we purposely denoted the data which the model error is evaluated on as
 $\testset{\obspriorcent}$, as opposed to the training data $\obspriorcent$,
-which is used to determine the model parameters. The corresponding covariance is 
-denoted $\testset{\obspriorcov}$. Note that in
-Eq.~\ref{eq:chi2kereponerep}, $\testset{\obspriorcent}$ is a stochastic
-variable, but also $\modelvecrep$ is a stochastic variable, with its pattern of
-fluctuations, since the fitted model depends on the data $\pseudodat^{\repind}$
-that enter the fit. We define the model error $\eout$ on the set of data
-$\testset{\obspriorcent}$ by taking the average over the models,
+which is used to determine the model parameters. The corresponding covariance is
+denoted $\testset{\obspriorcov}$. Note that in Eq.~\ref{eq:chi2kereponerep},
+$\testset{\obspriorcent}$ is a stochastic variable, but also $\modelvecrep$ is a
+stochastic variable, with its pattern of fluctuations, since the fitted model
+depends on the data $\pseudodat^{\repind}$ that enter the fit. We define the
+model error $\eout$ on the set of data $\testset{\obspriorcent}$ by taking the
+average over the models,
 \begin{equation}
     \label{eq:chi2kerep}
     \eout = \frac{1}{\ndata} \emodel{
@@ -100,9 +100,8 @@ square
 \end{equation}
 Let us now discuss these terms one by one, starting from the last two. The
 second term is the shift associated with evaluating the model error on noisey
-test data and the final term is a cross term which we will deal with later. For
-now we focus on decomposing the first term further,
-% TODO: add the same thing but for fully in sample data to an appendix.
+test data and the final term is a cross term which we will deal with later. We
+therefore focus next on further decomposing the first term,
 \begin{equation}
     \begin{split}
         &\emodel{
@@ -476,7 +475,7 @@ the same)
     \begin{split}
         \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law} &=
         \testset{\linmap} (\modelpostcent - \lawmodel ) \\
-        &= \testset{\linmap} \modelpostcov \linmap^T \obspriorcov \, \obsnoise \, ,
+        &= \testset{\linmap} \modelpostcov \linmap^T \obspriorcov^{-1} \, \obsnoise \, ,
     \end{split}
 \end{equation}
 where we recall that $\linmap$ is the forward map to the training observables
@@ -510,7 +509,7 @@ expectation value of the model predictions is
         \testset{\fwdobsop}\left(\modelvecrep\right) -
         \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} &=
         \testset{\linmap} (\modelvecrep - \modelpostcent) \\
-        &= \testset{\linmap} \modelpostcov \linmap^T \obspriorcov \, \noise \, .
+        &= \testset{\linmap} \modelpostcov \linmap^T \obspriorcov^{-1} \, \noise \, .
     \end{split}
 \end{equation}
 Since $\noise$ and $\obsnoise$ follow the same distribution, it is clear that
@@ -545,9 +544,9 @@ the model \viz
     % testset fails here due to double postscript
     {\rm Tr} \left[ \modelpostcov {\modelpostcov}^{ \prime -1} \right] \, ,
 \end{equation}
-where we emphasise that the covariance matrices $\modelpostcov$ are
-$\testset{\modelpostcov}$ from completely independent Bayesian inferences
-with no prior information on the model parameters, unlike in
+where we emphasise that the covariance matrices $\modelpostcov$ and
+$\testset{\modelpostcov}$ are obtained from completely independent Bayesian
+inferences with no prior information on the model parameters, unlike in
 Eq.~\ref{eq:ModelPostSequential} where a sequential marginalisation causes
 $\testset{\modelpostcov}$ to depend on $\modelpostcov$.
 

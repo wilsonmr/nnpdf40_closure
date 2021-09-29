@@ -25,6 +25,7 @@
 %\usepackage{tikz-feynman}
 \usepackage{hyperref}
 \usepackage{placeins}
+\usepackage{bbold}
 \usepackage[font=small,labelfont=bf]{caption}
 %\tikzfeynmanset{compat=1.0.0}
 \usepackage{tikz}
@@ -50,17 +51,17 @@
 \newcommand{\modelspace}{X}
 \newcommand{\modelvec}{u}
 \newcommand{\modelpriorcent}{\modelvec_0}
-\newcommand{\modelpriorcov}{\cov_M}
+\newcommand{\modelpriorcov}{\cov_X}
 \newcommand{\modelpostcent}{\posterior{\modelvec}}
-\newcommand{\modelpostcov}{\posterior{\cov}_M}
+\newcommand{\modelpostcov}{\posterior{\cov}_X}
 % observable space
 \newcommand{\ndata}{N_{\rm data}}
 \newcommand{\obs}{y}
 \newcommand{\obspriorcent}{\obs_0}
-\newcommand{\obspriorcov}{\cov_{D}}
+\newcommand{\obspriorcov}{\cov_{Y}}
 \newcommand{\obsnoise}{\eta}
 \newcommand{\obspostcent}{\posterior{\obs}}
-\newcommand{\obspostcov}{\posterior{\cov}_D}
+\newcommand{\obspostcov}{\posterior{\cov}_Y}
 % linear map
 \newcommand{\linmap}{\fwdobsop}
 \newcommand{\vander}{\mathcal{X}}
