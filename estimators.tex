@@ -337,12 +337,12 @@ of the variance, we are looking at the fluctuations of the replicas around their
 central value for fixed $\obspriorcent$. This is related to the ensemble of
 model replicas we provide as the end product of a fit and can be calculated when
 we have one instance of $\obspriorcent$, provided by the experiments. In the
-case of the bias we consider the flucutations of the central value over replicas
+case of the bias we consider the fluctuations of the central value over replicas
 around the true theoretical prediction as the values of $\obspriorcent$
 fluctuate around $\law$. This latter procedure is only possible in a closure
 test, where the underlying true observable is known. The bias as defined here
 yields an estimate of the fluctuations of the MAP estimator if we could do
-multiple independent experiments.
+multiple independent instances of their measurements from each experiment.
 
 \paragraph{Bias-variance ratio}
 
@@ -516,7 +516,7 @@ Since $\noise$ and $\obsnoise$ follow the same distribution, it is clear that
 \begin{equation}
     \covrep = \covcent,
 \end{equation}
-which, as a result means that
+which simply means that
 \begin{equation}
     \var = \mathbf{E}_{\obspriorcent}[{\rm bias}].
 \end{equation}
@@ -557,7 +557,7 @@ on the observables in the test set, then
 \begin{equation}
     \modelpostcov^{-1} = \linmap^T \obspriorcov^{-1} \linmap \, ,
 \end{equation}
-or the total posterior model distribution, is identical to the posterior model
+for the posterior model distribution, is identical to the posterior model
 distribution given just the training data - as you would expect.
 Now we can express bias (or variance) as
 \begin{equation}\label{eq:BiasTraceObsPost}
