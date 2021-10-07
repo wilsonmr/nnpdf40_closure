@@ -200,27 +200,6 @@ estimators that allow us to characterise the quality of the closure fit is one
 of the main problems that need to be addressed. We will discuss a new class of
 estimators in the next Section. 
 
-As already discussed in Ref.~\cite{nnpdf30}, fitting to L0, L1 and L2
-pseudo-data allows us to validate different aspects of the fitting procedure. In
-an L0 fit, we fit multiple time the exact same set of data, which corresponds to
-the theory prediction from the chosen model. The fitted pseudo-data is the
-result obtained by applying the forward map to the model. It is clear that in
-this case the quality of the fit can be improved at will, provided that the
-parametrization is flexible enough and the minimization algorithm is efficient.
-There are indeed multiple solutions that reproduce exactly the data set, while
-interpolating between the data points. In an L1 the data have been fluctuated
-around the theoretical prediction -- mimicking thereby the central values of
-experimental measurements. The true model no longer reproduces the data; instead
-it will yield a $\chi^2$ of order one. The pseudo-data are held fixed,
-fluctuations from one replica to the next are due to the existence of multiple
-solutions that hold a similar value for the residual $\chi^2$ at the end of the
-minimization process. Finally, in the L2 fits, the fluctuations of the data are
-reproduced by the replicas, and propagated to the model function when fitting
-the data for each replica. Since the NNPDF fitting methodology has changed in
-the latest release, it is important to compare the uncertainties at L0, L1 and
-L2 that are obtained with the new fitting rouitne (n3fit) with the corresponding
-ones obtained with the old fitting code (nnfit). 
-
 Note that in a closure test, the assumed prior of the data is fully consistent
 with the particular instance of observed central values, $\obspriorcent$: by
 construction, there are no inconsistent data sets. In the original closure test
