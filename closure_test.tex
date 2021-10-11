@@ -106,31 +106,57 @@ It is not immediately obvious that the MC methodology, maximising the likelihood
 on an ensemble of pseudo-data replicas, guarantees that the model replicas
 are indeed sampled from the posterior distribution of parameters given data as
 described \eg\ in Eq.~\ref{eq:PosteriorModel}. In order to investigate this
-issue, we will again consider a model, whose predictions are linear in the model
-parameters, where the posterior distribution of model parameters can be written
-explicitly. A practical example, which can
-elucidate the following arguments would be a polynomial model. Then $\modelvec$ is a
-vector of $\nmodel$ polynomial coefficients and $\linmap$ is the Vandermonde matrix
+issue, we will again consider a model whose predictions are linear in the model
+parameters, so that the posterior distribution of model parameters can be computed
+explicitly. DIS observables can be seen as an example of a linear model. Let us assume 
+that the PDF are parametrized by their values at selected values of $x_i$, so that
+$u$ is a finite-dimensional vector 
 \begin{equation}
-    \linmap =
-    \begin{bmatrix}
-        1  & x_1 & \ldots& x_1^{\nmodel-1} \\ 
-        1  & x_2 & \ldots& x_2^{\nmodel-1} \\ 
-        \vdots  & \vdots & \vdots& \vdots \\ 
-        1  & x_{\ndata} & \ldots & x_{\ndata}^{\nmodel-1} 
-    \end{bmatrix}.
+    \label{eq:Uvector}
+    u_i = u(x_i)\, , \quad i = 1, \ldots, \nmodel\, .    
 \end{equation}
-In this case the forward map yields
-    \begin{equation}
-        \label{eq:PolyMod}
-        y_i = \sum_{j=0}^{\nmodel-1} u_j x_i^j\, , 
-    \end{equation}
-where $i=1,\ldots,\ndata$. The arguments here are not restricted to polynomials,
-however, and apply to any model whose forward map can be expressed as
-Eq.~\eqref{eq:MatrixG}, for example a linear shallow approximation of neural
-networks \cite{ADVANI2020428}. In order to get an exact analytical solution for
+The observables are then computed by taking a matrix-vector multiplication of the 
+vector $u$ by a $\ndata \times \nmodel$ matrix, $F_{ij}$, which is called FK table in the 
+NNPDF jargon, 
+\begin{equation}
+    \label{eq:FKTabLinVec}
+    y_i = \sum_{j=1}^{\nmodel} \linmap_{ij} u_j\, ,
+\end{equation}
+where $i=1,\ldots,\ndata$. In this case the forward map coincides exactly with the 
+FK table, $\linmap_{ij} = F_{ij}$. 
+
+However it should be clear that the discussion below applies to any model whose forward 
+map can be approximated as Eq.~\eqref{eq:FKTabLinVec}, like a linear approximation of neural
+networks~\cite{ADVANI2020428}. Let us consider for instance the actual NNPDF parametrization, 
+where the value of the PDF is given by a neural network whose state is determined by a set of 
+weights $\theta$. In this case $X$ is the space of weights, the model will be specified by a vector 
+$\theta$ in the space of weights, and we are going to continue using $u$ to denote the PDF, so that 
+\begin{equation}
+    \label{eq:WeightsParam}
+    u_i = u(x_i; \theta)\, .
+\end{equation}
+If the parameters have a sufficiently narrow distribution around some value $\bar\theta$, then
+we can expand the expression for the observables:
+\begin{align}
+    y_i  &= 
+        \sum_j F_{ij} \left[u(x_j; \bar\theta)
+         + \sum_k \left.\frac{\partial u}{\partial \theta_k}\right|_{x_j,\bar\theta} 
+         \left(\theta - \bar\theta\right)_k
+        \right] \\
+        &=
+        \bar{y}_i  + \sum_k \linmap_{ik} \Delta\theta_k
+        \,,         
+\end{align}
+where 
+\begin{align}
+    \linmap_{ik} &= 
+        \sum_j F_{ij} \left.\frac{\partial u}{\partial \theta_k}\right|_{x_j,\bar\theta} \\
+    \Delta\theta_k &= \theta_k - \bar\theta_k\, .
+\end{align}
+In order to get an exact analytical solution for
 the linear model, we additionally require $\linmap$ to have linearly independent
-rows, and therefore $\linmap \obspriorcov \linmap^T$ is invertible. With no
+rows, and therefore $\linmap \obspriorcov \linmap^T$ is invertible. As discussed in 
+Section~\ref{sec:inverse-problems}, in the absence of 
 prior information on the model, the posterior distribution of model parameters
 is a Gaussian with mean and covariance given by Eqs.~\ref{eq:NoPriorLinModel}
 and \ref{eq:NoPriorLinModelCov}.

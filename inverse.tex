@@ -25,16 +25,32 @@ where we assume that $\modelspace$ and $R$ are Banach spaces.~\footnote{Banach
 spaces are complete normed vector spaces. We do not need to get into a more
 detailed discussion here, but it is important to note that working in Banach
 spaces allows us to generalise the results to infinite-dimensional spaces of
-functions.} As an example we can think of $\modelvec$ as being a Parton
-Distribution Function, \ie\ a function defined on the interval $[0,1]$, and $r$
-a DIS structure function, which is related to the PDF by a factorization formula
+functions.} As an example we can think of $\modelvec$ as being a PDF, 
+\ie\ a function defined on the interval $[0,1]$, and $r$
+a DIS structure function. The structure function is related to the PDF by a 
+factorization formula
 involving perturbative coefficient functions: 
 \begin{align}
   \label{eq:DISExample}
   r(x,Q^2) = \int_x^1 \frac{dz}{z}\, C(z,Q^2) \modelvec(x/z,Q^2)\, .
 \end{align}
 Note that in this example the forward map maps one real function into another
-real function. Experiments will not have access to the full function $r$ but
+real function. In this case the space of models $X$ is the space of continuous 
+functions defined on the interval $[0,1]$, which satisfy integrability conditions. 
+Even though this is an infinite-dimensional space, it is possible to define a 
+probability measure on such a space and construct a Bayesian solution to the inverse 
+problem. In current determinations of PDFs, the functional form of the PDF is 
+dictated by some kind of parametrization: the space $X$ is then a finite-dimensional 
+space, $\real^{\nmodel}$, where $\nmodel$ is the number of parameters. In the case of 
+the NNPDF fits discussed below, the weights of the neural networks are the parameters 
+that determine the functional form of the PDFs. Alternatively, one could think of a 
+finite-dimensional representation defined by the value of the PDF at selected values 
+of $x$, \ie $u_i=u(x_i)$ for $i=1,\ldots,\nmodel$. Depending on 
+the context we will denote by $u$ either the function $u(x)$, or the vector of real
+parameters that are used to determine the function $u(x)$. Disambiguation should 
+hopefully be straightforward. 
+
+Experiments will not have access to the full function $r$ but
 only to a subset of $\ndata$ observations. In order to have a formal
 mathematical expression that takes into account the fact that we have a finite
 number of measurements, we introduce an {\em observation operator}
@@ -65,7 +81,7 @@ often the case that inverse problems are ill-defined in the sense that the
 solution may not exist, may not be unique, or may be unstable under small
 variations of the problem. 
 
-In solving this problem we are going to adopt a Bayesian point of view, which
+In solving the inverse problem here, we are going to adopt a Bayesian point of view, which
 can be summarised as follows: our prior knowledge about $\modelvec$ is encoded
 in a prior probability measure $\mu_X^0$, where the suffix $X$ indicates that
 the measure is defined in the space of models, and the suffix 0 refers to the
@@ -89,8 +105,8 @@ and Bayes' theorem yields
 \paragraph{Example}
 
 Even though the concepts that we have introduced so far should sound familiar,
-it is worthwhile to spend a few paragraphs to clarify some ideas and present an
-explicit example where all the probability densities are carefully defined.
+it is worthwhile clarifying some ideas and present an
+explicit case where all the probability densities are carefully defined.
 This is best exemplified by considering the case where both the observational
 noise and the model prior are Gaussian. We assume that we are given a set of
 central values $\obspriorcent \in \real^{\ndata}$ and their covariance matrix
