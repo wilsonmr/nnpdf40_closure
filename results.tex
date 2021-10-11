@@ -1,11 +1,16 @@
 \section{Numerical Setup and Results}
 
-In this Section we first introduce the experimental setup used to produce the
-results, and then discuss the actual results. The results here act both as a
-proof of principle of the data space estimators presented in this paper but also
+In this Section we first introduce the experimental setup used to run the
+closure tests, and then discuss the actual results: following the study performed in 
+Ref.~\cite{nnpdf30}, we first analyse the relative 
+size of different component of PDFs uncertainties, comparing the changes between the old
+and the new methodologies, used to produce the NNPDF3.1 and NNPDF4.0 sets of PDFs respectively; 
+we then move to data space estimators, which have been computed only for NNPDF4.0
+\footnote{comment about the fact that this is possible thanks to the fact that the code is now much faster}.
+The results here act both as a proof of principle of new estimators presented in this paper but also
 as part of a suite of methodological validation tools, see also the "future
 tests" \cite{Cruz_Martinez_2021}, used to understand the PDF uncertainties of
-the upcoming NNPDF4.0 set of PDFs. For the purpose of understanding how the
+the recent NNPDF4.0 set of PDFs. For the purpose of understanding how the
 results here were produced, we will briefly describe the key features of the
 NNPDF4.0 methodology, but refer the reader to NNPDF4.0 for a full discussion on
 how these methodological choices were made, and the impact on performing PDF
@@ -17,7 +22,7 @@ Using neural networks to fit PDFs has been discussed many times in previous
 NNPDF publications, see for example \cite{nnpdf30, Ball_2017}. A new feature of
 NNPDF4.0 will be that, for the default fit performed in the evolution basis, a
 single neural network parameterises all 8 PDF flavours $\{ g, \Sigma, V, V_3,
-V_8, T_3, T_8, c^+ \}$ at the initial scale. The PDF for a single flavour $j$,
+V_8, T_3, T_8, T_{15} \}$ at the initial scale. The PDF for a single flavour $j$,
 at the initial scale $Q_0 = 1.65~{\rm GeV}$ is given by
 \begin{equation}
     f_j(x, Q_0) = NN(x, \ln x | \modelvec)_j * x^{1-\alpha_j} * (1-x)^{\beta_j},
@@ -27,9 +32,8 @@ PDF behaviour at $x \to 0$ and $x \to 1$ respectively and $NN(x, \ln x |
 \modelvec)_j$ is the $j^{\rm th}$ output of the neural network, which takes $x$
 and $\ln x$ as input. As discussed in Sec.~\ref{sec:fit-reps}, an ensemble of
 models is fitted, each one is an MAP estimator of the corresponding pseudo-data
-it is fitted on. Unlike in the case of the linear model, the parameters of the
-neural network cannot be found analytically and instead an optimization
-algorithm is used to try and find the parameters which maximise the likelihood.
+it is fitted on. 
+An optimization algorithm is used to try and find the parameters which maximise the likelihood.
 In principle, the preprocessing exponents can also be varied during the fit
 analogously to the neural network parameters, such as in \cite{Carrazza_2019},
 or they can be randomly selected from a predetermined range as is done in
@@ -39,14 +43,16 @@ have been made is beyond the scope of this paper and left to the full NNPDF4.0
 release \cite{NNPDF40}. A summary of the hyperparameters used to produce results
 presented in this paper are provided in Tab.~\ref{tab:Hyperparams}.
 
-Finally, the parton distributions themselves are not compared directly with
-data. Instead the observables quantities are obtained by performing convolutions
-with the PDFs, as discussed in \ref{eq:DISExample}. In practice the observables
-are obtained by convoluting the PDFs with FastKernel tables, presented in
-\cite{Ball_2010,Bertone_2017}, for each data point. The convolution depends on
-the process type of the observable, for DIS-like observables, such as in
-Eq.~\ref{eq:DISExample}, the convolution is performed with a single PDF. For
-hadronic observables the convolution is performed between two PDFs.
+%Something like the following should go in Sec 3, when defining the forward map for NNPDF
+%Finally, the parton distributions themselves are not compared directly with
+%data. Instead the observables quantities are obtained by performing convolutions
+%with the PDFs, as discussed in \ref{eq:DISExample}. In practice the observables
+%are obtained by convoluting the PDFs with FastKernel tables, presented in
+%\cite{Ball_2010,Bertone_2017}, for each data point. The convolution depends on
+%the process type of the observable, for DIS-like observables, such as in
+%Eq.~\ref{eq:DISExample}, the convolution is performed with a single PDF. For
+%hadronic observables the convolution is performed between two PDFs. 
+
 
 \subsection{Closure test setup}
 
@@ -94,20 +100,76 @@ as discussed in Sec.~\ref{sec:closure-test-intro}, for the fitted 3.1-like
 dataset. Each set of experimental central values was then fitted following
 NNPDF4.0 methodology \cite{NNPDF40}, producing 40 pseudo-data replicas.
 
-When comparing with the old NNPDF methodology, we use the minimization algorithm
-of Ref.~\cite{nnpdf30}. An important iingredient of previous NNPDF minimization
-procedure was the choice of a stopping criterion. XXX
+%When comparing with the old NNPDF methodology, we use the minimization algorithm
+%of Ref.~\cite{nnpdf30}. An important iingredient of previous NNPDF minimization
+%procedure was the choice of a stopping criterion. XXX
 
 \subsection{Errors on PDFs}
 
-The relative error on fitted PDFs is shown in Fig.~\ref{fig:nnpdfLfits}.
+As already discussed in Ref.~\cite{nnpdf30}, fitting to L0, L1 and L2
+pseudo-data allows us to validate different aspects of the fitting procedure. In
+an L0 fit, we fit multiple time the exact same set of data, which corresponds to
+the theory prediction from the chosen model. The fitted pseudo-data is the
+result obtained by applying the forward map to the model. It is clear that in
+this case the quality of the fit can be improved at will, provided that the
+parametrization is flexible enough and the minimization algorithm is efficient.
+There are indeed multiple solutions that reproduce exactly the data set, while
+interpolating between the data points. In an L1 the data have been fluctuated
+around the theoretical prediction -- mimicking thereby the central values of
+experimental measurements. The true model no longer reproduces the data; instead
+it will yield a $\chi^2$ of order one. The pseudo-data are held fixed,
+fluctuations from one replica to the next are due to the existence of multiple
+solutions that hold a similar value for the residual $\chi^2$ at the end of the
+minimization process. Finally, in the L2 fits, the fluctuations of the data are
+reproduced by the replicas, and propagated to the model function when fitting
+the data for each replica. Since the NNPDF fitting methodology has changed in
+the latest release, it is important to compare the uncertainties at L0, L1 and
+L2 that are obtained with the new fitting rouitne (n3fit) with the corresponding
+ones obtained with the old fitting code (nnfit). 
+
+An example of these relative errors on fitted PDFs is shown in Fig.~\ref{fig:CT_uncertainty_g}
+for the case of the gluon distribution: L0, L1 and L2 closure tests are displayed on the same plot, each one
+normalized to the corresponding central value. 
+We note how the L0 and L1 uncertainties are the dominant ones in the $x$ regions where less experimental data are available,
+namely at small and large-$x$, where the model is left unconstrained and free to fluctuate, while they are considerably
+reduced in the data region. Here the L2 error, induced by the actual experimental data, is the dominant one.
+
+It is interesting to compare these results with what we find with the old fitting code. The corresponding
+plots are shown in Fig.~\ref{fig:CT_uncertainty_g_nnpdf3.1}: the PDF error 
+is mainly dominated by the L0 uncertainty, even in those kinematic regions where experimental data are present.
+This is in agreement with the results of Ref.~\cite{nnpdf30}, where it was shown that 
+data uncertainties are not dominant anywhere.
+
+This is clearly not the case for the results obtained with the new methodology.
+This, most likely, is due to the different optimizers used in NNPDF4.0, which has been proved to be much more efficient 
+than the genetic algorithm, adopted in the previous NNPDF determinations.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[scale=0.7]{CT_log_c_nnpdf31_L0_L1.pdf}
-    \caption{Relative error in nnfit clsoure tests.}
-    \label{fig:nnpdfLfits}    
+    \includegraphics[scale=0.43]{CT_log_g.pdf}
+    \includegraphics[scale=0.43]{CT_linear_g.pdf}
+    \caption{Relative PDF error for the gluon distribution in the new methodology,
+    plotted in logarithmic (left) and linear scale (right).}
+    \label{fig:CT_uncertainty_g}    
 \end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.43]{CT_log_g_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_linear_g_nnpdf31.pdf}
+    \caption{Same as Fig.~\ref{fig:CT_uncertainty_g} for the old methodology.}
+    \label{fig:CT_uncertainty_g_nnpdf3.1}    
+\end{figure}
+
+%\begin{figure}[ht]
+%    \centering
+%    \includegraphics[scale=0.43]{CT_log_u_nnpdf31.pdf}
+%    \includegraphics[scale=0.43]{CT_linear_u_nnpdf31.pdf}
+%    \includegraphics[scale=0.43]{CT_log_u.pdf}
+%    \includegraphics[scale=0.43]{CT_linear_u.pdf}
+%    \caption{Same as Fig.~\ref{fig:CT_uncertainty_g} but for the up quark distribution.}
+%    \label{fig:CT_uncertainty_u}    
+%\end{figure}
 
 \subsection{Bias-variance ratio}
 
