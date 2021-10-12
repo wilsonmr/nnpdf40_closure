@@ -1,41 +1,43 @@
 \section{Summary}
 
-We've presented a formal framework for inverse problems, from a Bayesian
+We have presented a theoretical framework for treating inverse problems from a Bayesian
 perspective. In particular, the framework provides a more formal description
 of what it means when we talk about propagating experimental uncertainities
-into the space of models. Strictly speaking, there is no fitting required to
+into the space of models by focusing on the posterior probability measure in model 
+space given the available data. Strictly speaking, there is no fitting required to
 obtain the expression for the posterior distributions in the space of the
 data or the model, instead these are obtained by marginalising the
-prior distribution. We note that sampling from the posterior distribution
+joint distribution. We note that sampling from the posterior distribution
 of the model is,
-in general, highly non-trivial but show that at least for linear problems the
-NNPDF MC methodology can be shown to produce a sample of models which are
-distributed according to the posterior model distribution. Furthermore, we
+in general, highly non-trivial; however we can show that at least for linear problems the
+NNPDF MC methodology produces a sample of models which are
+distributed according to the posterior model distribution predicted from the Bayesian formalism. 
+Furthermore, we
 provide evidence that even for non-linear models this result at least holds
 as a good approximation close to the MAP estimator.
 
 We then use this formal framework to think about some of the estimators which
 we use as part of the NNPDF closure test. In particular we derive bias and
 variance from decomposing an out of sample error function, which is understood
-from a classic fitting point of view.
-The estimators are then related back to the posterior distributions in
+from a classic fitting point of view. The estimators are then related back to the 
+posterior distributions in
 the Bayesian framework. We note that the estimators themselves are not perfect
 and suffer from only testing the model uncertainties locally (in regions where
 the test data probes). Furthermore, the estimators only give an approximate
 overall picture, and cannot be used to diagnose where the problem arises if
 we find evidence that the model uncertaintes are not faithful.
 
-Given the framework set out here, future work should be undertaken
+Given the framework set out here, future work should be undertaken to
 generalise the closure estimators to model space. This would likely involve
 a combination of the closure estimators presented here and 
 the extension of the Bayesian framework to
 infinite-dimensional spaces.
 
-We give some preliminary closure results, as a proof of principle, the results
+We give some preliminary closure results, as a proof of principle. The results
 presented here will be examined in more detail alongside the full NNPDF4.0
 release but serve as an example of how the data space estimators can be practically
 included even in a rather complex setting. The NNPDF4.0 methodology
-passes the closure test according to the estimators presented here,
+passes the closure test according to the estimators that we analysed,
 providing evidence that for unseen data the current NNPDF methodology
 appears to provide faithful uncertainities. The estimators are not limited to
 this specific application, and the results presented demonstrate how
@@ -49,8 +51,8 @@ In the closure test framework described in this study, the prior on the
 data is fully consistent with the generation of the 
 observable central values from the true observables and uncertainities
 by construction, which is likely not the case in real world fits. Something
-which should be investigated is guarantee faithful uncertainities when this
-is no longer the case, for example one could consider
+which should be investigated is how we can guarantee faithful uncertainities when this
+is no longer the case. For example one could consider
 a closure test where the generated data was inconsistent with the prior.
 Most observed inconsistentency between the prior and the data
 central values is likely due to missing theoretical uncertainities, but
@@ -59,19 +61,20 @@ there could still be tension in the data. The advantage of viewing
 inverse problems from a Bayesian perspective is access to
 methodologies which deal with inconsistent data (or unknown
 systematics) in a Bayesian framework,
-for example in these cosmological studies \cite{Luis_Bernal_2018, Hobson_2002}.
+for example in these cosmological studies~\cite{Luis_Bernal_2018, Hobson_2002}.
 These methods potentially offer a more formal approach to dealing with
 inconsistent data, rather than ad hoc procedures.
 
 The inclusion of MHOUs in the likelihood was justified from a Bayesian
-perspective \cite{AbdulKhalek:2019ihb}, but here we have drawn a connection
+perspective~\cite{AbdulKhalek:2019ihb}, but here we have drawn a connection
 between the model replicas and the posterior distribution in model space,
 which explains why theoretical uncertainities
 must be included in both the sampling of the pseudodata replicas and the
 likelihood. Therefore we emphasise that the framework set out here is not
 only useful for understanding model uncertainities with the current
 methodology, but also for motivating future methodological development from
-a Bayesian perspective.
+a Bayesian perspective. We defer more detailed investigations of the potential of 
+this approach to future work. 
 
 % As a final thought, in light of the Bayesian framework set out here, one could
 % even conceive of a methodology which

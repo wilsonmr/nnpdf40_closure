@@ -513,7 +513,11 @@ where
 \paragraph{Posterior distribution of unseen data}
 
 In real-life cases we are also interested in the posterior distribution of a set
-of data that have not been included in the fit. In the Bayesian framework that
+of data that have not been included in the fit. Because different datasets are described 
+by the same theory, the knowledge of one dataset will inform our knowledge of the underlying 
+theory -- \ie\ we will determine a posterior distribution for the model. That new knowledge 
+about the model will then propagate to any other -- unseen -- set of data, even if the experiments
+are completely unrelated. In the Bayesian framework that
 we have developed, this situation can be modeled by having two independent sets
 of data $y$ and $y'$, for which we have a prior distribution 
 \begin{align}
@@ -526,8 +530,9 @@ of data $y$ and $y'$, for which we have a prior distribution
   \exp\left[-\frac12 \left(y-y_0\right)^T (C_{Y})^{-1} 
   \left(y-y_0\right)\right]\, .
 \end{align}
-Following the derivation above, we can write the joint distribution for the data
-and the model 
+Note that the prior distribution is factorised as the product of individual distributions for $y$ and 
+$y'$ since the datasets are assumed to be independent. Following the derivation above, we can write the
+joint distribution for the data and the model 
 \begin{equation}
   \label{eq:JointModelData}
   \pi^\fwdobsop(y,y',u) 
@@ -538,7 +543,8 @@ and the model
   \delta\left(y'- \mathcal{G}'u\right)\, .
 \end{equation}
 Note that because both sets of data are derived from the same model $u$, the
-joint distribution above introduces a correlation between the data sets. 
+joint distribution above introduces a correlation between the data sets. The 
+same model $u$ appears in both delta functions in the equation above. 
 
 We can now marginalise with respect to the dataset $y$, 
 \begin{equation}

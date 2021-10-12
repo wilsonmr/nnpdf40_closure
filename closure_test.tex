@@ -6,12 +6,19 @@ contact explicitly with the formalism laid out in
 Sec.~\ref{sec:inverse-problems}. In the Bayesian formulation,
 Eq.~\eqref{eq:PosteriorModel} gives a quantitative description of how the
 information contained in the experimental data propagates into our knowledge of
-the space of models. In practice, sampling from the posterior distribution is
-not straightforward and we defer the investigation of this issue to further
+the space of models. In practice, it should be possible to sample directly from the posterior 
+distribution, or to find a solution using some kind of Backus-Gilbert methodology. These new directions 
+are not straightforward and we defer their investigation to further, dedicated 
 studies. Here we focus instead on the standard NNPDF fitting procedure and
-investigate its relation with the Bayesian result. 
-\textcolor{red}{TG: make contact with previous sections, identifying NNPDF fits with 
-a finite case with a linear forward map (in the DIS case); remove polynomial toy model.}
+investigate its relation with the Bayesian result. The NNPDF approach generates 
+an ensemble of fit results, which are supposed to describe the posterior probability 
+distribution for the model (\ie\ in the space of PDFs) given the experimental data. In the 
+case of a linear map, we show here that this is exactly the case: the NNPDF replicas are 
+distributed exactly accroding to the posterior density that was obtained in the previous 
+section. 
+
+% \textcolor{red}{TG: make contact with previous sections, identifying NNPDF fits with 
+% a finite case with a linear forward map (in the DIS case); remove polynomial toy model.}
 
 \subsection{Fitting replicas}
 \label{sec:fit-reps}
@@ -120,14 +127,13 @@ vector $u$ by a $\ndata \times \nmodel$ matrix, $F_{ij}$, which is called FK tab
 NNPDF jargon, 
 \begin{equation}
     \label{eq:FKTabLinVec}
-    y_i = \sum_{j=1}^{\nmodel} \linmap_{ij} u_j\, ,
+    y_i = \sum_{j=1}^{\nmodel} F_{ij} u_j\, ,
 \end{equation}
 where $i=1,\ldots,\ndata$. In this case the forward map coincides exactly with the 
-FK table, $\linmap_{ij} = F_{ij}$. 
-
-However it should be clear that the discussion below applies to any model whose forward 
-map can be approximated as Eq.~\eqref{eq:FKTabLinVec}, like a linear approximation of neural
-networks~\cite{ADVANI2020428}. Let us consider for instance the actual NNPDF parametrization, 
+FK table, $\linmap_{ij} = F_{ij}$ and the sum in Eq.~\ref{eq:FKTabLinVec} approximates 
+the convolution in Eq.~\ref{eq:DISExample}. However it should be clear that the discussion below applies to any 
+model whose forward map can be approximated as Eq.~\eqref{eq:FKTabLinVec}, like a linear 
+approximation of neural networks~\cite{ADVANI2020428}. Let us consider for instance the actual NNPDF parametrization, 
 where the value of the PDF is given by a neural network whose state is determined by a set of 
 weights $\theta$. In this case $X$ is the space of weights, the model will be specified by a vector 
 $\theta$ in the space of weights, and we are going to continue using $u$ to denote the PDF, so that 
@@ -142,17 +148,22 @@ we can expand the expression for the observables:
         \sum_j F_{ij} \left[u(x_j; \bar\theta)
          + \sum_k \left.\frac{\partial u}{\partial \theta_k}\right|_{x_j,\bar\theta} 
          \left(\theta - \bar\theta\right)_k
-        \right] \\
-        &=
-        \bar{y}_i  + \sum_k \linmap_{ik} \Delta\theta_k
+        \right]
+\end{align}
+and therefore
+\begin{align}
+    y_i - \bar{y}_i &=
+         \sum_k \linmap_{ik} \Delta\theta_k
         \,,         
 \end{align}
 where 
 \begin{align}
     \linmap_{ik} &= 
-        \sum_j F_{ij} \left.\frac{\partial u}{\partial \theta_k}\right|_{x_j,\bar\theta} \\
+        \sum_j F_{ij} \left.\frac{\partial u}{\partial \theta_k}\right|_{x_j,\bar\theta}\, , \\
+    \bar{y}_i &= \sum_j F_{ij} u(x_j; \bar\theta)\, , \\
     \Delta\theta_k &= \theta_k - \bar\theta_k\, .
 \end{align}
+
 In order to get an exact analytical solution for
 the linear model, we additionally require $\linmap$ to have linearly independent
 rows, and therefore $\linmap \obspriorcov \linmap^T$ is invertible. As discussed in 
@@ -161,7 +172,8 @@ prior information on the model, the posterior distribution of model parameters
 is a Gaussian with mean and covariance given by Eqs.~\ref{eq:NoPriorLinModel}
 and \ref{eq:NoPriorLinModelCov}.
 
-If instead we deploy the NNPDF Monte Carlo method to fitting model replicas,
+Let us now stick to the parametrization in Eq.~\ref{eq:Uvector} and let us deploy 
+the NNPDF Monte Carlo method to fitting model replicas,
 then in the case under study $\arg\min_{\modelvec^{\repind}} \repchis$ is found
 analytically by imposing that the derivative of $\repchis$ with respect to the
 model parameters is zero, i.e.
@@ -188,11 +200,12 @@ density for $\noise$ is known:
 These two equations show that, under the assumptions specified above, $\modelvec_*
 \sim \mathcal{N}(\modelpostcent, \, \modelpostcov)$. In other words, when the
 model predictions are linear in the model parameters, the NNPDF MC method is
-shown to produce a sample of models distributed according to the expected posterior distribution of model
+shown to produce a sample of models exactly distributed according to the expected 
+posterior distribution of model
 parameters given the data. When we fit PDFs, parameterised as deep fully
 connected neural networks, to data which includes hadronic observables, it is
 clear that the forward map is non-linear, and therefore this proof does not
-strictly apply. As previously discussed at the end of Sec.~\ref{sec:LinProbs},
+strictly apply. As discussed above,
 even for non-linear models we can make a linear approximation of the forward map
 provided that we are expanding around the MAP estimator. This means the NNPDF MC
 methodology should reproduce the posterior distribution of the model given the
