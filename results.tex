@@ -1,12 +1,12 @@
 \section{Numerical Setup and Results}
 
 In this Section we first introduce the experimental setup used to run the
-closure tests, and then discuss the actual results: following the study performed in 
+closure tests, and then discuss the actual results. Following the study performed in 
 Ref.~\cite{nnpdf30}, we first analyse the relative 
-size of different component of PDFs uncertainties, comparing the changes between the old
-and the new methodologies, used to produce the NNPDF3.1 and NNPDF4.0 sets of PDFs respectively; 
-we then move to data space estimators, which have been computed only for NNPDF4.0
-\footnote{comment about the fact that this is possible thanks to the fact that the code is now much faster}.
+size of the different components of PDFs uncertainty, comparing the changes between the old
+and the new methodologies, used to produce the NNPDF3.1 \cite{Ball_2017} and NNPDF4.0 \cite{NNPDF40} 
+sets of PDFs respectively. We then move to data space estimators, which have been computed only for NNPDF4.0
+\footnote{this is possible thanks to the efficiency of the new code \cite{nnpdf40code}.}.
 The results here act both as a proof of principle of new estimators presented in this paper but also
 as part of a suite of methodological validation tools, see also the "future
 tests" \cite{Cruz_Martinez_2021}, used to understand the PDF uncertainties of
@@ -16,11 +16,11 @@ NNPDF4.0 methodology, but refer the reader to NNPDF4.0 for a full discussion on
 how these methodological choices were made, and the impact on performing PDF
 fits to experimental data.
 
-\subsection{Neural network parton distribution functions}
+\subsection{Closure test setup}
 
 Using neural networks to fit PDFs has been discussed many times in previous
 NNPDF publications, see for example \cite{nnpdf30, Ball_2017}. A new feature of
-NNPDF4.0 will be that, for the default fit performed in the evolution basis, a
+NNPDF4.0 is that, for the default fit performed in the evolution basis, a
 single neural network parameterises all 8 PDF flavours $\{ g, \Sigma, V, V_3,
 V_8, T_3, T_8, T_{15} \}$ at the initial scale. The PDF for a single flavour $j$,
 at the initial scale $Q_0 = 1.65~{\rm GeV}$ is given by
@@ -31,7 +31,7 @@ where $\alpha$ and $\beta$ are the preprocessing exponents, which control the
 PDF behaviour at $x \to 0$ and $x \to 1$ respectively and $NN(x, \ln x |
 \modelvec)_j$ is the $j^{\rm th}$ output of the neural network, which takes $x$
 and $\ln x$ as input. As discussed in Sec.~\ref{sec:fit-reps}, an ensemble of
-models is fitted, each one is an MAP estimator of the corresponding pseudo-data
+models is fitted, each one is a MAP estimator of the corresponding pseudo-data
 it is fitted on. 
 An optimization algorithm is used to try and find the parameters which maximise the likelihood.
 In principle, the preprocessing exponents can also be varied during the fit
@@ -43,18 +43,6 @@ have been made is beyond the scope of this paper and left to the full NNPDF4.0
 release \cite{NNPDF40}. A summary of the hyperparameters used to produce results
 presented in this paper are provided in Tab.~\ref{tab:Hyperparams}.
 
-%Something like the following should go in Sec 3, when defining the forward map for NNPDF
-%Finally, the parton distributions themselves are not compared directly with
-%data. Instead the observables quantities are obtained by performing convolutions
-%with the PDFs, as discussed in \ref{eq:DISExample}. In practice the observables
-%are obtained by convoluting the PDFs with FastKernel tables, presented in
-%\cite{Ball_2010,Bertone_2017}, for each data point. The convolution depends on
-%the process type of the observable, for DIS-like observables, such as in
-%Eq.~\ref{eq:DISExample}, the convolution is performed with a single PDF. For
-%hadronic observables the convolution is performed between two PDFs. 
-
-
-\subsection{Closure test setup}
 
 As input to the closure test, a single replica was drawn randomly from a
 previous NNPDF fit to experimental data. We refer to this as the underlying law
@@ -75,7 +63,8 @@ realistic input.
 The observables used in the fits are a subset of the full NNPDF4.0 dataset. For
 convenience, we chose to fit the PDFs on a variant of the NNPDF3.1 dataset used
 in Ref.~\cite{Ball_2018}, which is described in detail in a study of the
-determination of the strange PDF~\cite{Faura_2020}. The datasets used in the
+determination of the strange PDF~\cite{Faura_2020}. 
+The datasets used in the
 calculation of statistical estimators are the new datasets which will be
 included in NNPDF4.0, which will be discussed in detail with the main release.
 For a full summary of observables used in the test data and a visual
@@ -89,22 +78,20 @@ Alternatively, since the data is generated from the theory predictions produced
 by the input underlying law, one could even produce completely artificial data
 using a different set of FK tables. From a practical standpoint, using the
 NNPDF3.1 dataset and validating on the newly included datasets in 4.0 allowed us
-to validate the PDF uncertainities on data outside of the kinematic coverage of
+to validate the PDF uncertainties on data outside of the kinematic coverage of
 data included in the fit. Furthermore, the data estimators only give us local
 information on the PDF uncertainties and it seems logical to split the data in
 this way since the results seem more applicable to the reality of how the PDFs
 end up being used.
 
-We then generate 30 different sets of experimental central values (or L1 data),
+In order to compute the expectation values defining the data space estimators,
+see for example Eq.~\eqref{eq:RatioDef}, we generate 30 different sets of experimental central values (or L1 data),
 as discussed in Sec.~\ref{sec:closure-test-intro}, for the fitted 3.1-like
 dataset. Each set of experimental central values was then fitted following
 NNPDF4.0 methodology \cite{NNPDF40}, producing 40 pseudo-data replicas.
 
-%When comparing with the old NNPDF methodology, we use the minimization algorithm
-%of Ref.~\cite{nnpdf30}. An important iingredient of previous NNPDF minimization
-%procedure was the choice of a stopping criterion. XXX
 
-\subsection{Errors on PDFs}
+\subsection{Different components of the PDF uncertainty}
 
 As already discussed in Ref.~\cite{nnpdf30}, fitting to L0, L1 and L2
 pseudo-data allows us to validate different aspects of the fitting procedure. In
@@ -127,58 +114,37 @@ the latest release, it is important to compare the uncertainties at L0, L1 and
 L2 that are obtained with the new fitting rouitne (n3fit) with the corresponding
 ones obtained with the old fitting code (nnfit). 
 
-An example of these relative errors on fitted PDFs is shown in Fig.~\ref{fig:CT_uncertainty_g}
-for the case of the gluon distribution: L0, L1 and L2 closure tests are displayed on the same plot, each one
+These relative errors on fitted PDFs are shown in Figs.~\ref{fig:nnpdf40_ct_errors1} and~\ref{fig:nnpdf40_ct_errors2}.
+Results from L0, L1 and L2 closure tests are displayed on the same plot, each fit
 normalized to the corresponding central value. 
-We note how the L0 and L1 uncertainties are the dominant ones in the $x$ regions where less experimental data are available,
-namely at small and large-$x$, where the model is left unconstrained and free to fluctuate, while they are considerably
-reduced in the data region. Here the L2 error, induced by the actual experimental data, is the dominant one.
+We note how the L0 and L1 uncertainties tend to increase in the $x$ regions where less experimental data are available,
+namely at small and large-$x$, where the model is left unconstrained and has more freedom to fluctuate,
+while they are considerably reduced in the data region 
+where the contribution of the L2 error, induced by the actual experimental data, becomes more important.
+The fact that the data uncertainty is not always the dominant component of the PDF uncertainty
+was already stressed in Ref.~\cite{nnpdf30}. Improved methodologies should therefore aim to reduce the L0 and L1
+error. 
 
-It is interesting to compare these results with what we find with the old fitting code. The corresponding
-plots are shown in Fig.~\ref{fig:CT_uncertainty_g_nnpdf3.1}: the PDF error 
+In this respect, it is interesting to compare these results with what we find with the old fitting code. The corresponding
+plots are shown in Figs.~\ref{fig:nnpdf31_ct_errors1} and~\ref{fig:nnpdf31_ct_errors2}: the PDF error 
 is mainly dominated by the L0 uncertainty, even in those kinematic regions where experimental data are present.
-This is in agreement with the results of Ref.~\cite{nnpdf30}, where it was shown that 
-data uncertainties are not dominant anywhere.
+The situation is clearly much worse than what we obtain with the new methodology, where we observe a marked  
+reduction of the L0 uncertainty.
+This, most likely, is due to the optimized architecture and the different minimizer used in NNPDF4.0, 
+which has been proved to be much more efficient than the genetic algorithm, adopted in the previous NNPDF determinations.
 
-This is clearly not the case for the results obtained with the new methodology.
-This, most likely, is due to the different optimizers used in NNPDF4.0, which has been proved to be much more efficient 
-than the genetic algorithm, adopted in the previous NNPDF determinations.
+It should be noted how these plots only provide a qualitative assessment of the relative size of the different
+components of PDFs uncertainty. Despite being useful to assess how the methodology has improved with respect
+to the previous one, they do not provide any quantitative estimation of the faithfulness of PDF uncertainty.
+This can only be done in data space, using the new estimators introduced in the previous sections.
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=0.43]{CT_log_g.pdf}
-    \includegraphics[scale=0.43]{CT_linear_g.pdf}
-    \caption{Relative PDF error for the gluon distribution in the new methodology,
-    plotted in logarithmic (left) and linear scale (right).}
-    \label{fig:CT_uncertainty_g}    
-\end{figure}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=0.43]{CT_log_g_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_linear_g_nnpdf31.pdf}
-    \caption{Same as Fig.~\ref{fig:CT_uncertainty_g} for the old methodology.}
-    \label{fig:CT_uncertainty_g_nnpdf3.1}    
-\end{figure}
+\subsection{Data space estimators}
 
-%\begin{figure}[ht]
-%    \centering
-%    \includegraphics[scale=0.43]{CT_log_u_nnpdf31.pdf}
-%    \includegraphics[scale=0.43]{CT_linear_u_nnpdf31.pdf}
-%    \includegraphics[scale=0.43]{CT_log_u.pdf}
-%    \includegraphics[scale=0.43]{CT_linear_u.pdf}
-%    \caption{Same as Fig.~\ref{fig:CT_uncertainty_g} but for the up quark distribution.}
-%    \label{fig:CT_uncertainty_u}    
-%\end{figure}
-
-\subsection{Bias-variance ratio}
-
-We calculated $\biasvarratio$ on the test data, shown in
-Tab.~\ref{tab:summarise_new_data}. An
-uncertainty on $\biasvarratio$ by performing a bootstrap sample
-\cite{efron1994introduction},
-where we randomly sample from both fits and replicas and re-calculate
-$\biasvarratio$, the value and error presented in the table is then the mean
+Results for $\biasvarratio$ and the corresponding uncertainty calculated on the test data are shown in
+Tab.~\ref{tab:summarise_new_data}. These have been computed by performing a bootstrap sample
+\cite{efron1994introduction}, where we randomly sample from both fits and replicas and re-calculate
+$\biasvarratio$. The value and error presented in the table is then the mean
 and standard deviation across bootstrap samples. We checked that the distribution
 of the estimator across bootstrap samples is indeed Gaussian. We also checked
 that increasing the number of fits and replicas reduced the bootstrap error but
@@ -211,18 +177,16 @@ values of predictions (in units of the covariance) across different fits
 and replicas. The square root ratio of the mean of these two distributions
 is precisely $\biasvarratio$.
 
-\begin{figure}[ht]
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.8 \textwidth]{plot_bias_variance_distributions_total.png}
+    \includegraphics[width=0.6 \textwidth]{plot_bias_variance_distributions_total.png}
     \caption{The green histogram is the distribution of the total bias across fits,
     the orange histogram is the distribution of the difference between the
     replica and central predictions squared, in units of the covariance
     across all fits and replicas. This gives a qualitative picture of the full
     distribution, in Tab.~\ref{tab:biasvarratio} we compare the square root of the
-    mean of each distribution.}
+    mean of each distribution, getting the quoted value for $\biasvarratio$ \textcolor{red}{CHECK}.}
 \end{figure}
-
-\subsection{Comparison to quantile statistics}
 
 As discussed in Sec.~\ref{sec:QuantileStatistics}, one can define an analogous
 estimator in data space, based upon $\xi_{n\sigma}$, which was defined on a grid
@@ -233,8 +197,7 @@ Eq.~\ref{eq:expectedxi}. In Tab.~\ref{tab:xicomparison} we compare the estimated
 $\xi_{1\sigma}$ from
 subsituting $\biasvarratio$ into Eq.~\ref{eq:expectedxi} and to the
 measured value.
-
-\begin{table}[hb]
+\begin{table}[h]
     \begin{center}
         \begin{tabular}{lrr}
             \toprule
@@ -256,7 +219,6 @@ measured value.
     }
     \label{tab:xicomparison}
 \end{table}
-
 Despite the assumptions entering each of the two estimators differing, we see
 good agreement between the $\xi_{1\sigma}$ estimated from $\biasvarratio$
 and that measured directly. We find this result reassuring, since it indicates
@@ -265,3 +227,61 @@ also that the uncertainty on each data point seems faithful. If the results
 differed it would indicate some kind of imbalance, where some components
 of the uncertainty are correctly represented by the replicas but other directions
 are not.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.43]{CT_linear_u.pdf}
+    \includegraphics[scale=0.43]{CT_log_u.pdf}
+    \includegraphics[scale=0.43]{CT_linear_ubar.pdf}
+    \includegraphics[scale=0.43]{CT_log_ubar.pdf}
+    \includegraphics[scale=0.43]{CT_linear_d.pdf}
+    \includegraphics[scale=0.43]{CT_log_d.pdf}
+    \includegraphics[scale=0.43]{CT_linear_dbar.pdf}
+    \includegraphics[scale=0.43]{CT_log_dbar.pdf}
+    \caption{Results from L0, L1 and L2 closure tests for the $u$, $\bar{u}$, $d$ and $\bar{d}$ distributions in the new methodology,
+    plotted in logarithmic (left) and linear scale (right). Each fit is normalized to its central value.}
+    \label{fig:nnpdf40_ct_errors1}    
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.43]{CT_linear_s.pdf}
+    \includegraphics[scale=0.43]{CT_log_s.pdf}
+    \includegraphics[scale=0.43]{CT_linear_sbar.pdf}
+    \includegraphics[scale=0.43]{CT_log_sbar.pdf}
+    \includegraphics[scale=0.43]{CT_linear_g.pdf}
+    \includegraphics[scale=0.43]{CT_log_g.pdf}
+    \includegraphics[scale=0.43]{CT_linear_c.pdf}
+    \includegraphics[scale=0.43]{CT_log_c.pdf}
+    \caption{Same as Fig.~\ref{fig:nnpdf40_ct_errors1} but for the $s$, $\bar{s}$, $g$ and $c$ distributions .}
+    \label{fig:nnpdf40_ct_errors2}    
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.43]{CT_linear_u_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_log_u_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_linear_ubar_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_log_ubar_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_linear_d_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_log_d_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_linear_dbar_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_log_dbar_nnpdf31.pdf}
+    \caption{Same as Fig.~\ref{fig:nnpdf40_ct_errors1} for the old methodology.}
+    \label{fig:nnpdf31_ct_errors1}    
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[scale=0.43]{CT_linear_s_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_log_s_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_linear_sbar_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_log_sbar_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_linear_g_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_log_g_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_linear_c_nnpdf31.pdf}
+    \includegraphics[scale=0.43]{CT_log_c_nnpdf31.pdf}
+    \caption{Same as Fig.~\ref{fig:nnpdf40_ct_errors2} for the old methodology.}
+    \label{fig:nnpdf31_ct_errors2}    
+\end{figure}
