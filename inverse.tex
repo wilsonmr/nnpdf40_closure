@@ -45,7 +45,7 @@ space, $\real^{\nmodel}$, where $\nmodel$ is the number of parameters. In the ca
 the NNPDF fits discussed below, the weights of the neural networks are the parameters 
 that determine the functional form of the PDFs. Alternatively, one could think of a 
 finite-dimensional representation defined by the value of the PDF at selected values 
-of $x$, \ie $u_i=u(x_i)$ for $i=1,\ldots,\nmodel$. Depending on 
+of $x$, \ie\ $u_i=u(x_i)$ for $i=1,\ldots,\nmodel$. Depending on 
 the context we will denote by $u$ either the function $u(x)$, or the vector of real
 parameters that are used to determine the function $u(x)$. Disambiguation should 
 hopefully be straightforward. 
@@ -666,12 +666,12 @@ joint probability densities
   \right)\, ,
 \end{equation}
 where $f_i=f(x_i)$, for all values of $n$, and all values of $x_1, \ldots, x_n$.
-These finite-dimensional densities allow the definition of a probability
-measure. 
+This infinite set of finite-dimensional densities allows the definition of a
+probability measure. 
 
-For a Gaussian random function, these densities only depend on a mean value $m(x)$ 
-and a covariance $C(x,x')$. The probability densities for the variables $f_i$, for
-any value of $n$ is 
+For a Gaussian random function, these densities only depend on a mean value
+function $m(x)$ and a covariance $C(x,x')$. The probability densities for the
+variables $f_i$, for any value of $n$ is 
 \begin{equation}
   \label{eq:GaussianFunctC}
   \pi\left(f_1, \ldots, f_n; x_1, \ldots, x_n\right)
@@ -693,7 +693,7 @@ solution of the inverse problem
   \label{eq:BayesLinearInverse}
   y^i = \int dx\, G^i(x) u(x)\, ,
 \end{equation}
-where $y_i$ is a discrete set of observables and $u(x)$ is a random function,
+where $y^i$ is a discrete set of observables and $u(x)$ is a random function,
 with a Gaussian prior with mean $u_0(x)$ and covariance $C_{X}(x,x')$. 
 The vector of observed values is denoted $y_0$, and we assume that the prior
 distribution of $y$ is a Gaussian centred at $y_0$ with covariance $C_{Y}$.
@@ -707,11 +707,11 @@ and its covariance. Introducing the matrix
   S^{ij} =
   \int dx dx'\, G^i(x) C_{X}(x,x') G^j(x') + C_{Y}^{ij}\, ,
 \end{equation}
-and its inverse $T_{ij}=\left(S^{-1}\right)^{ij}$, the posterior Gaussian field is centred at
+and its inverse $T^{ij}=\left(S^{-1}\right)^{ij}$, the posterior Gaussian field is centred at
 \begin{align}
   \label{eq:PostMeanFunc}
   \tilde{u}(x) = u_0(x) + 
-  \int dx'\, C_{X}(x,x') G^i(x') T_{ij} \left(
+  \int dx'\, C_{X}(x,x') G^i(x') T^{ij} \left(
     y_0^j - \int dx''\, G^j(x'') u_0(x'') 
   \right)\, ,
 \end{align}
@@ -730,7 +730,7 @@ where
 and the weighted residuals are given by
 \begin{equation}
   \label{eq:DeltaYDef}
-  \delta y^i = T_{ij} \left(
+  \delta y^i = T^{ij} \left(
   y_0^j - \int dx'\, G^j(x') u_0(x')
   \right)\, .
 \end{equation}
@@ -743,12 +743,13 @@ the posterior covariance can be written as
 \begin{equation}
   \label{eq:PostCovFunc}
   \tilde{C}_{X}(x,x') = 
-  C_{X}(x,x') - \Psi^i(x) T_{ij} \Psi^j(x')\, .
+  C_{X}(x,x') - \Psi^i(x) T^{ij} \Psi^j(x')\, .
 \end{equation}
 
 It is instructive to compare the Bayesian result summarised above with the
-method proposed by Backus and Gilbert to solve the same problem. Assuming that
-there exists an unknown 'true' model $\utrue$, such that the observed data are
+method proposed by Backus and Gilbert~\cite{BackusGilbert1968} to solve the same
+problem. Assuming that there exists an unknown 'true' model $\utrue$, such that
+the observed data are
 \begin{equation}
   \label{eq:BackStart}
   y_0^i = \int dx\, G^i(x) \utrue(x)\, ,
@@ -801,5 +802,7 @@ is just white noise and therefore
   \label{eq:BackComparison}
   C_{X}(x,x') = \delta(x-x')\, .
 \end{equation}
-The Bayesian solution allows a variety of prior to be explicitly declared and
-tested compared to the Backus-Gilbert solution. 
+The connections between the Bayesian treatment and the Backus-Gilbert solution
+deserves further investigations, which we defer to future studies. Note that the
+Bayesian solution allows a variety of priors to be explicitly declared and
+compared to the Backus-Gilbert solution. 
