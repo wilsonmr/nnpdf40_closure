@@ -23,46 +23,46 @@ posterior distribution of the solution, {\it after taking into account a set of
 experimental observations.} The prior and posterior probabilities encode our
 knowledge about the model before and after incorporating the experimental
 results. There are multiple advantages to this formulation: the inverse problem
-is well defined, the prior distribution ensures that all the assumptions are
-explicit, and it allows to regulate the likelihood distribution. 
+is well defined, and the prior distribution ensures that all the assumptions are
+explicit, while regulating the likelihood distribution. 
 
 Note also that probability measures can be defined in infinite-dimensional
 spaces, In cases where we are looking to determine a continuous function, the
-Bayesian approach allows, at least in principle, to address the problem directly
-in terms of the posterior probability measure of the model function. It is often
-convenient for practical reasons to define a parametrization of the model
-function in terms of a finite, albeit large, number of parameters and reduce the
-problem to a finite dimensional one. The price to pay for this simplification is
-the introduction of some bias, which needs to be understood and possibly
-quantified. An expressive parametrization clearly helps in this case. The
-Bayesian approach is also well suited to include potentially inconsistent data
-in a systematic way. We will briefly touch upon this aspect below. 
+Bayesian approach provides, at least in principle, a formulation of the problem
+directly in terms of the posterior probability measure of the model function. It
+is often convenient for practical reasons to define a parametrization of the
+model function in terms of a finite, albeit large, number of parameters and
+reduce the problem to a finite dimensional one. The price to pay for this
+simplification is the introduction of some bias, which needs to be understood
+and possibly quantified. An expressive parametrization clearly helps in this
+case. 
 
 A Bayesian approach to inverse problems has been actively developed by
-mathematicians for a long time, and this development has accelerated quickly in
-the last decade. In this paper we aim at summarising the existing framework and
-adapt it to analyse the fits of parton distribution functions obtained by the
-NNPDF collaboration. We will review the formalism in Sect. 2, trying to define
-the notation that will be used in the rest of the paper. We will report some
-examples already known, for illustrative purposes. We then try to connect the
-Bayesian approach with the NNPDF fits based on a Monte Carlo methodology, where
-the distribution of the PDFs is encoded in a set of fits to artificially
-generated data, called replicas. We can anticipate here that, under the
-hypotheses that the data are Gaussian and the model is linear, the NNPDF
-procedure would characterise completely the posterior proabillity density. When
-the model is non-linear two modifications need to be taken into account. First
-of all the analytical calculation that we present in
-Sect.~\ref{sec:BayesianInverse} is no longer possible, and one needs to rely on
-the fact that a linearization of the model yields an accurate prediction. Even
-though linear models are known to provide good approximations~\cite{xxx}, the
-systematic errors introduced by this approximation are not easy to quantify.
-There is also a more subtle effect that needs to be taken into account. When
-working with linear models, the minimization procedure is know to have a unique
-minimum, which can be computed exactly. Non-linear models can be plagued by
-multiple minima, and more importantly by inefficiencies of the algorithm in
-finding them. While it is important to be aware of the limitations of the
-analytical calculation, it is also very useful to have an explicit result as a
-template to guide the analysis of our numerical investigations. 
+mathematicians for a long time, and this development has dramatically
+accelerated in the last decade. In this paper we aim at summarising the existing
+framework and adapt it to analyse the fits of parton distribution functions
+obtained by the NNPDF collaboration. We review the Bayesian formalism in
+Sect.~2, where we define the notation that will be used in the rest of the
+paper. We report some known examples for illustrative purposes. Even though
+these are well-known results, we find it useful to summarise them in the context
+of our specific problem. In Sect.~3, we try to connect the Bayesian approach
+with the NNPDF fits based on a Monte Carlo methodology, where the distribution
+of the PDFs is encoded in a set of fits to artificially generated data, called
+replicas. We can anticipate here that, under the hypotheses that the data are
+Gaussian and the model is linear, the NNPDF procedure does characterise
+completely the posterior proabillity density. When the model is non-linear two
+modifications need to be taken into account. First of all the analytical
+calculation that we present in Sect.~\ref{sec:BayesianInverse} is no longer
+possible, and one needs to rely on the fact that a linearization of the model
+yields an accurate prediction. Even though linear models are known to provide
+good approximations, the systematic errors introduced by this approximation are
+not easy to quantify. There is also a more subtle effect that needs to be taken
+into account. When working with linear models, the minimization procedure is
+know to have a unique minimum, which can be computed exactly. Non-linear models
+can be plagued by multiple minima, and more importantly by inefficiencies of the
+algorithm in finding them. While it would be foolish to ignore the limitations
+of the analytical calculation, it is nonetheless very useful to have an explicit
+result as a template to guide the analysis of our numerical investigations. 
 
 In the NNPDF fitting framework, the posterior probability of the parton
 distribution functions, is encoded in an ensemble of fits to replicas of the
@@ -75,18 +75,27 @@ in particular for those that are more relevant for phenomenology.
 The idea of {\em closure tests} is to test this procedure in a fit to artificial
 data that have been generated from a known set of input PDFs. In this case the
 underlying law is known and we can check how the posterior distribution compares
-to the underlying law. This is the basis of a closure test, which has already
-been used to test to validity of previous iterations of the NNPDF methodology.
-Here we aim to refine some of the pre-existing closure test estimators and with
-the help of fast fitting methodology perform a more extensive study of how
-faithful our uncertainties are. For this purpose we introduce new estimators
-that allow us to quantify the quality of our fits. These esimators are defined
-in the space of data and need to be understood as stochastic variables that are
-characterised by a probability density. Where possible, we use the Bayesian
-formalism in order to compute analytically these probability densities. In order
-to perform analytical calculations we often need to make some simplifying
-assumptions. While it is incorrect to use the analytical results for making
-quantitative predictions for the results of the realistic case of a non-linear
-fit, the analytical results provide a guide to the interpretation of the
-observed patterns. 
+to the underlying law. This is the basis of a closure test, which is summarised
+at the end of Sect.~3. Closure tests have already been used to test to validity
+of previous iterations of the NNPDF methodology. Here we aim to refine some of
+the pre-existing closure test estimators and with the help of fast fitting
+methodology perform a more extensive study of how faithful our uncertainties
+are. For this purpose we introduce in Sect.~4 new estimators that allow us to
+quantify the quality of our fits. These estimators are defined in the space of
+data and need to be understood as stochastic variables that are characterised by
+a probability density. Where possible, we use the Bayesian formalism in order to
+compute analytically these probability densities and compare with numerical
+results. In order to perform analytical calculations we often need to make some
+simplifying assumptions. While it is incorrect to use the analytical results for
+making quantitative predictions for the results of the realistic case of a
+non-linear fit, the analytical results provide a guide to the interpretation of
+the observed patterns. 
+
+The results of our numerical studies are summarised in Sect.~5, where we also
+compare the new methodology introduced in the latest NNPDF
+fit~\cite{Ball:2021leu} to the methodology used by the collaboration in previous
+fits. 
  
+The Bayesian formalism, by providing posterior probability distributions, paves
+the way to explore a number of issues. We highlight in our conclusions some
+possible questions that we defer to future studies. 

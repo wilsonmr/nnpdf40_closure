@@ -150,7 +150,7 @@ distribution is simply the product of $\pi_{Y}^0$ and $\pi_{X}^0$.
 
 The forward map induces a correlation between the input model and the
 observables, so we introduce a probability density $\theta$ that describes these
-correlations due to the physical theory,  
+correlations due to the underlying theory,  
 \begin{equation}
   \label{eq:ThetaCorr}
   \theta(\obs,\modelvec|\fwdobsop) = \delta\left(\obs - \fwdobsop(\modelvec)\right)\, ,
@@ -208,7 +208,7 @@ $\obspriorcent$, to the theory prediction, $\fwdobsop(\modelvec)$:
 In the notation of Eq.~\ref{eq:BayesThmInversePosterior}
 \begin{equation}
   \label{eq:IdentifyRho}
-  \pi_{Y}^0(\fwdobsop(\modelvec)|\obspriorcent) = \rho\left(
+  \pi_{Y}^0(\fwdobsop(\modelvec)|\obspriorcent,\obspriorcov) = \rho\left(
     \fwdobsop(\modelvec) - \obspriorcent
   \right)\, ,
 \end{equation}
