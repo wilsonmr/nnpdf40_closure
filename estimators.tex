@@ -81,7 +81,7 @@ square
 \begin{equation}
     \begin{split}
     \label{eq:EoutDecomposition}
-        &\eout = \frac{1}{\ndata} \emodel{
+        &\eout = \frac{1}{\ndata} \biggl\{ \emodel{
             \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\law} \right)^T
             \testset{\obspriorcov}^{-1}
             \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\law} \right)
@@ -95,7 +95,7 @@ square
             \left( \testset{\fwdobsop}\left(\modelvecrep\right) - \testset{\law} \right)^T
             \testset{\obspriorcov}^{-1}
             \left(\testset{\law} - \testset{\obspriorcent} \right)
-        }\, .
+        }\biggr\}\, .
     \end{split}
 \end{equation}
 Let us now discuss these terms one by one, starting from the last two. The
@@ -142,12 +142,11 @@ $\mathbf{E}_{\testset{\obspriorcent}}[{\rm noise}] \to 1$.
 The two estimators of interest are independent of
 the test data, and therefore we only need to take the expectation value over
 the training data.
-
-\paragraph{Multiple closure fits}
-In practical terms, taking the expectation value across the training data can
+In practical terms, this can
 be achieved by running multiple closure fits, each with a different
 observational noise vector $\obsnoise$, and taking the average i.e.
 \begin{equation}
+    \label{eq:average_over_training_data}
     \mathbf{E}_{\obspriorcent}[ x ] = \frac{1}{\nfits} \sum_{j=1}^{\nfits} x.
 \end{equation}
 Clearly this is resource intensive, and requires us to perform many fits. In
