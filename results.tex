@@ -116,35 +116,45 @@ the latest release, it is important to compare the uncertainties at L0, L1 and
 L2 that are obtained with the new fitting routine with the corresponding
 ones obtained with the old fitting code. 
 
-An example of these relative errors on fitted PDFs is shown in Fig.~\ref{fig:CT_uncertainty_g} 
-where results from L0, L1 and L2 closure tests are displayed on the same plot in the case of the gluon distribution.
-Each fit is normalized to the corresponding central value. 
-We note how the L0 and L1 uncertainties tend to increase in the $x$ regions where less experimental data are available,
-namely at small and large-$x$, where the model is left unconstrained and has more freedom to fluctuate,
-while they are considerably reduced in the data region 
-where the contribution of the L2 error, induced by the actual experimental data, becomes more important.
-The fact that the data uncertainty is not always the dominant component of the PDF uncertainty
-was already stressed in Ref.~\cite{nnpdf30}. Improved methodologies should therefore aim to reduce the L0 and L1
-error. 
+An example of these relative errors on fitted PDFs is shown in
+Fig.~\ref{fig:CT_uncertainty_g} where results from L0, L1 and L2 closure tests
+are displayed on the same plot in the case of the gluon distribution. Each fit
+is normalized to the corresponding central value. We note how the L0 and L1
+uncertainties tend to increase in the $x$ regions where less experimental data
+are available, namely at small and large-$x$, where the model is left
+unconstrained and has more freedom to fluctuate, while they are considerably
+reduced in the data region where the contribution of the L2 error, induced by
+the actual experimental data, becomes more important. The fact that the data
+uncertainty is not always the dominant component of the PDF uncertainty was
+already stressed in Ref.~\cite{nnpdf30}. Improved methodologies should therefore
+aim to reduce the L0 and L1 error. 
 
-In this respect, it is interesting to compare these results with what we find with the old fitting code. The corresponding
-plots are shown in Fig.~\ref{fig:CT_uncertainty_g_nnpdf3.1}: unlike the NNPDF4.0 case, here the PDF uncertainty 
-is always dominated by the L0 uncertainty, even in those kinematic regions where experimental data are present.
-We can conclude that moving to the new methodology we observe a marked reduction of the L0 uncertainty.
-This, most likely, is due to the optimized architecture and the different minimizer used in NNPDF4.0, 
-which has been proved to be much more efficient than the genetic algorithm, adopted in the previous NNPDF determinations.
-This can be appreciated by looking at Fig.~\ref{fig:chi2_vs_epoch},
-where we plot the $\chi^2$ distribution across replicas as a function of the training epoch for the L0 closure tests
-in the new and old methodology. As mentioned before, in a L0 closure test the quality of the fit can in principle be improved at will,
-assuming the use of an efficient optimizer.
-For the final $\chi^2$ of the central value of each fit, plotted as a black dashed line, 
-we find $0.002$ and $0.012$ in the new and old fitting code respectively,
-showing the better efficiency of the new methodology. 
+In this respect, it is interesting to compare these results with what we find
+with the old fitting code. The corresponding plots are shown in
+Fig.~\ref{fig:CT_uncertainty_g_nnpdf3.1}: unlike the NNPDF4.0 case, here the PDF
+uncertainty is always dominated by the L0 uncertainty, even in those kinematic
+regions where experimental data are present. We can conclude that moving to the
+new methodology we observe a marked reduction of the L0 uncertainty. This, most
+likely, is due to the optimized architecture and the different minimizer used in
+NNPDF4.0, which has been proved to be much more efficient than the genetic
+algorithm, adopted in the previous NNPDF determinations. This can be appreciated
+by looking at Fig.~\ref{fig:chi2_vs_epoch}, where we plot the $\chi^2$
+distribution across replicas as a function of the training epoch for the L0
+closure tests in the new and old methodology. As mentioned before, in a L0
+closure test the quality of the fit can in principle be improved at will,
+assuming the use of an efficient optimizer. For the final $\chi^2$ of the
+central value of each fit, plotted as a black dashed line, we find $0.002$ and
+$0.012$ in the new and old fitting code respectively, showing the better
+efficiency of the new methodology. 
 
-It should be noted how Figs.~\ref{fig:CT_uncertainty_g},~\ref{fig:CT_uncertainty_g_nnpdf3.1} only provide a qualitative assessment of the relative size of the different
-components of PDFs uncertainty. Despite being useful to assess how the methodology has improved with respect
-to the previous one, they do not provide any quantitative estimation of the faithfulness of PDF uncertainty.
-This can only be done in data space, using the new estimators introduced in the previous sections.
+It should be noted how
+Figs.~\ref{fig:CT_uncertainty_g},~\ref{fig:CT_uncertainty_g_nnpdf3.1} only
+provide a qualitative assessment of the relative size of the different
+components of PDFs uncertainty. Despite being useful to assess how the
+methodology has improved with respect to the previous one, they do not provide
+any quantitative estimation of the faithfulness of PDF uncertainty. This is best
+achieved in data space, using the new estimators introduced in the previous
+sections.
 
 \begin{figure}[h]
     \centering
