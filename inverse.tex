@@ -5,7 +5,7 @@
 The problem of determining PDFs from a set of experimental data falls under the
 general category of {\em inverse problems}, \ie\ the problem of finding the
 input to a given model knowing a set of observations, which are often finite and
-noisy. In this Section we are going to review the Bayesian formulation of
+noisy. In this section we are going to review the Bayesian formulation of
 inverse problems. It is impossible to do justice to this vast subject here.
 Instead we try to emphasise the aspects that are relevant for quantifying
 uncertainties on PDF determinations. 
@@ -13,8 +13,8 @@ uncertainties on PDF determinations.
 \subsection{Statement of the problem}
 \label{sec:BayesianInverse}
 
-The space of inputs is denoted by $\modelspace$, while $R$ denotes the space of responses.
-The model is specified by a {\em forward map}
+The space of inputs is denoted by $\modelspace$, while $R$ denotes the space of
+responses. The model is specified by a {\em forward map}
 \begin{align}
   \label{eq:ForwardMap}
   \fwdmapop : ~& \modelspace \to R \nonumber \\
@@ -25,35 +25,36 @@ where we assume that $\modelspace$ and $R$ are Banach spaces.~\footnote{Banach
 spaces are complete normed vector spaces. We do not need to get into a more
 detailed discussion here, but it is important to note that working in Banach
 spaces allows us to generalise the results to infinite-dimensional spaces of
-functions.} As an example we can think of $\modelvec$ as being a PDF, 
-\ie\ a function defined on the interval $[0,1]$, and $r$
-a DIS structure function. The structure function is related to the PDF by a 
-factorization formula
-involving perturbative coefficient functions: 
+functions.} As an example we can think of $\modelvec$ as being a PDF, \ie\ a
+function defined on the interval $[0,1]$, and $r$ a DIS structure function. The
+structure function is related to the PDF by a factorization formula involving
+perturbative coefficient functions: 
 \begin{align}
   \label{eq:DISExample}
   r(x,Q^2) = \int_x^1 \frac{dz}{z}\, C(z,Q^2) \modelvec(x/z,Q^2)\, .
 \end{align}
 Note that in this example the forward map maps one real function into another
-real function. In this case the space of models $X$ is the space of continuous 
-functions defined on the interval $[0,1]$, which satisfy integrability conditions. 
-Even though this is an infinite-dimensional space, it is possible to define a 
-probability measure on such a space and construct a Bayesian solution to the inverse 
-problem. In current determinations of PDFs, the functional form of the PDF is 
-dictated by some kind of parametrization: the space $X$ is then a finite-dimensional 
-space, $\real^{\nmodel}$, where $\nmodel$ is the number of parameters. In the case of 
-the NNPDF fits discussed below, the weights of the neural networks are the parameters 
-that determine the functional form of the PDFs. Alternatively, one could think of a 
-finite-dimensional representation defined by the value of the PDF at selected values 
-of $x$, \ie\ $u_i=u(x_i)$ for $i=1,\ldots,\nmodel$. Depending on 
-the context we will denote by $u$ either the function $u(x)$, or the vector of real
-parameters that are used to determine the function $u(x)$. Disambiguation should 
-hopefully be straightforward. 
+real function. In this case the space of models $X$ is the space of continuous
+functions defined on the interval $[0,1]$, which satisfy integrability
+conditions. Even though this is an infinite-dimensional space, it is possible to
+define a probability measure on such a space and construct a Bayesian solution
+to the inverse problem. In current determinations of PDFs, the functional form
+of the PDF is dictated by some kind of parametrization, with different
+parametrizations being used by different collaborations. In all cases, the space
+$X$ is a finite-dimensional space, $\real^{\nmodel}$, where $\nmodel$ is
+the number of parameters. In the case of the NNPDF fits discussed below, the
+weights of the neural networks are the parameters that determine the functional
+form of the PDFs. Alternatively, one could think of a finite-dimensional
+representation defined by the value of the PDF at selected values of $x$, \ie\
+$u_i=u(x_i)$ for $i=1,\ldots,\nmodel$. Depending on the context we will denote
+by $u$ either the function $u(x)$, or the vector of real parameters that are
+used to determine the function $u(x)$. Disambiguation should hopefully be
+straightforward. 
 
-Experiments will not have access to the full function $r$ but
-only to a subset of $\ndata$ observations. In order to have a formal
-mathematical expression that takes into account the fact that we have a finite
-number of measurements, we introduce an {\em observation operator}
+Experiments will not have access to the full function $r$ but only to a subset
+of $\ndata$ observations. In order to have a formal mathematical expression that
+takes into account the fact that we have a finite number of measurements, we
+introduce an {\em observation operator}
 \begin{align}
   O : ~& R \to Y \nonumber \\
        & r \mapsto \obs \, ,
@@ -76,18 +77,18 @@ fact that experimental data are subject to noise, we can write
 where $\obsnoise$ is a random variable defined over $\real^{\ndata}$ with
 probability density $\rho(\obsnoise)$. We will refer to $\obsnoise$ as the {\em
 observational noise}. In this setting, the inverse problem becomes finding
-$\modelvec$ given $\obs$. As pointed out by Hadamard a long time ago, it is
-often the case that inverse problems are ill-defined in the sense that the
-solution may not exist, may not be unique, or may be unstable under small
-variations of the problem. 
+$\modelvec$ given $\obs$. It is often the case that inverse problems are
+ill-defined in the sense that the solution may not exist, may not be unique, or
+may be unstable under small variations of the problem. 
 
-In solving the inverse problem here, we are going to adopt a Bayesian point of view, which
-can be summarised as follows: our prior knowledge about $\modelvec$ is encoded
-in a prior probability measure $\mu_X^0$, where the suffix $X$ indicates that
-the measure is defined in the space of models, and the suffix 0 refers to the
-fact that this is a prior distribution. We use Bayes' theorem to compute the
-posterior probability measure of $\modelvec$ given the data $\obs$, which we
-denote as $\mu_X^\fwdobsop$. When possible, we denote the probability densities
+In solving the inverse problem, we are going to adopt a Bayesian point of view,
+as summarised \eg\ in Ref.~\cite{Stuart:2010}: our prior knowledge about
+$\modelvec$ is encoded in a prior probability measure $\mu_X^0$, where the
+suffix $X$ indicates that the measure is defined in the space of models, and the
+suffix 0 refers to the fact that this is a prior distribution. We use Bayes'
+theorem to compute the posterior probability measure of $\modelvec$ given the
+data $\obs$, which we denote as $\mu_X^\fwdobsop$. When the probability measure
+can be described by a probability density, we denote the probability densities
 associated to $\mu_X^0$ and $\mu_X^\fwdobsop$, by $\pi_X^0$ and
 $\pi_X^\fwdobsop$ respectively. Then, using Eq.~(\ref{eq:NoisyInverseProblem}),
 we can write the data likelihood, \ie\ the probability density of $\obs$ given
@@ -99,19 +100,18 @@ $\modelvec$,
 and Bayes' theorem yields
 \begin{align}
   \label{eq:BayesThmInversePosterior}
-  \pi_X^\fwdobsop(\modelvec) = \pi_X(\modelvec|\obs) \propto \rho(\obs-\fwdobsop(\modelvec)) \pi_X^0(\modelvec)\, .
+  \pi_X^\fwdobsop(\modelvec) = \pi_X(\modelvec|\obs) \propto 
+  \pi_X^0(\modelvec)
+  \rho(\obs-\fwdobsop(\modelvec))\, .
 \end{align}
 
-\paragraph{Example}
-
 Even though the concepts that we have introduced so far should sound familiar,
-it is worthwhile clarifying some ideas and present an
-explicit case where all the probability densities are carefully defined.
-This is best exemplified by considering the case where both the observational
-noise and the model prior are Gaussian. We assume that we are given a set of
-central values $\obspriorcent \in \real^{\ndata}$ and their covariance matrix
-$\obspriorcov$. Then the {\em prior} probability density of the observable
-$\obs$ is 
+it is worthwhile clarifying some ideas and present an explicit case where all
+the probability densities are carefully defined. This is best exemplified by
+considering the case where both the observational noise and the model prior are
+Gaussian. We assume that we are given a set of central values $\obspriorcent \in
+\real^{\ndata}$ and their covariance matrix $\obspriorcov$. Then the {\em prior}
+probability density of the observable $\obs$ is 
 \begin{equation}
   \label{eq:PriorData}
   \pi_{Y}^0(\obs|\obspriorcent,\obspriorcov) \propto \exp\left(
@@ -144,7 +144,8 @@ For the case where $a \in \real^{\ndata}$, we use the Euclidean norm and
 \begin{align}
   \left| a \right|_M^2 = \sum_{i,j} a_i M^{-1}_{ij} a_j\, ,
 \end{align}
-where the indices $i,j$ run from 1 to $\ndata$.  
+where the indices $i,j$ run from 1 to $\ndata$, which eventually yields the
+usual expression for the $\chi^2$ of correlated data.   
 Up to this point data and models are completely independent, and the joint
 distribution is simply the product of $\pi_{Y}^0$ and $\pi_{X}^0$. 
 
@@ -166,10 +167,16 @@ using a Gaussian with covariance $C_T$,
     \left| \obs - \fwdobsop(\modelvec)
     \right|_{C_T}^2\right)\, .
 \end{equation}
-Note however that there are no rigorous arguments favouring the fact that
-theoretical errors are normally distributed. Taking the correlation
-$\theta(\obs,\modelvec|\fwdobsop)$ into account, the joint distribution of
-$\obs$ and $\modelvec$ is
+In the context of PDF fitting a similar recipe to take into account theoretical
+errors has recently been advocated in
+Refs.~\cite{NNPDF:2019vjt,AbdulKhalek:2019ihb}. Note that there are no rigorous
+arguments favouring the assumption that theoretical errors are normally
+distributed; it is nonetheless a useful working assumption, and a definite
+improvement compared to ignoring the theoretical errors altogether. The net
+effect of the theory errors is a redefinition of the covariance of the data,
+which has no major impact in our discussion, and therefore will be ignored.
+Taking the correlation $\theta(\obs,\modelvec|\fwdobsop)$ into account, the
+joint distribution of $\obs$ and $\modelvec$ is
 \begin{align}
   \label{eq:JointYAndU}
   \pi^\fwdobsop(\obs,\modelvec|\obspriorcent,\obspriorcov,\modelpriorcent,\modelpriorcov) 
@@ -191,7 +198,7 @@ We can now marginalize with respect to \obs, neglecting theory errors,
     \pi_{Y}^0(\obs|\obspriorcent,\obspriorcov) 
     \delta\left(\obs-\fwdobsop(\modelvec)\right) \\
   & \propto 
-    \pi_{X}^0(\modelvec|\modelpriorcent,\modelpriorcov) 
+    \pi_{X}^0(\modelvec|\modelpriorcent,\modelpriorcov) \,
     \pi_{Y}^0(\fwdobsop(\modelvec)|\obspriorcent,\obspriorcov)\, .
 \end{align}
 We see that we have recovered Eq.~\ref{eq:BayesThmInversePosterior}. The
@@ -200,9 +207,10 @@ $\obspriorcent$, to the theory prediction, $\fwdobsop(\modelvec)$:
 \begin{equation}
   \label{eq:LikelyChiSq}
   -\log\pi_{Y}^0(\fwdobsop(\modelvec)|\obspriorcent,\obspriorcov) =  
-      \frac12 \left|
-      \fwdobsop(\modelvec) - \obspriorcent
-      \right|_{\obspriorcov}^2
+    \frac12 \sum_{i,j=1}^{\ndata}
+      \left(\fwdobsop(\modelvec) - \obspriorcent \right)_i
+      \left(\obspriorcov^{-1}\right)_{ij}
+      \left(\fwdobsop(\modelvec) - \obspriorcent \right)_j
     \, .
 \end{equation}
 In the notation of Eq.~\ref{eq:BayesThmInversePosterior}
@@ -239,14 +247,15 @@ Gaussian case, the result from Bayes' theorem reduces to
   \right]\, .
 \end{align}
 Note that in the argument of the likelihood function we have the central values
-of the data points $\obspriorcent$. Eq.~(\ref{eq:PosteriorModel}) is the
-Bayesian answer to the inverse problem, our knowledge of the model $\modelvec$
-is encoded in the probability measure $\mu_{X}^\fwdobsop$, which is fully
-specified by the density $\pi_{X}^\fwdobsop$. There are several ways to
-characterise a probability distribution. As discussed later in this study, the
-NNPDF approach is focused on the determination of the {\em Maximum A Posteriori
-(MAP)} estimator, \ie\ the element $u_* \in \modelspace$ that maximises
-$\pi_{X}^\fwdobsop(\modelvec)$:
+of the data points $\obspriorcent$ as given by the experiments.
+Eq.~(\ref{eq:PosteriorModel}) is the Bayesian answer to the inverse problem, our
+knowledge of the model $\modelvec$ is encoded in the probability measure
+$\mu_{X}^\fwdobsop$, which is fully specified by the density
+$\pi_{X}^\fwdobsop$. There are several ways to characterise a probability
+distribution, a task that becomes increasingly difficult in high-dimensional
+spaces. As discussed later in this study, the NNPDF approach is focused on the
+determination of the {\em Maximum A Posteriori (MAP)} estimator, \ie\ the
+element $u_* \in \modelspace$ that maximises $\pi_{X}^\fwdobsop(\modelvec)$:
 \begin{align}
   \label{eq:MAP}
   u_* = \arg\min_{\modelvec \in \modelspace} 
@@ -256,8 +265,9 @@ $\pi_{X}^\fwdobsop(\modelvec)$:
   \right)\, .
 \end{align}
 For every instance of the data $\obspriorcent$, the MAP estimator is computed by
-minimising a regulated $\chi^2$, we will refer to this procedure as the {\em
-classical fit} of experimental data to a model. Note that in the Bayesian
+minimising a regulated $\chi^2$, where the regularization is determined by the
+prior that is assumed on the model $u$. We will refer to this procedure as the
+{\em classical fit} of experimental data to a model. Note that in the Bayesian
 approach, the regulator appears naturally after having specified carefully all
 the assumptions that enter in the prior. In this specific example the regulator
 arises from the Gaussian prior for the model input $\modelvec$, which is
@@ -268,17 +278,18 @@ fit.
 \subsection{Comparison with classical fitting}
 \label{sec:comp-class-fit}
 
-There are a number of results that make the connection between the two
-approaches more quantitative, and therefore more transparent. We are going to
-summarise these results here without proofs, referring the reader to the
-mathematical literature for the missing details. Working in the
-finite-dimensional case, we assume 
+Analytical results make the connection between the two approaches more
+quantitative, and therefore more transparent. We are going to summarise these
+results here without proofs, referring the reader to the mathematical literature
+for the missing details. Working in the finite-dimensional case, we assume 
 \begin{align*}
   \modelvec &\in \real^{\nmodel} \, ,\\
   \obs &\in \real^{\ndata}\, ,
 \end{align*}
-and we are going to consider in detail two examples from Ref.~\cite{StuartCore},
-which illustrate the role of the priors in the Bayesian setting. It is
+and we are going to review in detail two examples from Ref.~\cite{Stuart:2010},
+which illustrate the role of the priors in the Bayesian setting. We report here
+the results in Ref.~\cite{Stuart:2010} because their simplicity provides a
+striking example of the role of priors, which is sometimes underestimated. It is
 particularly useful to distinguish the case of an underdetermined system from
 the case of an overdetermined one. 
 
@@ -332,9 +343,11 @@ are respectively
   \frac{(\modelpriorcov g) (\modelpriorcov g)^T}{\gamma^2 + (g^T \modelpriorcov g)}\, .
 \end{align}
 Because the argument of the exponential is a quadratic form, the mean of the
-distribution coincides with the MAP estimator. It is instructive to look at
-these quantities in the limit of infinitely precise data, \ie\ in the limit
-$\gamma\to 0$:
+distribution coincides with the MAP estimator. Hence in this case a fit that
+minimises the $\chi^2$ of the data to the theory prediction yields exactly the
+mean of the posterior distribution. It is instructive to look at these
+quantities in the limit of infinitely precise data, \ie\ in the limit $\gamma\to
+0$:
 \begin{align}
   m_\star &= 
   \lim_{\gamma\to 0} m
@@ -378,8 +391,9 @@ while the posterior covariance becomes
   \right)\, .
 \end{equation}
 This covariance is the projector on the subspace orthogonal to $g$ multiplied by
-$\sigma$. In the simple two-dimensional example depicted in Fig.~\ref{fig:2dexample}, choosing the direction of $g$
-as one of the basis vector, we obtain
+$\sigma$. In the simple two-dimensional example depicted in
+Fig.~\ref{fig:2dexample}, choosing the direction of $g$ as one of the basis
+vector, we obtain
 \begin{equation}
   \label{eq:ExplCovTwo}
   \Sigma_\star = 
@@ -423,7 +437,8 @@ In this case, in the limit of vanishing observational noise, we obtain
   m_\star &= \frac{(g^T \obs)}{|g|^2} \, ,\\
   \sigma_\star^2 &= 0\, .
 \end{align}
-The mean is given by the weighted average of the datapoints, which is also the solution of the $\chi^2$ minimization
+The mean is given by the weighted average of the datapoints, which is also the
+solution of the $\chi^2$ minimization
 \begin{equation}
   m_\star = \arg\min_{\modelvec\in\real} \left|\obs - g \modelvec\right|^2\, .
 \end{equation}
@@ -434,7 +449,8 @@ around the value of the MAP estimator.
 \subsection{Linear Problems}
 \label{sec:LinProbs}
 
-Linear problems in finite-dimensional spaces are characterized by a simple forward law, 
+Linear problems in finite-dimensional spaces are characterized by a simple
+forward law, 
 \begin{equation}
   \label{eq:MatrixG}
   \obs = \linmap \modelvec\, ,
@@ -485,10 +501,10 @@ is best visualised using a spectral decomposition
   \label{eq:CDSpecDec}
   \obspriorcov^{-1} = \sum_n \frac{1}{\sigma_n^2} P_n\, ,
 \end{equation}
-where $P_n$ denotes the projector on the $n$-th eigenvector of $\obspriorcov$, and
-$\sigma_n^2$ is the corresponding eigenvalue. The action of $\obspriorcov^{-1}$ is to
-perform a weighted average of the components of $\obspriorcent$ in the directions of the
-eigenvectors of $\obspriorcov$.
+where $P_n$ denotes the projector on the $n$-th eigenvector of $\obspriorcov$,
+and $\sigma_n^2$ is the corresponding eigenvalue. The action of
+$\obspriorcov^{-1}$ is to perform a weighted average of the components of
+$\obspriorcent$ in the directions of the eigenvectors of $\obspriorcov$.
 
 An explicit expression for the posterior distribution of data can be obtained
 from the joint distribution by marginalising over the model input $\modelvec$:
@@ -509,17 +525,20 @@ where
   \label{eq:PosteriorDataParamsCov}
   \obspostcov &= \linmap \modelpostcov \linmap^T\, .
 \end{align}
+Note that this is the naive error propagation from the covariance of the model,
+$\modelpostcov$, to the space of data. 
 
 \paragraph{Posterior distribution of unseen data}
 
 In real-life cases we are also interested in the posterior distribution of a set
-of data that have not been included in the fit. Because different datasets are described 
-by the same theory, the knowledge of one dataset will inform our knowledge of the underlying 
-theory -- \ie\ we will determine a posterior distribution for the model. That new knowledge 
-about the model will then propagate to any other -- unseen -- set of data, even if the experiments
-are completely unrelated. In the Bayesian framework that
-we have developed, this situation can be modeled by having two independent sets
-of data $y$ and $y'$, for which we have a prior distribution 
+of data that have not been included in the fit. Because different datasets are
+described by the same theory, the knowledge of one dataset will inform our
+knowledge of the underlying theory -- \ie\ we will determine a posterior
+distribution for the model. That new knowledge about the model will then
+propagate to any other -- unseen -- set of data, even if the experiments are
+completely unrelated. In the Bayesian framework that we have developed, this
+situation can be modeled by having two independent sets of data $y$ and $y'$,
+for which we have a prior distribution 
 \begin{align}
   \label{eq:JointIndepDataPrior}
   \pi_{Y}^0&\left(y,y'|y_0,C_{Y},y'_0,C'_{Y}\right) 
@@ -530,9 +549,10 @@ of data $y$ and $y'$, for which we have a prior distribution
   \exp\left[-\frac12 \left(y-y_0\right)^T (C_{Y})^{-1} 
   \left(y-y_0\right)\right]\, .
 \end{align}
-Note that the prior distribution is factorised as the product of individual distributions for $y$ and 
-$y'$ since the datasets are assumed to be independent. Following the derivation above, we can write the
-joint distribution for the data and the model 
+Note that the prior distribution is factorised as the product of individual
+distributions for $y$ and $y'$ since the datasets are assumed to be independent.
+Following the derivation above, we can write the joint distribution for the data
+and the model 
 \begin{equation}
   \label{eq:JointModelData}
   \pi^\fwdobsop(y,y',u) 
@@ -542,11 +562,10 @@ joint distribution for the data and the model
   \delta\left(y - \mathcal{G}u\right)
   \delta\left(y'- \mathcal{G}'u\right)\, .
 \end{equation}
-Note that because both sets of data are derived from the same model $u$, the
-joint distribution above introduces a correlation between the data sets. The 
-same model $u$ appears in both delta functions in the equation above. 
-
-We can now marginalise with respect to the dataset $y$, 
+Because both sets of data are derived from the same model $u$, the joint
+distribution above introduces a correlation between the data sets. The same
+model $u$ appears in both delta functions in the equation above. We can now
+marginalise with respect to the dataset $y$, 
 \begin{equation}
   \label{eq:MarginaliseDatasetY}
   \begin{split}
@@ -574,16 +593,19 @@ unseen data,
 \end{equation}
 where
 \begin{align}
+  \label{eq:lineone}
   \tilde{C}'_{Y} 
   &= \mathcal{G}' \tilde{C}'_{X} \mathcal{G}'^{T} \\
+  \label{eq:linetwo}
   \tilde{y}'
   &= \mathcal{G}' \tilde{u}'\, ,
 \end{align}
-and 
+and we have introduced the variables $\tilde{u}'$ and $\tilde{C}'_{X}$,  
 \begin{align}
   \label{eq:ModelPostSequential}
   \tilde{C}_{X}'^{-1} 
   &= \mathcal{G}'^T C_{Y}'^{-1} \mathcal{G}' + \tilde{C}_{X}^{-1} \\
+  \label{eq:ModelPostSequentialTwo}
   \tilde{u}' 
   &= \tilde{C}'_{X} \left(
     \mathcal{G}'^T C_{Y}'^{-1} y_0' + \tilde{C}_{X}^{-1} \tilde{u} 
@@ -593,13 +615,19 @@ The variables $\tilde{C}_{X}$ and $\tilde{u}$ have been defined above. We repeat
 their definition here in order to have all the necessary equations collected
 together: 
 \begin{align}
+  \label{eq:linethree}
   \tilde{C}_{X}^{-1}
   &= \mathcal{G}^T C_{Y}^{-1} \mathcal{G} + C_{X}^{-1} \\
+  \label{eq:linefour}
   \tilde{u}
   &= \tilde{C}_{X} \left(
     \mathcal{G}^T C_{Y}^{-1} y_0 + C_{X}^{-1} u_0
   \right)\, .
 \end{align}
+Eqs.~\ref{eq:lineone}, \ref{eq:linetwo}, \ref{eq:ModelPostSequential},
+\ref{eq:ModelPostSequentialTwo}, \ref{eq:linethree} and \ref{eq:linefour} yield
+the central value and the variance of the posterior distribution of unseen data
+as a function of $y_0$, $y_0'$, $C_Y$, $C_Y'$, $u_0$ and $C_X$. 
 
 \paragraph{A comment on non-linear models}
 
@@ -648,8 +676,9 @@ and therefore
   \frac{d\mu^\fwdobsop}{d\mu^0} (\modelvec) \propto \exp\left(-\Phi(\modelvec;\obs)\right)\, .
 \end{align}
 In finite-dimensional spaces, the three equations above are just definitions
-that do not add much content. Their interest resides in the fact that the last
-expression, Eq.~(\ref{eq:RadonNikodymTwo}), can be properly defined when $\modelspace$ is
+that do not add anything to the above discussion in terms of probability
+densities. Their interest resides in the fact that the last expression,
+Eq.~(\ref{eq:RadonNikodymTwo}), can be properly defined when $\modelspace$ is
 infinite-dimensional, allowing a rigorous extension of the Bayesian formulation
 of inverse problems to the case of infinite-dimensional spaces. 
 
@@ -685,29 +714,31 @@ The covariance $C$ is such that
   C(x,x') = \int df\, df'\, \left(f - m(x)\right) \left(f'-m(x')\right)
     \pi\left(f,f';x,x'\right)\,,
 \end{equation}
-which shows that the two-point probability density determines all the other distributions. 
+which shows that the two-point probability density determines all the other
+distributions. 
 
-\paragraph{Functional linear problems} This formalism allows us to formulate a Bayesian 
-solution of the inverse problem 
+\paragraph{Functional linear problems} This formalism allows us to formulate a
+Bayesian solution of the inverse problem 
 \begin{equation}
   \label{eq:BayesLinearInverse}
   y^i = \int dx\, G^i(x) u(x)\, ,
 \end{equation}
 where $y^i$ is a discrete set of observables and $u(x)$ is a random function,
-with a Gaussian prior with mean $u_0(x)$ and covariance $C_{X}(x,x')$. 
-The vector of observed values is denoted $y_0$, and we assume that the prior
+with a Gaussian prior with mean $u_0(x)$ and covariance $C_{X}(x,x')$. The
+vector of observed values is denoted $y_0$, and we assume that the prior
 distribution of $y$ is a Gaussian centred at $y_0$ with covariance $C_{Y}$.
 
-Similarly to the finite-dimensional case, the Bayesian solution yields a Gaussian 
-random function for the posterior distribution of the solution $u(x)$. In order to 
-characterise the posterior Gaussian distribution we need explicit expressions for its mean
-and its covariance. Introducing the matrix
+Similarly to the finite-dimensional case, the Bayesian solution yields a
+Gaussian random function for the posterior distribution of the solution $u(x)$.
+In order to characterise the posterior Gaussian distribution we need explicit
+expressions for its mean and its covariance. Introducing the matrix
 \begin{equation}
   \label{eq:Smatrix}
   S^{ij} =
   \int dx dx'\, G^i(x) C_{X}(x,x') G^j(x') + C_{Y}^{ij}\, ,
 \end{equation}
-and its inverse $T^{ij}=\left(S^{-1}\right)^{ij}$, the posterior Gaussian field is centred at
+and its inverse $T^{ij}=\left(S^{-1}\right)^{ij}$, the posterior Gaussian field
+is centred at
 \begin{align}
   \label{eq:PostMeanFunc}
   \tilde{u}(x) = u_0(x) + 
@@ -748,8 +779,8 @@ the posterior covariance can be written as
 
 It is instructive to compare the Bayesian result summarised above with the
 method proposed by Backus and Gilbert~\cite{BackusGilbert1968} to solve the same
-problem. Assuming that there exists an unknown 'true' model $\utrue$, such that
-the observed data are
+inverse problem. Assuming that there exists an unknown 'true' model $\utrue$,
+such that the observed data are
 \begin{equation}
   \label{eq:BackStart}
   y_0^i = \int dx\, G^i(x) \utrue(x)\, ,
@@ -803,6 +834,6 @@ is just white noise and therefore
   C_{X}(x,x') = \delta(x-x')\, .
 \end{equation}
 The connections between the Bayesian treatment and the Backus-Gilbert solution
-deserves further investigations, which we defer to future studies. Note that the
-Bayesian solution allows a variety of priors to be explicitly declared and
-compared to the Backus-Gilbert solution. 
+and its regulated variations, deserves further investigations, which we defer to
+future studies. Note that the Bayesian solution allows a variety of priors to be
+explicitly declared and compared to the Backus-Gilbert solution. 
