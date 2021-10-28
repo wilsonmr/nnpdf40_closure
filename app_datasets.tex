@@ -18,7 +18,7 @@ the central values of the test datasets.
     \caption{
         Observables included in the test data. We wish to stress that the observable
         central values themselves are not used, however the experimental
-        uncertainities are used in the definition of the closure estimators, and
+        uncertainties are used in the definition of the closure estimators, and
         the corresponding predictions from either the underlying law or the
         closure fits.
     }
@@ -35,11 +35,13 @@ test datasets shown in Tab.~\ref{tab:summarise_new_data} is plotted.
     \includegraphics[width=0.8 \textwidth]{plot_xq2.png}
     % TODO: make PDF for higher res image.
     \caption{The kinematic coverage of the training and test data
-    used to train the models and produce results presented in this paper. We emphasise
-    that the split of datasets was largely chosen on practical grounds, not because
-    of a deep reason to split the data chronologically. The kinematics of the two
+    used to train the models and produce results presented in this paper. 
+    %We emphasise
+    %that the split of datasets was largely chosen on practical grounds, not because
+    %of a deep reason to split the data chronologically. 
+    The kinematics of the two
     sets of data with this particular split overlaps but there are also kinematic
-    regions which the test dataset probes, for which there was no training data.}
+    regions which the test dataset probes, for which there are no training data.}
     \label{fig:DataKinematicCoverage}
 \end{figure}
 
@@ -66,8 +68,6 @@ hyperparameters as a point of reference.
         \end{tabular}
     \end{center}
     \caption{Hyperparameters for neural networks used in this study. The parameter
-    choices, and how these choices were made will be discussed in the full NNPDF4.0
-    paper. The table here is simply to add context to the results below. There
-    are 763 trainable parameters.}
+    choices, and how these choices were made are discussed in Ref.~\cite{NNPDF40}.}
     \label{tab:Hyperparams}
 \end{table}
