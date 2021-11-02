@@ -115,8 +115,8 @@ the data are reproduced by the replicas, and propagated to the model function
 when fitting the data for each replica. Since the NNPDF fitting methodology has
 changed in the latest release, adopting the procedure described in
 Ref.~\cite{Carrazza:2019mzf}, it is important to compare the uncertainties at
-L0, L1 and L2 that are obtained with the new methodology with the
-corresponding ones obtained with the old framework. 
+L0, L1 and L2 that are obtained with the NNPDF4.0 methodology with the
+corresponding ones obtained with the NNPDF3.1 framework.
 
 An example of these relative errors on fitted PDFs is shown in the upper panel of
 Fig.~\ref{fig:CT_uncertainty_g} where results from L0, L1 and L2 closure tests
@@ -142,13 +142,14 @@ for both NNPDF4.0 and NNPDF3.1. This, most
 likely, is due to the optimized architecture and the different minimizer used in
 NNPDF4.0, which has been proved to be much more efficient than the genetic
 algorithm, adopted in the previous NNPDF determinations. This can be appreciated
-by looking at Fig.~\ref{fig:chi2_vs_epoch}, where we plot the distribution across replicas of the L0 closure test $\chi^2$
+by looking at Fig.~\ref{fig:chi2_vs_epoch}, where we plot the distribution
+across replicas of the L0 closure test $\chi^2$
 as a function of the training epoch and genetic algorithm generation
-for the new and old methodology respectively. As mentioned before, in a L0
+for the NNPDF4.0 and NNPDF3.1 methodology respectively. As mentioned before, in a L0
 closure test the quality of the fit can in principle be improved at will,
 assuming the use of an efficient optimizer. For the final $\chi^2$ of the
 central value of each fit, plotted as a black dashed line, we find $0.002$ and
-$0.012$ in the new and old fitting code respectively, showing the better
+$0.012$ in the NNPDF4.0 and NNPDF3.1 fitting code respectively, showing the better
 efficiency of the new methodology. 
 
 It should be noted how
@@ -166,8 +167,8 @@ sections.
     \includegraphics[scale=0.43]{CT_linear_g.pdf}
     \includegraphics[scale=0.43]{CT_log_g_nnpdf31.pdf}
     \includegraphics[scale=0.43]{CT_linear_g_nnpdf31.pdf}
-    \caption{Relative PDF error for the gluon distribution in the new (upper panel)
-    and old (lower panel) methodology, plotted in logarithmic (left) and linear scale (right).}
+    \caption{Relative PDF error for the gluon distribution in the NNPDF4.0 (upper panel)
+    and NNPDF3.1 (lower panel) methodology, plotted in logarithmic (left) and linear scale (right).}
     \label{fig:CT_uncertainty_g}    
 \end{figure}
 
@@ -175,7 +176,7 @@ sections.
     \centering
     \includegraphics[scale=0.43]{CT_log_new_vs_old_g.pdf}
     \includegraphics[scale=0.43]{CT_linear_new_vs_old_g.pdf}
-    \caption{Level 0 uncertainty in the old and new methodology.}
+    \caption{Level 0 uncertainty in the NNPDF4.0 and NNPDF3.1 methodology.}
     \label{fig:CT_uncertainty_new_vs_old}    
 \end{figure}
 
@@ -184,7 +185,8 @@ sections.
     \includegraphics[scale=0.43]{chi2_n3fit_L0.pdf}
     \includegraphics[scale=0.43]{chi2_nnfit_L0.pdf}
     \caption{$\chi^2$ distribution across replicas as a function of the training
-    epoch and genetic algorithm generation for the new (left) and old (right) methodology. The black dotted line
+    epoch and genetic algorithm generation for the NNPDF4.0 (left) and NNPDF3.1
+    (right) methodology. The black dotted line
     in each plot represents the final $\chi^2$ of the central value of the
     corresponding fit, equal to $0.002$ and $0.012$ respectively.}
     \label{fig:chi2_vs_epoch}    
