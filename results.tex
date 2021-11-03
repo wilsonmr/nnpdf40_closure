@@ -37,22 +37,26 @@ PDF behaviour at $x \to 0$ and $x \to 1$ respectively and $NN(x, \ln x |
 and $\ln x$ as input. As discussed in Sec.~\ref{sec:fit-reps}, an ensemble of
 models is fitted, each one is a MAP estimator of the corresponding pseudo-data
 it is fitted on. An optimization algorithm is used to try and find the
-parameters which maximise the likelihood. In principle, the preprocessing
-exponents can also be varied during the fit analogously to the neural network
-parameters, such as in \cite{Carrazza_2019}, or they can be randomly selected
-from a predetermined range as is done in previous NNPDF releases, for example
-\cite{Ball_2017}. There are clearly many choices with respect to
+parameters which maximise the likelihood. 
+%In principle, the preprocessing
+%exponents can also be varied during the fit analogously to the neural network
+%parameters, such as in \cite{Carrazza_2019}, or they can be randomly selected
+f%rom a predetermined range as is done in previous NNPDF releases, for example
+%\cite{Ball_2017}. 
+There are clearly many choices with respect to
 hyperparameters, the discussion of how these choices have been made is beyond
 the scope of this paper and left to the full NNPDF4.0 release \cite{NNPDF40}. A
 summary of the hyperparameters used to produce results presented in this paper
 are provided in Tab.~\ref{tab:Hyperparams}.
 
 As input to the closure test, a single replica was drawn randomly from a
-previous NNPDF fit to experimental data. We refer to this as the underlying law
+previous NNPDF fit to experimental data. This
+has generally more structure than the final central PDF, so this is a
+more general choice than picking any final central fit. We refer to this as the underlying law
 and the corresponding predictions as the true observable values. An example of
 the gluon input is provided in Fig.~\ref{fig:InputGluonPDF}. In principle any
 function could be used as underlying law, however it makes sense to use a
-realistic input.
+realistic input. 
 
 \begin{figure}
     \centering
@@ -82,13 +86,15 @@ stratified such that the kinematic coverage of the data of each partition
 was approximately equal.
 Alternatively, since the data is generated from the theory predictions produced
 by the input underlying law, one could even produce completely artificial data
-using a different set of FK tables. From a practical standpoint, using the
-NNPDF3.1 dataset and validating on the newly included datasets in 4.0 allowed us
-to validate the PDF uncertainties on data outside of the kinematic coverage of
-data included in the fit. Furthermore, the data estimators only give us local
-information on the PDF uncertainties and it seems logical to split the data in
-this way since the results seem more applicable to the reality of how the PDFs
-end up being used.
+using a different set of FK tables. 
+%From a practical standpoint, using the
+%NNPDF3.1 dataset and validating on the newly included datasets in 4.0 allowed us
+%to validate the PDF uncertainties on data outside of the kinematic coverage of
+%data included in the fit. 
+%Furthermore, the data estimators only give us local
+%information on the PDF uncertainties and it seems logical to split the data in
+%this way since the results seem more applicable to the reality of how the PDFs
+%end up being used.
 
 In order to compute the expectation value over training data defined in
 Eq.~\ref{eq:average_over_training_data}, we generate 30 different sets of
@@ -140,12 +146,11 @@ with the NNPDF3.1 methodology. The corresponding plots are shown in the lower pa
 Fig.~\ref{fig:CT_uncertainty_g}: unlike the NNPDF4.0 case, here the PDF
 uncertainty is always dominated by the L0 uncertainty, even in those kinematic
 regions where experimental data are present. We can conclude that moving to the
-new methodology we observe a marked reduction of the L0 uncertainty, 
+NNPDF4.0 methodology, thanks to the optimized hyperparameters listed in Tab.~\ref{tab:Hyperparams},
+we observe a marked reduction of the L0 uncertainty, 
 see Fig.~\ref{fig:CT_uncertainty_new_vs_old}, where the latter is plotted on the same panel
-for both NNPDF4.0 and NNPDF3.1. This, most
-likely, is due to the optimized architecture and the different minimizer used in
-NNPDF4.0, which has been proved to be much more efficient than the genetic
-algorithm, adopted in the previous NNPDF determinations. This can be appreciated
+for both NNPDF4.0 and NNPDF3.1. 
+The better efficiency of the NNPDF4.0 methodology can be also appreciated
 by looking at Fig.~\ref{fig:chi2_vs_epoch}, where we plot the distribution
 across replicas of the L0 closure test $\chi^2$
 as a function of the training epoch and genetic algorithm generation
@@ -202,7 +207,8 @@ sections.
 
 Results for $\biasvarratio$ and the corresponding uncertainty calculated on the
 test data are shown in the first column of Tab.~\ref{tab:biasvarratio}. These
-have been computed by performing a bootstrap sample
+have been computed by performing a bootstrap sample, 
+in order to account for the finite size of the replicas and fits sample
 \cite{efron1994introduction}, where we randomly sample from both fits and
 replicas and re-calculate $\biasvarratio$. The value and error presented in the
 table is then the mean and standard deviation across bootstrap samples. We
