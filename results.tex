@@ -51,8 +51,8 @@ are provided in Tab.~\ref{tab:Hyperparams}.
 
 As input to the closure test, a single replica was drawn randomly from a
 previous NNPDF fit to experimental data. This
-has generally more structure than the final central PDF, so this is a
-more general choice than picking any final central fit. We refer to this as the underlying law
+has generally more structure than the final central PDF and it is therefore a
+more general choice than any final central fit. We refer to this as the underlying law
 and the corresponding predictions as the true observable values. An example of
 the gluon input is provided in Fig.~\ref{fig:InputGluonPDF}. In principle any
 function could be used as underlying law, however it makes sense to use a
@@ -206,9 +206,9 @@ sections.
 \subsection{Data space estimators}
 
 Results for $\biasvarratio$ and the corresponding uncertainty calculated on the
-test data are shown in the first column of Tab.~\ref{tab:biasvarratio}. These
-have been computed by performing a bootstrap sample, 
-in order to account for the finite size of the replicas and fits sample
+test data are shown in the first column of Tab.~\ref{tab:biasvarratio}.
+The uncertainties, which take into account the finite size of the replicas and fits samples,
+have been computed by performing bootstrap, 
 \cite{efron1994introduction}, where we randomly sample from both fits and
 replicas and re-calculate $\biasvarratio$. The value and error presented in the
 table is then the mean and standard deviation across bootstrap samples. We
