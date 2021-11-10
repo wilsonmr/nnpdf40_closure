@@ -66,9 +66,6 @@ that the experimental covariance matrix is block diagonal:
         0  & \testset{\modelpriorcov}  \\ 
     \end{bmatrix}\, .
 \end{equation}
-% In the context of a closure test, $\eout$ is a stochastic quantity which
-% depends both on the training data, through the ensemble of MAP estimators, and
-% the test data.
 
 It is useful to perform a decomposition of Eq.~\ref{eq:chi2kerep}, following
 usual manipulations of the likelihood function associated with least-squares
@@ -191,7 +188,6 @@ more detail in the next subsection.
 %
 \begin{figure}[h!]
     \centering
-    %\includegraphics[width=0.75\textwidth]{diagonal_basis_2d_estimators_diagram.png}
     \begin{tikzpicture}
         \draw[blue!75, fill=blue!5, thick] (-0.5, 0.8) circle (1.2 cm);
         \draw[thick] (0,0) circle (2 cm);
@@ -232,7 +228,6 @@ model predictions in units of the covariance
 \begin{equation}
     \label{eq:VarDef}
     \begin{split}
-        % NOTE: not using \emodel here in order to split line.
         \var &= \frac{1}{\ndata}\mathbf{E}_{\{ \modelvec_* \}} \Big[ \\
             &\left( \testset{\fwdobsop}\left(\modelvecrep\right) - 
             \emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} \right)^T
@@ -522,7 +517,6 @@ distribution in model space given the test data, with zero prior knowledge of
 the model, which we denote as $\modelpostcov'$:
 \begin{equation}\label{eq:BiasTraceModelPost}
     \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
-    % testset fails here due to double postscript
     {\rm Tr} \left[ \modelpostcov {\modelpostcov}^{ \prime -1} \right] \, ,
 \end{equation}
 where we emphasise that the covariance matrices $\modelpostcov$ and
@@ -560,18 +554,6 @@ prior from performing the relevant experiment which measures the same
 observables. The two distributions can be compared when the independently
 measured experimental data is published.
 
-% If we marginalise
-% instead over $\testset{\obs}$, then
-% \begin{equation}
-%     \mathbf{E}_{\obspriorcent}[{\rm bias}] = \frac{1}{\ndata}
-%     {\rm Tr} \left[
-%         \obspostcov
-%         \obspriorcov^{-1}
-%     \right] \, ,
-% \end{equation}
-% but as we already know, if there was no prior information on the model
-% this reduces to $\frac{\nmodel}{\ndata}$ (to convince yourself, set
-% $\testset{\modelpostcov} = \modelpostcov$ in Eq.~\ref{eq:BiasTraceModelPost}).
 
 \paragraph{Underparameterised model}
 

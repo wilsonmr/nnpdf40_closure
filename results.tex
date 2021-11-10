@@ -38,11 +38,6 @@ and $\ln x$ as input. As discussed in Sec.~\ref{sec:fit-reps}, an ensemble of
 models is fitted, each one is a MAP estimator of the corresponding pseudo-data
 it is fitted on. An optimization algorithm is used to try and find the
 parameters which maximise the likelihood. 
-%In principle, the preprocessing
-%exponents can also be varied during the fit analogously to the neural network
-%parameters, such as in \cite{Carrazza_2019}, or they can be randomly selected
-f%rom a predetermined range as is done in previous NNPDF releases, for example
-%\cite{Ball_2017}. 
 There are clearly many choices with respect to
 hyperparameters, the discussion of how these choices have been made is beyond
 the scope of this paper and left to the full NNPDF4.0 release \cite{NNPDF40}. A
@@ -87,14 +82,6 @@ was approximately equal.
 Alternatively, since the data is generated from the theory predictions produced
 by the input underlying law, one could even produce completely artificial data
 using a different set of FK tables. 
-%From a practical standpoint, using the
-%NNPDF3.1 dataset and validating on the newly included datasets in 4.0 allowed us
-%to validate the PDF uncertainties on data outside of the kinematic coverage of
-%data included in the fit. 
-%Furthermore, the data estimators only give us local
-%information on the PDF uncertainties and it seems logical to split the data in
-%this way since the results seem more applicable to the reality of how the PDFs
-%end up being used.
 
 In order to compute the expectation value over training data defined in
 Eq.~\ref{eq:average_over_training_data}, we generate 30 different sets of
@@ -279,66 +266,3 @@ uncertainty are correctly represented by the replicas but other directions are
 not. Finally we note how not only are the measured value and estimated value
 from $\biasvarratio$ self consistent, but they are also consistent with $0.68$,
 which further supports the argument that the model uncertainties are faithful.
-
-\iffalse
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=0.43]{CT_linear_u.pdf}
-    \includegraphics[scale=0.43]{CT_log_u.pdf}
-    \includegraphics[scale=0.43]{CT_linear_ubar.pdf}
-    \includegraphics[scale=0.43]{CT_log_ubar.pdf}
-    \includegraphics[scale=0.43]{CT_linear_d.pdf}
-    \includegraphics[scale=0.43]{CT_log_d.pdf}
-    \includegraphics[scale=0.43]{CT_linear_dbar.pdf}
-    \includegraphics[scale=0.43]{CT_log_dbar.pdf}
-    \caption{Results from L0, L1 and L2 closure tests for the $u$, $\bar{u}$,
-    $d$ and $\bar{d}$ distributions in the new methodology, plotted in
-    logarithmic (left) and linear scale (right). Each fit is normalized to its
-    central value.}
-    \label{fig:nnpdf40_ct_errors1}    
-\end{figure}
-
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=0.43]{CT_linear_s.pdf}
-    \includegraphics[scale=0.43]{CT_log_s.pdf}
-    \includegraphics[scale=0.43]{CT_linear_sbar.pdf}
-    \includegraphics[scale=0.43]{CT_log_sbar.pdf}
-    \includegraphics[scale=0.43]{CT_linear_g.pdf}
-    \includegraphics[scale=0.43]{CT_log_g.pdf}
-    \includegraphics[scale=0.43]{CT_linear_c.pdf}
-    \includegraphics[scale=0.43]{CT_log_c.pdf}
-    \caption{Same as Fig.~\ref{fig:nnpdf40_ct_errors1} but for the $s$,
-    $\bar{s}$, $g$ and $c$ distributions .}
-    \label{fig:nnpdf40_ct_errors2}    
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=0.43]{CT_linear_u_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_log_u_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_linear_ubar_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_log_ubar_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_linear_d_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_log_d_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_linear_dbar_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_log_dbar_nnpdf31.pdf}
-    \caption{Same as Fig.~\ref{fig:nnpdf40_ct_errors1} for the old methodology.}
-    \label{fig:nnpdf31_ct_errors1}    
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[scale=0.43]{CT_linear_s_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_log_s_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_linear_sbar_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_log_sbar_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_linear_g_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_log_g_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_linear_c_nnpdf31.pdf}
-    \includegraphics[scale=0.43]{CT_log_c_nnpdf31.pdf}
-    \caption{Same as Fig.~\ref{fig:nnpdf40_ct_errors2} for the old methodology.}
-    \label{fig:nnpdf31_ct_errors2}    
-\end{figure}
-\fi

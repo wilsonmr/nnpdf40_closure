@@ -91,21 +91,6 @@ The point is that the linear model has already been shown to be a sample from
 posterior distribution of the model given the data. But from the classical
 fitting point of view we would say this model has overfitted.
 
-% From the
-% Bayesian point of view, the usefulness of this estimator is less clear for
-% several reasons:
-% \begin{itemize}
-%     \item The posterior model distribution cannot be treated as a prior for the
-%     data it was obtained from, so the interpretation of estimators in
-%     Eq.~\ref{eq:ExpectedBiasVarianceTraining} is unclear.
-%     \item The posterior model distribution isn't fitted, it's just a result of
-%     marginalising over the data.
-%     \item The posterior model distribution for the linear model always appears
-%     to be overfitting, which doesn't make so much sense given the previous
-%     point and in light of Sec.~\ref{Sec:LinearMapEstimators} where the predictions
-%     generated with the posterior model distribution are shown to have
-%     faithful uncertainties.
-% \end{itemize}
 As such, we do not report any results with $\deltachi$ here, because
 when $\biasvarratio = 1$, it doesn't add much to the discussion. It may still
 be useful as a diagnostic tool when $\biasvarratio \neq 1$, which as discussed
