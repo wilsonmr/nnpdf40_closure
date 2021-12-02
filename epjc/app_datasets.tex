@@ -1,0 +1,73 @@
+\section{Closure test setup details}
+\label{sec:appendix-datasets}
+
+\subsection{Data}
+
+The full list of datasets included in the test set are shown in
+Tab.~\ref{tab:summarise_new_data}. The central values are not actually used
+in the closure test, however we use the experimental uncertainities in
+the calculation of both $\biasvarratio$ and $\xisigdat{1}$. The corresponding
+predictions generated from the underlying law are used as the true
+observable values. Neither of the data-space closure estimators rely on
+the central values of the test datasets.
+
+\begin{table}[h!]
+    \begin{center}
+        \input{tables/reference_test_data}
+    \end{center}
+    \caption{
+        Observables included in the test data. We wish to stress that the observable
+        central values themselves are not used, however the experimental
+        uncertainties are used in the definition of the closure estimators, and
+        the corresponding predictions from either the underlying law or the
+        closure fits.
+    }
+    \label{tab:summarise_new_data}
+\end{table}
+
+For completeness, in Fig.~\ref{fig:DataKinematicCoverage}
+the kinematic coverage of the training datasets, which
+as mentioned is the NNPDF3.1-like dataset used in \cite{Faura_2020}, and the
+test datasets shown in Tab.~\ref{tab:summarise_new_data} is plotted.
+
+\begin{figure*}
+    \centering
+    \includegraphics[scale=0.5]{plot_xq2.png}
+    % TODO: make PDF for higher res image.
+    \caption{The kinematic coverage of the training and test data
+    used to train the models and produce results presented in this paper. 
+    %We emphasise
+    %that the split of datasets was largely chosen on practical grounds, not because
+    %of a deep reason to split the data chronologically. 
+    The kinematics of the two
+    sets of data with this particular split overlaps but there are also kinematic
+    regions which the test dataset probes, for which there are no training data.}
+    \label{fig:DataKinematicCoverage}
+\end{figure*}
+
+\subsection{Models}
+
+A summary of the hyperparameters for the neural networks used during the closure
+fits is given in table Tab.~\ref{tab:Hyperparams}. These hyperparameters were
+chosen as part of an extensive hyperparameters scan, which will be explained in
+detail in NNPDF4.0, for this study we simply provide the values of the
+hyperparameters as a point of reference.
+
+\begin{table}
+    \begin{center}
+        \begin{tabular}[h]{c|c}
+            \toprule
+            hyperparameter & value \\
+            \midrule
+            architecture & 2-25-20-8 \\
+            activation & tanh-tanh-linear \\
+            minimiser & NAdam \\
+            max training length & 17000 epochs \\
+            pre-processing exponents & not fitted \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+    \caption{Hyperparameters for neural networks used in this study. The parameter
+    choices, and how these choices were made are discussed in Ref.~\cite{NNPDF40}.}
+    \label{tab:Hyperparams}
+\end{table}

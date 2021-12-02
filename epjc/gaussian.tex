@@ -1,0 +1,224 @@
+\section{Gaussian integrals}
+\label{sec:GaussianIntegrals}
+
+Theory errors can be included in this framework by allowing the distribution of
+observables around the theory prediction to have a finite width, \eg\ by
+replacing the Dirac delta 
+\begin{equation}
+    \label{eq:DiracInApp}
+    \delta(y-\mathcal{G}u)
+\end{equation}
+in Eq.~\ref{eq:ThetaCorr} with a Gaussian
+\begin{equation}
+    \label{eq:TheoryGaussian}
+    \theta(\obs,\modelvec|\fwdobsop) \propto \exp\left[
+        -\frac12 \left(y-\mathcal{G}u\right)^T
+        C_T^{-1} \left(y-\mathcal{G}u\right)
+    \right]\, .
+\end{equation}
+For the purposes of this study, we do not want to provide a realistic estimate
+of theory errors. Instead we will be assuming that the errors are uncorrelated
+and identical for all data points
+\begin{equation}
+    \label{eq:DiagTheoryCov}
+    C_T = \sigma^2 \mathds{1}\, ,
+\end{equation}
+and we will be interested in the limit where $\sigma^2\to 0$. 
+
+\subsection{Integrating out the data}
+\label{sec:IntOutData}
+
+Marginalizing with respect to \obs\ in this case yields 
+\begin{align}
+  \label{eq:MarginGaussData}
+  \pi_M(\modelvec|\obspriorcent,\modelpriorcent,\fwdobsop) 
+  &\propto \pi_{M}^0(\modelvec|\modelpriorcent) \, 
+  \int dy\, \pi_{D}^0(\obs|\obspriorcent) 
+    \theta(\obs,\modelvec|\fwdobsop) \, .
+\end{align}
+The argument of the exponential in the integrand is a quadratic form in \obs, 
+\begin{equation}
+    \label{eq:QuadFormDataInt}
+    A = \left(y-y_0\right)^T C_D^{-1} \left(y-y_0\right) +
+    \left(y-\mathcal{G}u\right)^T C_T^{-1} \left(y-\mathcal{G}u\right)\, .
+\end{equation}
+The integral can be easily evaluated by completing the square, 
+\begin{equation}
+    \label{eq:QuadFormDataIntSquare}
+    A = \left(y-\tilde{y}\right)^T 
+    \tilde{C}_D^{-1}
+    \left(y-\tilde{y}\right) + R_D\, .
+\end{equation}
+Comparing Eqs.~\ref{eq:QuadFormDataInt} and~\ref{eq:QuadFormDataIntSquare} at order $y^2$ and \obs, yields
+\begin{align}
+    \tilde{C}_D^{-1} &= \frac{1}{\sigma^2}
+    \left(\mathds{1} + \sigma^2 C_D^{-1}\right)\, , \\
+    \tilde{y} &= \left(\mathds{1} + \sigma^2 C_D^{-1}\right)^{-1} 
+    \left(
+        \mathcal{G}u + \sigma^2 C_D^{-1} y_0
+    \right)\, ,
+\end{align}
+and therefore
+\begin{align}
+    \tilde{y}^T &\tilde{C}_D^{-1} \tilde{y}
+    = \frac{1}{\sigma^2} \left(\mathcal{G}u\right)^T
+    \left(\mathds{1}+\sigma^2 C_D^{-1}\right)^{-1} \left(\mathcal{G}u\right) \nonumber\\
+    &+ y_0^T C_D^{-1} \left(\mathds{1}+\sigma^2 C_D^{-1}\right)^{-1} 
+    \left(\mathcal{G}u\right)  \nonumber \\
+    \label{eq:RemainderFromSquare}
+    & + \left(\mathcal{G}u\right)^T C_D^{-1} 
+    \left(\mathds{1}+\sigma^2 C_D^{-1}\right)^{-1} y_0 \nonumber \\ 
+    & + \sigma^2 y_0^T C_D^{-1} \left(\mathds{1}+\sigma^2 C_D^{-1}\right)^{-1} 
+    C_D^{-1} y_0\, .
+\end{align}
+Note that the four terms in the equation above are ordered in increasing powers
+of $\sigma^2$ and ultimately we will be interested in the limit $\sigma^2\to 0$,
+which reproduces the Dirac delta in $\theta(y,u)$. Plugging
+Eq.~\ref{eq:RemainderFromSquare} in Eq.~\ref{eq:QuadFormDataIntSquare} and again
+comparing to Eq.~\ref{eq:QuadFormDataInt}, we find
+\begin{equation}
+    \label{eq:RDBeforeLimit}  
+    \begin{split}
+    R_D 
+    &= \frac{1}{\sigma^2} \left(\mathcal{G}u\right)^T 
+    \left[
+        \mathds{1} - \frac{1}{\mathds{1}+\sigma^2 C_D^{-1}} 
+    \right]
+    \left(\mathcal{G}u\right) - y_0^T C_D^{-1} \left(\mathcal{G}u\right) \nonumber \\
+    &- \left(\mathcal{G}u\right)^T C_D^{-1} y_0 + y_0^T C_D^{-1} y_0 + \mathcal{O}(\sigma^2)\, ,       
+    \end{split} 
+\end{equation}
+Expanding for small values of $\sigma^2$ the terms of order $1/\sigma^2$ cancel;
+keeping only finite terms in the limit $\sigma^2 \to 0$ we finally obtain
+\begin{equation}
+    \label{eq:RDAfterLimit}
+    R_D = \left(\mathcal{G}u - y_0\right)^T C_D^{-1}
+    \left(\mathcal{G}u - y_0\right)\, .
+\end{equation}
+This is exactly the result that we obtained earlier when 
+\begin{equation}
+    \label{eq:RemindTheta}
+    \theta(y,u|\mathcal{G}) = \delta(y-\mathcal{G}u)\, .
+\end{equation}
+It should not come as a surprise since in the limit where $\sigma^2 \to 0$ the
+Gaussian distribution that we chose to describe the fluctutations of the data
+around the theory predictions reduces indeed to a Dirac delta. The posterior for
+the model is exactly the one we computed in Sect.~\ref{sec:inverse-problems}. We
+do not learn anything new from this exercise, but it is a useful warm-up for the
+next example. The integral over \obs\ can now be performed easily, since it is
+yet again a Gaussian integral. 
+
+
+\subsection{Integrating out the model}
+\label{eq:IntModOut}
+
+Using the same approach as above, we now want to marginalise with respect to the model in order to obtain the posterior distribution of the data: 
+\begin{align}
+    \label{eq:MarginGaussModel}
+    \pi_D(\obs|\obspriorcent,\modelpriorcent,\fwdobsop) 
+    &\propto \pi_{D}^0(\obs|\obspriorcent) \, 
+    \int du\, \pi_{M}^0(\modelvec|\modelpriorcent) 
+      \theta(\obs,\modelvec|\fwdobsop) \, .
+  \end{align}
+We follow exactly the same procedure outlined above, starting from the argument
+of the exponential
+\begin{align}
+    \label{eq:QuadFormModelInt}
+    A = \left(u-u_0\right)^T &C_M^{-1} \left(u-u_0\right) \nonumber \\ 
+    &+ \left(y-\mathcal{G}u\right)^T C_T^{-1} \left(y-\mathcal{G}u\right)\, ,
+\end{align}
+we complete the square and rewrite it in the form
+\begin{equation}
+    \label{eq:QuadFormModelIntSquare}
+    A = \left(u-\tilde{u}\right)^T 
+    \tilde{C}_M^{-1}
+    \left(u-\tilde{u}\right) + R_M\, .
+\end{equation}
+It can be readily checked that in this case
+\begin{align}
+    \tilde{C}_M^{-1} &= \frac{1}{\sigma^2}
+    \left(\mathcal{G}^T \mathcal{G} + \sigma^2 C_D^{-1}\right)\, , \\
+    \tilde{u} &= \left(\mathcal{G}^T \mathcal{G} + \sigma^2 C_M^{-1}\right)
+    \left(
+        \mathcal{G}^T y + \sigma^2 C_M^{-1} u_0
+    \right)\, .
+\end{align}
+In order to evaluate $R_M$, we need
+\begin{equation}
+    \label{eq:UtildeUtildeTerm}
+    \begin{split}
+    \tilde{u}^T &\tilde{C}_M^{-1} \tilde{u} 
+    = \frac{1}{\sigma^2} y^T \mathcal{G} 
+    \left(\mathcal{G}^T \mathcal{G} + \sigma^2 C_M^{-1}\right)^{-1}
+    \mathcal{G}^T y  \\ 
+    &+ u_0^T C_M^{-1} 
+    \left(\mathcal{G}^T \mathcal{G} + \sigma^2 C_M^{-1}\right)^{-1}
+    \mathcal{G}^T y + \\
+    & + y^T \mathcal{G} \left(\mathcal{G}^T \mathcal{G} + \sigma^2 C_M^{-1}\right)^{-1} C_M^{-1} u_0 + \mathcal{O}(\sigma^2)\, .
+    \end{split} 
+\end{equation}
+Noting that
+\begin{align}
+    \label{eq:InverseFromTarantola}
+    &\left(\mathcal{G}^T \mathcal{G} + \sigma^2 C_M^{-1}\right)^{-1} =
+    \frac{1}{\sigma^2} C_M \nonumber \\ 
+    & \quad - \frac{1}{\sigma^2} C_M \mathcal{G}^T 
+    \left(\mathcal{G} \frac{1}{\sigma^2} C_M \mathcal{G}^T 
+        + \mathds{1}\right)^{-1} \mathcal{G}
+    \frac{1}{\sigma^2} C_M\, ,
+\end{align}
+we have, in the limit where $\sigma^2 \to 0$
+\begin{align}
+    \label{eq:QuadraticYTerm}
+    \mathcal{G} &\left(\mathcal{G}^T \mathcal{G} + \sigma^2 C_M^{-1}\right)^{-1} 
+    \mathcal{G}^T = 
+    \mathds{1}  \nonumber \\ 
+    & \quad- \sigma^2 \left(\mathcal{G} C_M \mathcal{G}^T\right)^{-1} + 
+    \mathcal{O}(\sigma^4)\, .
+\end{align}
+Collecting all terms we find
+\begin{equation}
+    \label{eq:RMAfterLimit}
+    R_M = \left(y - \mathcal{G} u_0\right)^T 
+        \left(\mathcal{G} C_M \mathcal{G}^T\right)^{-1}
+        \left(y- \mathcal{G} u_0\right)\, .
+\end{equation}
+Performing the Gaussian integral over $u$ in Eq.~\ref{eq:MarginGaussModel}, we
+obtain the posterior distribution of the data
+\begin{align}
+    \label{eq:PosteriorDataDistr}
+    \pi_D^y(y)& \propto 
+    \exp\Big[-\frac12 \left(y-y_0\right)^T C_D^{-1} \left(y - y_0\right) \nonumber \\
+    &\quad -\frac12 \left(y - \mathcal{G} u_0\right)^T 
+    \left(\mathcal{G} C_M \mathcal{G}^T\right)^{-1}
+    \left(y - \mathcal{G} u_0\right)
+    \Big]\, .
+\end{align}
+As in the case above, we note that this is a Gaussian distribution,
+\begin{equation}
+    \label{eq:PosteriorDataDistrGauss}
+    \pi_D^{y}(y) \propto
+    \exp \left[
+        -\frac12 \left(y - \tilde{y}\right)^T
+        \tilde{C}_D^{-1} 
+        \left(y - \tilde{y}\right)
+    \right]\, ,
+\end{equation}
+where the mean and the covariance are given in
+Eqs.~\ref{eq:PosteriorDataParamsMean} and~\ref{eq:PosteriorDataParamsCov}. We
+can rewrite those expressions as
+\begin{align}
+    \tilde{y} &= \mathcal{G} \tilde{u} \, , \\
+    \tilde{C}_D^{-1} &=
+        C_D^{-1} + \left(\mathcal{G} C_M \mathcal{G}^T\right)^{-1}\, .
+\end{align}
+In order to simplify the notation we introduce
+\begin{equation}
+    \hat{C}_M = \left(\mathcal{G} C_M \mathcal{G}^T\right)\, ,
+\end{equation}
+and then
+\begin{equation}
+    \tilde{C}_D = \hat{C}_M
+    - \hat{C}_M \left(\hat{C}_M + C_D \right)^{-1} 
+    \hat{C}_M\, .
+\end{equation}

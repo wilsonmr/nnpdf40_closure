@@ -1,0 +1,135 @@
+%%%%%%%%%%%%%%%%%%%%%%% file template.tex %%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This is a template file for The European Physical Journal
+%
+% Copy it to a new file with a new name and use it as the basis
+% for your article
+%
+%%%%%%%%%%%%%%%%%%%%%%%% Springer-Verlag %%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{filecontents}{leer.eps}
+%!PS-Adobe-2.0 EPSF-2.0
+%%CreationDate: Mon Jul 13 16:51:17 1992
+%%DocumentFonts: (atend)
+%%Pages: 0 1
+%%BoundingBox: 72 31 601 342
+%%EndComments
+
+gsave
+72 31 moveto
+72 342 lineto
+601 342 lineto
+601 31 lineto
+72 31 lineto
+showpage
+grestore
+%%Trailer
+%%DocumentFonts: Helvetica
+\end{filecontents}
+%
+\documentclass[epj,nopacs]{svjour}
+% Remove option referee for final version
+%
+% Remove any % below to load the required packages
+%\usepackage{latexsym}
+%\usepackage{graphics}
+\input{init}
+% etc
+%
+\begin{document}
+%
+\title{Bayesian Approach to Inverse Problems: an Application to NNPDF Closure Testing}
+
+\author{Luigi Del Debbio\inst{1} \and Tommaso Giani\inst{2,3} \and Michael Wilson\inst{1}% etc
+} 
+%
+%
+\institute{Higgs Centre for Theoretical Physics, School of Physics and Astronomy,
+Peter~Guthrie~Tait~Road, Edinburgh EH9 3 FD, United Kingdom \and 
+Department of Physics and Astronomy, Vrije Universiteit, NL 1081 HV Amsterdam \and
+Nikhef Theory Group, Science Park 105, 1098 XG Amsterdam, The Netherlands}
+%
+\date{Received: / Revised version: }
+% The correct dates will be entered by Springer
+%
+\abstract{
+  We discuss the Bayesian approach to the solution of inverse problems and
+  apply the formalism to analyse the closure tests performed by the NNPDF
+  collaboration. Starting from a comparison with the approach that is
+  currently used for the determination of parton distributions (PDFs) by the
+  NNPDF collaboration, we discuss some analytical results that can be obtained
+  for linear problems and use these results as a guidance for the more
+  complicated non-linear problems. We show that, in the case of Gaussian
+  distributions, the posterior probability density of the parametrized PDFs is
+  fully determined by the results of the NNPDF fitting procedure. In the
+  particular case that we consider, the fitting procedure and the Bayesian
+  analysis yield exactly the same result. Building on the insight that we
+  obtain from the analytical results, we introduce new estimators to assess
+  the statistical faithfulness of the fit results in closure tests. These
+  estimators are defined in data space, and can be studied analytically using
+  the Bayesian formalism in a linear model in order to clarify their meaning.
+  Finally we present numerical results from a number of closure tests
+  performed with current NNPDF methodologies. These further tests allow us to
+  validate the NNPDF4.0 methodology and provide a quantitative comparison of the
+  NNPDF4.0 and NNPDF3.1 methodologies. As PDFs determinations move into precision
+  territory, the need for a careful validation of the methodology becomes
+  increasingly important: the error bar has become the focal point of
+  contemporary PDFs determinations. In this perspective, theoretical
+  assumptions and other sources of error are best formulated and analysed in
+  the Bayesian framework, which provides an ideal language to address the
+  precision and the accuracy of current fits.
+%
+%\PACS{
+%      {PACS-key}{discribing text of that key}   \and
+%      {PACS-key}{discribing text of that key}
+%     } % end of PACS codes
+} %end of abstract
+%
+
+\titlerunning{Bayesian Approach to Inverse Problems}
+\authorrunning{L.~Del Debbio \and T.~Giani \and M.~Wilson}
+\maketitle
+%
+
+\input{introduction}
+\input{inverse}
+\input{closure_test}
+\input{estimators}
+\input{results}
+\input{summary}
+
+\appendix
+\input{gaussian}
+\input{app_datasets}
+\input{app_deltachi2}
+
+
+
+\iffalse
+% For tables use
+\begin{table}
+\caption{Please write your table caption here}
+\label{tab:1}       % Give a unique label
+% For LaTeX tables use
+\begin{tabular}{lll}
+\hline\noalign{\smallskip}
+first & second & third  \\
+\noalign{\smallskip}\hline\noalign{\smallskip}
+number & number & number \\
+number & number & number \\
+\noalign{\smallskip}\hline
+\end{tabular}
+% Or use
+\vspace*{5cm}  % with the correct table height
+\end{table}
+\fi
+
+%
+% BibTeX users please use
+\bibliographystyle{UTPstyle}
+\bibliography{main}
+
+
+\end{document}
+
+
