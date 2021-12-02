@@ -188,8 +188,8 @@ joint distribution of $\obs$ and $\modelvec$ is
 We can now marginalize with respect to \obs, neglecting theory errors, 
 \begin{align}
   \label{eq:MarginOne}
-  \pi&^\fwdobsop_{X}(\modelvec|\obspriorcent,\obspriorcov,\modelpriorcent,\modelpriorcov) 
-  \propto \int dy\, 
+  \pi&^\fwdobsop_{X}(\modelvec|\obspriorcent,\obspriorcov,\modelpriorcent,\modelpriorcov) \nonumber \\
+  &\propto \int dy\, 
     \pi_{X}^0(\modelvec|\modelpriorcent,\modelpriorcov) 
     \pi_{Y}^0(\obs|\obspriorcent,\obspriorcov) 
     \theta(\obs,\modelvec|\fwdobsop) \nonumber \\ 
@@ -463,8 +463,8 @@ function $S(\modelvec)$ is a quadratic function of $\modelvec$,
   \label{eq:CostLinGauss}
   S(\modelvec) &= 
   \left(\linmap \modelvec - \obspriorcent \right)^T \obspriorcov^{-1} 
-  \left(\linmap \modelvec - \obspriorcent \right) + 
-  \left( \modelvec - \modelpriorcent \right)^T \modelpriorcov^{-1} \left(\modelvec - \modelpriorcent \right) \\
+  \left(\linmap \modelvec - \obspriorcent \right) \nonumber \\
+  &\quad \quad+ \left( \modelvec - \modelpriorcent \right)^T \modelpriorcov^{-1} \left(\modelvec - \modelpriorcent \right) \\
   &= 
   \left(\modelvec - \modelpostcent\right) \modelpostcov^{-1}
   \left(\modelvec - \modelpostcent\right) + \mathrm{const}\, ,
@@ -545,8 +545,8 @@ for which we have a prior distribution
    = \pi_{Y}^0\left(y'|y'_0,C'_{Y}\right) \pi_{Y}^0\left(y|y_0,C_{Y}\right) \nonumber \\
   & \propto 
   \exp\left[-\frac12 \left(y'-y'_0\right)^T (C'_{Y})^{-1} 
-  \left(y'-y'_0\right)\right]\,\times \nonumber\\
-  &\quad\exp\left[-\frac12 \left(y-y_0\right)^T (C_{Y})^{-1} 
+  \left(y'-y'_0\right)\right] \nonumber\\
+  &\quad\times\exp\left[-\frac12 \left(y-y_0\right)^T (C_{Y})^{-1} 
   \left(y-y_0\right)\right]\, .
 \end{align}
 Note that the prior distribution is factorised as the product of individual
@@ -556,11 +556,10 @@ and the model
 \begin{align}
   \label{eq:JointModelData}
   \pi&^\fwdobsop(y,y',u) 
-  \propto \nonumber \\
-  &\pi_{Y}^0(y,y'|y_0,C_{Y},y'_0,C'_{Y}) 
-  \pi_{X}^0(u) 
-  \delta\left(y - \mathcal{G}u\right)
-  \delta\left(y'- \mathcal{G}'u\right)\, .
+  \propto \pi_{Y}^0(y,y'|y_0,C_{Y},y'_0,C'_{Y}) 
+  \pi_{X}^0(u) \nonumber \\
+  & \quad \times\delta\left(y - \mathcal{G}u\right)
+   \delta\left(y'- \mathcal{G}'u\right)\, .
 \end{align}
 Because both sets of data are derived from the same model $u$, the joint
 distribution above introduces a correlation between the data sets. The same
