@@ -125,19 +125,31 @@ value across replicas is taken. The first term in this expression we call the
 
 As previously mentioned $\eout$ should be considered a stochastic estimator, in
 theory we could take the expectation value across training data $\obspriorcent$
-and test data $\testset{\obspriorcent}$, the latter of which cancels the cross
-term in Eq.~\ref{eq:EoutDecomposition}. The final result of that would be
+and test data $\testset{\obspriorcent}$. 
+In other words, $\eout$ is a function of the Gaussian parameters $\eta$ and $\eta'$,
+and we can take the average over them to compute the average over training and test data. 
+Denoting as $\rho$ the Gaussian describing the distribution of $\eta$ and $\eta'$,
+we can define
+\begin{align}
+    \mathbf{E}_{y}\left[\eout\right] = \int d\eta\, \rho\left(\eta\right) \eout\left(\eta\right)\,.
+\end{align}
+The average over the test data cancels the cross term in Eq.~\ref{eq:EoutDecomposition}
+and the final result would be
 \begin{equation}\label{eq:ExpectedBiasVariance}
-    \mathbf{E}_{\obspriorcent, \testset{\obspriorcent}}[\eout] =
+    \mathbf{E}_{\obspriorcent} \mathbf{E}_{\testset{\obspriorcent}}[\eout] =
     \mathbf{E}_{\obspriorcent}[{\rm bias}] + 
     \mathbf{E}_{\obspriorcent}[{\rm variance}] +
-    \mathbf{E}_{\testset{\obspriorcent}}[{\rm noise}]\, .
+    \mathbf{E}_{\testset{\obspriorcent}}[{\rm noise}]\,.
 \end{equation}
 We are not interested in the observational noise term, since it is independent
 of the model and in the limit of infinite test data
 $\mathbf{E}_{\testset{\obspriorcent}}[{\rm noise}] \to 1$. The two estimators of
-interest are independent of the test data, and therefore we only need to take
-the expectation value over the training data. In practical terms, this can be
+interest are independent of the parameter $\eta'$ associated with the test data,
+however they do depend implicitly of $\eta$, entering the definition of the training data used to determine
+$\modelvecrep$.
+Therefore we only need to take
+the expectation value over the parameter $\eta$, associated with the training data. 
+In practical terms, this can be
 achieved by running multiple closure fits, each with a different observational
 noise vector $\obsnoise$, and taking the average i.e.
 \begin{equation}

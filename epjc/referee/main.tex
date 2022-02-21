@@ -1,0 +1,90 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[colorlinks=true, linkcolor=black!50!blue, urlcolor=blue, citecolor=blue, anchorcolor=blue]{hyperref}
+\usepackage[font=small,labelfont=bf,margin=0mm,labelsep=period,tableposition=top]{caption}
+\usepackage[a4paper,top=3cm,bottom=2.5cm,left=2.5cm,right=2.5cm,bindingoffset=0mm]{geometry}
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{afterpage}
+\usepackage{epsfig,cite}
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{dsfont}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{afterpage}
+
+
+\usepackage{url}
+
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{tikz-3dplot}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage{simpler-wick}
+\setlength{\parindent}{0pt}
+\graphicspath{{./figs/}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\smallfrac#1#2{\hbox{$\frac{#1}{#2}$}}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\bare}{{(0)}}
+\newcommand{\sym}{\mathrm{sym}}
+\newcommand{\asy}{\mathrm{asy}}
+\newcommand{\as}{\alpha_s}
+\newcommand{\comment}[1]{\textbf{\textcolor{red!60!black}{[#1]}}}
+\newcommand{\unsure}[1]{\textbf{\textcolor{red!60!black}{[#1]}}}
+\newcommand{\nsv}{\mathrm{V}_3}
+\newcommand{\nst}{\mathrm{T}_3}
+\newcommand{\eg}{{\em e.g.}}
+\newcommand{\ie}{{\em i.e.}}
+\newcommand{\msbar}{\overline{MS}}
+\newcommand{\dis}{\text{DIS}}
+\newcommand{\pos}{\text{POS}}
+
+\def \z{\zeta}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+
+\usepackage{tabularx}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\begin{document}
+We thank the referee for their close reading of our paper and for the detailed comments and criticisms 
+which helped us clarifying different points.
+\begin{enumerate}
+    \item \textcolor{red}{TG: which was the reference to Hadamar?}
+    \item We have added a sentence at the end of the paragraph to stress this points.
+    \item This sort of demonstration had indeed been stated in words in previous NNPDF literature,
+    for example in Sec.4.1 of \cite{Forte:2002fg} in the context of structure function fits:
+    at the end of the third paragraph it is stated that it is easy to see that
+    the model has the same average, variance and point-to-point correlation
+    as the artificial replica distribution. In this paragraph of our paper
+    we are just recalling this point to the reader for completeness, spelling out all the equations for clarity.
+    Also, we wanted to stress the fact that this demonstration only strictly applies for the linear case,
+    while in the case of hadronic observables we also rely on a linear approximation of the 
+    forward map. We have added a citation to Ref.~\cite{Forte:2002fg}, to clarify that this point
+    had been already addressed in the past.
+    \item we have added the explicit definition of the average over test and training data and 
+    clarify the statement that the estimators are independent of the test data. Indeed with dependence
+    on training and test data we meant dependence on the parameters $\eta$ and $\eta'$.
+\end{enumerate}
+
+
+
+
+
+\bibliographystyle{UTPstyle}
+\bibliography{main}
+\end{document}
