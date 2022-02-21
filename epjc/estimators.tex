@@ -157,8 +157,10 @@ noise vector $\obsnoise$, and taking the average i.e.
     \mathbf{E}_{\obspriorcent}[ x ] = \frac{1}{\nfits} \sum_{j=1}^{\nfits} x.
 \end{equation}
 Clearly this is resource intensive, and requires us to perform many fits. In
-NNPDF3.0 \cite{nnpdf30}, single replica proxy fits were used to perform a study
-of the uncertainties. Here we have expanded the data-space estimators used in
+NNPDF3.0 \cite{nnpdf30}, single replica proxy fits, namely fits run 
+over different training sets and made by a single replica,
+were used to perform a study of the uncertainties. 
+Here we have expanded the data-space estimators used in
 the closure fits and also will be using multiple full replica fits to calculate
 various expectation values - made possible by our next generation fitting code.
 
@@ -170,7 +172,8 @@ eigenvector of the experimental covariance matrix normalised by the square root
 of the corresponding eigenvalue. An example of this is given in
 Fig.~\ref{fig:diagram2destimators}, where for simplicity we have considered a
 system with just two data points, \ie\ a two-dimensional data space, with a
-diagonal covariance. The origin of the coordinate system is the true value of
+diagonal covariance and we take these for both the training and the test set.
+The origin of the coordinate system is the true value of
 the observable. The observational noise in these coordinates corresponds to a
 unit circle centred in the origin as shown in
 Fig.~\ref{fig:diagram2destimators}. If the experimental covariance is faithful,
@@ -464,10 +467,10 @@ the same)
         &= \testset{\linmap} \modelpostcov \linmap^T \obspriorcov^{-1} \, \obsnoise \, ,
     \end{split}
 \end{equation}
-where we recall that $\linmap$ is the forward map to the training observables
-and $\obspriorcent$ are the corresponding training central values. Because the
-training observables do not necessarily coincide with the data used to compute
-the estimators, we have two different maps $\linmap$ and $\linmap'$. Calculating
+where we recall that $\linmap$ is the forward map to the training observables.
+Because the training observables, previously denoted as $y_0$, do not necessarily coincide 
+with the data used to compute the estimators, denoted as $y_0'$,
+we have two different maps $\linmap$ and $\linmap'$. Calculating
 the covariance across training data of
 $\emodel{\testset{\fwdobsop}\left(\modelvecrep\right)} - \testset{\law}$ gives
 \begin{equation}

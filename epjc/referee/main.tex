@@ -76,9 +76,57 @@ which helped us clarifying different points.
     while in the case of hadronic observables we also rely on a linear approximation of the 
     forward map. We have added a citation to Ref.~\cite{Forte:2002fg}, to clarify that this point
     had been already addressed in the past.
-    \item we have added the explicit definition of the average over test and training data and 
-    clarify the statement that the estimators are independent of the test data. Indeed with dependence
-    on training and test data we meant dependence on the parameters $\eta$ and $\eta'$.
+    \item We have added the explicit definition of the average over test and training data and 
+    clarify the statement that ``the estimators are independent of the test data''. Indeed with dependence
+    on training and test data we meant the explicit or implicit dependence on the parameters $\eta$ and $\eta'$.
+    \item We have added a sentence to clarify that by single replica proxy fits we mean fits
+    run over different training sets made by a single replica. \textcolor{red}{Is it true? Is it what done in NNPDF30
+    paper?}
+    \item In the example of Sec4.2 training and set tests are indeed taken to be the same for simplicity.
+    We have added a sentence stating explicitly thi choice.
+    \item This is a typo, $y_0$ should not be there. We have remove it, and clarified the sentence following Eq.(124),
+    which in the revised version of the paper is Eq.(125).\textcolor{red}{TG: correct?}
+    \item In order to answer the question properly one should repeat the analysis using the 
+    NNPDF3.1 code and look at the estimators to see if 1) the NNPDF3.1 uncertainties are faithful according to 
+    the criteria presented here 2) how the situation compared with respect to the NNPDF4.0 case.
+    Even if the computational cost of this exercise might be feasible with a reasonable batch computer system,
+    it has not been judged to be doable at the moment.  
+    %
+    Without computing explicitly these estimators on NNPDF3.1 is however complicated 
+    to make statistical meaningful statements about the comparison between the two methodologies,
+    and all we can do is something at the level of Fig.5.
+    We should also mention that the point we want to achieve with this work is to try to give
+    a better definition of what we mean by 1) faithful uncertainties and 2) passing a closure test.
+    In our opinion this is filling a gap in the previous NNPDF literature where these points 
+    were not fully defined and addressed. With the present work we hope to give more solid criteria 
+    to test the methodologies of future releases,
+    and we start showing the the current NNPDF4.0 methodology indeed satisfy such criteria of faithfulness,
+    within the context of a closure test.
+    However, performing the full exercise on the old methodology is not meant to be part of this work.
+    We have added a sentence about this, stating that the NNPDF4.0 vs NNPDF3.1 comparison presented here
+    is not complete, and that what presented here should be used to asses the faithfulness of future, and more
+    efficient methodologies. \textcolor{red}{TG: still need to modify the paper text for this. 
+    Can we say something more using some old NNPDF3.0 estimators?}
+    \item Better methodologies should indeed aim to reduce the L0 and L1 uncertainties.
+    However, a feature that a good methodology should have is that these components of the total uncertainty should
+    still be the dominant ones in the regions where data are not present.
+    Therefore we do want to have a bigger L0 and L1 uncertainties at small and large-x.
+    However this should be driven by the lack of experimental information in these kinematic regions,
+    and not by some unefficiency of the fitting methodology. What we meant here is that better methodologies 
+    should reduce the size of these uncertainties as far as the unefficiency of the fitting procedure
+    is concerned. We suggest that this is what we might be observing in the comparison
+    between NNPDF4.0 and NNPDF3.1 of Fig.5, and in support of this we note that L0 and L1 uncertainty
+    are reduced in both the data and extrapolation region, while still remaining the dominant source of 
+    error in the latter case.    
+    However the question concerning how big these components should be and how we could validate them 
+    in a closure test is not answered in this paper, since the estimators described here 
+    are computed on the actual data.
+    This is an issue which has still to be studied, and will be addressed in future works.
+    We have added few lines to elaborate on this. Further work in this direction is required to 
+    asses whether or not we are already reaching a fundamental limit for L0 and L1.  
+    \item \textcolor{red}{TG: I am also a bit confused about Fig.8 at the moment. What was it supposed to show?}
+    \item We agree with the referee and we have added few sentences to stress the point.
+    \item We agree with the point of the referee, and we have modified the sentence accordingly.
 \end{enumerate}
 
 
