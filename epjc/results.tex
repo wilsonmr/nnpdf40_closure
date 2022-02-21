@@ -273,3 +273,24 @@ uncertainty are correctly represented by the replicas but other directions are
 not. Finally we note how not only are the measured value and estimated value
 from $\biasvarratio$ self consistent, but they are also consistent with $0.68$,
 which further supports the argument that the model uncertainties are faithful.
+
+%
+As mentioned before, the improved efficiency of the new NNPDF4.0 code
+makes it possible to easily compute the data space estimators for the new methodology,
+but not for the NNPDF3.1 one, for which a much higher computational cost would be required to perform
+the same exercise. For this reason, here we choose to present numbers for NNPDF4.0 only.
+Given the fact that uncertainties in NNPDF4.0 are much smaller than those in NNPDF3.1,
+one might still wonder to what extend such estimators can or cannot distinguish between
+the two methodologies. In this respect, we notice that the faithfulness of uncertainties as defined here
+is not directly related to the corresponding size, and that the estimators presented here
+cannot distinguish between two different faithful methodologies. 
+Looking at the toy example of Fig.~\ref{fig:diagram2destimators}, if we had bigger uncertainty, like 
+in the NNPDF3.1 case, we would expect to get a bigger blue circle, with the true value of the observable
+still within its larger $68\%$. The data space estimators for any faithful methodology
+should therefore have similar values to those obtained for NNPDF4.0, independently of the
+relative size of the uncertainty.
+
+
+
+
+

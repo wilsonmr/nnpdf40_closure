@@ -87,26 +87,26 @@ which helped us clarifying different points.
     \item This is a typo, $y_0$ should not be there. We have remove it, and clarified the sentence following Eq.(124),
     which in the revised version of the paper is Eq.(125).\textcolor{red}{TG: correct?}
     \item In order to answer the question properly one should repeat the analysis using the 
-    NNPDF3.1 code and look at the estimators to see if 1) the NNPDF3.1 uncertainties are faithful according to 
-    the criteria presented here 2) how the situation compared with respect to the NNPDF4.0 case.
-    Even if the computational cost of this exercise might be feasible with a reasonable batch computer system,
-    it has not been judged to be doable at the moment.  
-    %
-    Without computing explicitly these estimators on NNPDF3.1 is however complicated 
-    to make statistical meaningful statements about the comparison between the two methodologies,
-    and all we can do is something at the level of Fig.5.
-    We should also mention that the point we want to achieve with this work is to try to give
-    a better definition of what we mean by 1) faithful uncertainties and 2) passing a closure test.
+    NNPDF3.1 code and look at the estimators to see if the NNPDF3.1 uncertainties are indeed faithful according to 
+    the criteria presented here.
+    The computational cost of this has not been judged to be feasible at the moment.
+    The point we would like to make with this work is to give
+    a better definition of what we mean by faithful uncertainties and passing a closure test.
     In our opinion this is filling a gap in the previous NNPDF literature where these points 
-    were not fully defined and addressed. With the present work we hope to give more solid criteria 
-    to test the methodologies of future releases,
-    and we start showing the the current NNPDF4.0 methodology indeed satisfy such criteria of faithfulness,
-    within the context of a closure test.
-    However, performing the full exercise on the old methodology is not meant to be part of this work.
-    We have added a sentence about this, stating that the NNPDF4.0 vs NNPDF3.1 comparison presented here
-    is not complete, and that what presented here should be used to asses the faithfulness of future, and more
-    efficient methodologies. \textcolor{red}{TG: still need to modify the paper text for this. 
-    Can we say something more using some old NNPDF3.0 estimators?}
+    were not fully defined and addressed, and we hope that this work gives more solid criteria 
+    to test the methodologies of future releases, starting from the current NNPDF4.0 methodology.
+    %
+    Performing the full exercise on the old methodology to assess whether or not it passes the faithful
+    criteria defined here, despite interesting, is not meant to be part of this work.
+    However as noticed by the referee we can add that these estimators cannot distinguish 
+    between two faithful methodology, independently of the relative size of their uncertainties.
+    Therefore, supposing the NNPDF3.1 are faithful (which has not been tested explicitly),
+    we should expect to get similar values to those we got for NNPDF4.0.
+    We have added a paragraph to discuss these points, using also the example of Fig.3 suggested by the referee,
+    that we found very clear to understand qualitatively how faithfulness and size of the uncertainties are 
+    not necessarily related. 
+
+    \textcolor{red}{TG: can we say something more using some old NNPDF3.0 estimators?}
     \item Better methodologies should indeed aim to reduce the L0 and L1 uncertainties.
     However, a feature that a good methodology should have is that these components of the total uncertainty should
     still be the dominant ones in the regions where data are not present.
